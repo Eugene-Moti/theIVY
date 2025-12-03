@@ -1,0 +1,281 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap'); */
+@import "../css/fonts.css";
+@import "tailwindcss";
+@import "../css/design-constants.css";
+
+* {
+  font-family: var(--font-primary);
+}
+
+.hero-btn {
+  color: #bfa544;
+  border: 3px solid #bfa544;
+  box-shadow: 0 4px 24px 0 rgba(191, 165, 68, 0.18), 0 1.5px 8px 0 rgba(0, 0, 0, 0.18);
+  font-weight: 700;
+  background: var(--color-cream-light);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-btn:hover,
+.hero-btn:focus {
+  background: rgba(191, 165, 68, 0.65);
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 8px 32px 0 rgba(191, 165, 68, 0.32), 0 2px 12px 0 rgba(0, 0, 0, 0.22);
+}
+
+.border-gold {
+  border-color: var(--color-gold) !important;
+}
+
+.marquee-premium-container {
+  padding-top: 1rem;
+}
+
+/* Marquee animation for premium text */
+@keyframes marquee-fade {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateX(-5%);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateX(105%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(110%);
+  }
+}
+
+.marquee-premium {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  background: linear-gradient(90deg, var(--color-gold) 40%, #ffcc80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: marquee-fade 10s linear infinite;
+  text-align: left;
+  padding: 0.5rem 0;
+}
+
+/* Google Maps iframe styling */
+.ivy-map-iframe {
+  width: 100%;
+  height: 350px;
+  border: 0;
+  border-radius: 1rem;
+  min-height: 300px;
+  max-width: 900px;
+}
+
+/* Property card hover backgrounds */
+.bg-blossoms-ivy {
+  background-image: url('/designs/Blossom Ivy.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-luckinn-ivy {
+  background-image: url('/designs/Luckinn Ivy.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-ivy-park {
+  background-image: url('/designs/Ivy Park.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Premium Locations section background */
+.bg-premium-locations {
+  background-image: url('/designs/IMG-20250710-WA0028.jpg');
+}
+
+/* Gold text for hero heading */
+.hero-heading-gold {
+  color: var(--color-gold);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Hero heading white with soft black shadow */
+.hero-heading-white-shadow {
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Luxury logo text styling */
+.luxury-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 2rem;
+  background: linear-gradient(90deg, var(--color-gold) 40%, #ffcc80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(191, 165, 68, 0.15);
+}
+
+/* Luxury logo subtitle styling */
+.luxury-logo-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--color-gold);
+}
+
+/* Large (reduced) hero heading for home page */
+.hero-heading-xl {
+  font-size: 4rem;
+}
+
+/* Luxury logo/brand classes */
+.ivy-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 2rem;
+  /* background: linear-gradient(90deg, var(--color-gold) 40%, #ffcc80 100%); */
+  background: linear-gradient(90deg, var(--color-gold) 0%, #ffcc80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.ivy-logo-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--color-gold);
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  margin-top: 0.15rem;
+}
+
+.min-w-48 {
+  min-width: 48px;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.gradient-gold {
+  background: linear-gradient(90deg, var(--color-gold) 40%, #ffcc80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-slide-up {
+  animation: slide-up 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes shake {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+
+  20% {
+    transform: scale(1.05) translateX(-4px);
+  }
+
+  40% {
+    transform: scale(1.08) translateX(4px);
+  }
+
+  60% {
+    transform: scale(1.05) translateX(-4px);
+  }
+
+  80% {
+    transform: scale(1.08) translateX(4px);
+  }
+
+  100% {
+    transform: scale(1.05) translateX(0);
+  }
+}
+
+.hover-animate-shake:hover {
+  animation: shake 0.4s;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  transform: scale(1.05);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-pr-sans);
+  --font-mono: var(--font-pr-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+}
