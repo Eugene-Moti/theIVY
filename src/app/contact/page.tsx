@@ -61,11 +61,11 @@ export default function ContactPage() {
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-green-600 mb-8 text-center animate-slide-down">Send Us a Message</h2>
           <form className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <input type="text" placeholder="First Name" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base" required />
-              <input type="text" placeholder="Last Name" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base" required />
+              <input type="text" placeholder="First Name" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base text-black" required />
+              <input type="text" placeholder="Last Name" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base text-black" required />
             </div>
-            <input type="email" placeholder="Email Address" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base" required />
-            <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base" required />
+            <input type="email" placeholder="Email Address" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base text-black" required />
+            <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base text-black" required />
             <select className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold text-gray-700 bg-white transition-all duration-300 text-sm sm:text-base" required aria-label="Inquiry Type">
               <option value="">Select Inquiry Type</option>
               <option value="general">General Inquiry</option>
@@ -82,7 +82,7 @@ export default function ContactPage() {
               <option value="3-bedroom">Ivy Park</option>
 
             </select>
-            <textarea placeholder="Tell us about your requirements..." rows={4} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base" required></textarea>
+            <textarea placeholder="Tell us about your requirements..." rows={4} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 bg-white transition-all duration-300 text-sm sm:text-base text-black" required></textarea>
             <button type="submit" className="w-full bg-gold text-black py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-[#bfa14a] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg scale-100 hover:scale-105 flex items-center justify-center gap-2 animate-pulse">
               <FaCheckCircle className="text-lg sm:text-xl text-green-600" /> Send Message
             </button>

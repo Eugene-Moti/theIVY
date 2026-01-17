@@ -385,7 +385,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="text-lg md:text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mb-10"
             >
-              Crafting Nairobi's most coveted addresses with unparalleled luxury and sophistication since 2010
+              Crafting Nairobi's most coveted addresses with unparalleled luxury and sophistication since 
             </motion.p>
 
             <motion.div
