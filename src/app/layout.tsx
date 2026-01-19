@@ -96,7 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+254-798-888-866",
+        telephone: "+254-700-019-012",
         contactType: "sales",
         availableLanguage: "English",
       },

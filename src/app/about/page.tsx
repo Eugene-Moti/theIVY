@@ -61,21 +61,21 @@ function ProjectsCarousel() {
       name: "BLOSSOM IVY",
       location: "Kileleshwa",
       description: "Elegant apartments offering tranquil living with urban convenience in prime Kileleshwa.",
-      image: "/designs/IMG-20250709-WA0079.jpg",
+      image: "/designs/cover.png",
       status: "current" as const,
     },
     {
       name: "LUCKINN IVY",
       location: "Westlands",
       description: "Contemporary living spaces in vibrant Westlands, designed for modern professionals.",
-      image: "/designs/IMG-20250709-WA0081.jpg",
+      image: "/designs/Luckinn.jpg",
       status: "current" as const,
     },
     {
       name: "IVY PARK",
       location: "Kilimani",
       description: "Sophisticated residences combining luxury with accessibility in prestigious Kilimani.",
-      image: "/designs/IMG-20250709-WA0082.jpg",
+      image: "/renders/251027_FINAL_Cinema-View 1_IVY PARK.jpg",
       status: "current" as const,
     },
   ];
@@ -260,10 +260,10 @@ export default function AboutPage() {
 
   // Stats data - consistent with Buy page styling
   const stats = [
-    { icon: <Building className="w-8 h-8" />, value: "50+", label: "Projects Completed" },
-    { icon: <Users className="w-8 h-8" />, value: "1000+", label: "Happy Families" },
-    { icon: <Award className="w-8 h-8" />, value: "15+", label: "Years Excellence" },
-    { icon: <Home className="w-8 h-8" />, value: "4", label: "Active Projects" },
+    { icon: <Building className="w-8 h-8" />, value: "5+", label: "Projects Completed" },
+    { icon: <Users className="w-8 h-8" />, value: "500+", label: "Happy Families" },
+    { icon: <Award className="w-8 h-8" />, value: "5+", label: "Years Excellence" },
+    { icon: <Home className="w-8 h-8" />, value: "3", label: "Active Projects" },
   ];
 
   // Features data - consistent with Home page styling
@@ -305,14 +305,14 @@ export default function AboutPage() {
       name: "Luckinn Ivy",
       location: "Westlands",
       description: "Elegant apartments designed for comfort and style with state-of-the-art facilities.",
-      image: "/designs/Luckinn Ivy.jpg",
+      image: "/designs/Luckinn.jpg",
       status: "Current"
     },
     {
       name: "Ivy Park",
       location: "Kilimani",
       description: "Spacious homes in a serene park setting, perfect for families seeking tranquility.",
-      image: "/designs/Ivy Park.png",
+      image: "/renders/251027_FINAL_Cinema-View 1_IVY PARK.jpg",
       status: "Current"
     },
   ];
@@ -385,7 +385,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="text-lg md:text-xl lg:text-2xl text-gray-100 max-w-3xl mx-auto leading-relaxed drop-shadow-lg mb-10"
             >
-              Crafting Nairobi's most coveted addresses with unparalleled luxury and sophistication since 
+              Crafting Nairobi's most coveted addresses with unparalleled luxury and sophistication since 2019
             </motion.p>
 
             <motion.div
@@ -477,7 +477,7 @@ export default function AboutPage() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/designs/IMG-20250709-WA0080.jpg"
+                  src="/designs/Cover.png"
                   alt="IVY GROUP Legacy"
                   width={800}
                   height={600}

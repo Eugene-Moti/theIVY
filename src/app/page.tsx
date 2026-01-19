@@ -363,12 +363,6 @@ export default function Home() {
             >
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-serif text-white drop-shadow-2xl mb-6">
                 </h1>
-
-              <div className="flex items-center justify-center gap-6 mt-10">
-                <div className="h-px w-32 bg-[#bfa544]/70" />
-                <GoldStar />
-                <div className="h-px w-32 bg-[#bfa544]/70" />
-              </div>
             </motion.div>
 
             {/* CTA Buttons */}
@@ -549,19 +543,19 @@ export default function Home() {
             {[
               {
                 quote: "IVY GROUP transformed our vision into reality. The attention to detail and quality exceeded our expectations.",
-                author: "Sarah M.",
-                role: "Blossom Ivy Resident",
-                image: "/designs/blossom.jpg"
+                author: "Brad O.",
+                role: "BlossomsIvy Investor",
+                image: "/designs/cover.jpg"
               },
               {
                 quote: "Professional from start to finish. Our investment in Luckinn Ivy has already shown remarkable appreciation.",
                 author: "David K.",
                 role: "Investor",
-                image: "/designs/Luckinn Ivy.jpg"
+                image: "/designs/Luckinn.jpg"
               },
               {
                 quote: "Living in Ivy Park feels like a permanent vacation. The amenities and community are exceptional.",
-                author: "Lisa W.",
+                author: "Erick M.",
                 role: "Ivy Park Resident",
                 image: "/designs/Exterior_07_IA.png"
               },
@@ -696,15 +690,15 @@ export default function Home() {
               { 
                 icon: "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z", 
                 title: "EMAIL US", 
-                detail: "blossomivymarketing@gmail.com", 
-                link: "mailto:blossomivymarketing@gmail.com", 
+                detail: "sales@rsunproperty.net", 
+                link: "mailto:sales@rsunproperty.net", 
                 cta: "Send Email" 
               },
               { 
                 icon: "M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57 1.66 0 3 .98 3 2.19v3.86c0 1.21-.98 2.19-2.19 2.19C8.66 24 2 17.34 2 9.81V5.94C2 4.73 2.98 3.75 4.19 3.75h3.86c1.21 0 2.19.98 2.19 2.19 0 1.24.2 2.45.57 3.57.12.35.03.75-.24 1.02l-2.2 2.2z", 
                 title: "CALL US", 
-                detail: "+254 798 888 866", 
-                link: "tel:+254798888866", 
+                detail: "+254 799 008 564", 
+                link: "tel:+254799008564", 
                 cta: "Call Now" 
               },
               { 
@@ -784,7 +778,7 @@ export default function Home() {
 
       {/* WHATSAPP FLOAT */}
       <motion.a
-        href="https://wa.me/254798888866"
+        href="https://wa.me/254799008564"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 group"
