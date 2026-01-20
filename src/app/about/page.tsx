@@ -93,7 +93,9 @@ function ProjectsCarousel() {
 
       {/* Nav Buttons */}
       <button
+        type="button"
         onClick={prevSlide}
+        aria-label="Previous slide"
         className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-lg border border-white/20 flex items-center justify-center hover:bg-white/20 hover:scale-110 active:scale-95 transition-all"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +103,9 @@ function ProjectsCarousel() {
         </svg>
       </button>
       <button
+        type="button"
         onClick={nextSlide}
+        aria-label="Next slide"
         className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-lg border border-white/20 flex items-center justify-center hover:bg-white/20 hover:scale-110 active:scale-95 transition-all"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -172,7 +176,9 @@ function ProjectsCarousel() {
         {projects.map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => goToSlide(i)}
+            aria-label={`Go to slide ${i + 1}`}
             className={`w-12 h-1.5 rounded-full transition-all ${i === currentSlide ? "bg-[#bfa544] w-20" : "bg-white/30 hover:bg-white/60"}`}
           />
         ))}
