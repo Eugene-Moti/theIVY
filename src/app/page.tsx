@@ -5,12 +5,7 @@ import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
-// Reusable Gold Star Icon
-const GoldStar = () => (
-  <svg className="w-12 h-12 md:w-14 md:h-14 text-[#bfa544]" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 .587l3.668 7.431 8.332 1.209-6 5.852 1.416 8.262L12 19.897l-7.416 3.896 1.416-8.262-6-5.852 8.332-1.209z" />
-  </svg>
-);
+
 
 // PROJECTS DATA
 const projectsData = [
@@ -132,9 +127,7 @@ function ProjectsCarousel() {
             transition={{ delay: 0.4 }}
             className="flex items-center justify-center gap-8 mt-8"
           >
-            <div className="h-px w-48 bg-[#bfa544]/70" />
-            <GoldStar />
-            <div className="h-px w-48 bg-[#bfa544]/70" />
+            <div className="h-px w-96 bg-[#bfa544]/70" />
           </motion.div>
         </div>
 
@@ -339,12 +332,12 @@ export default function Home() {
       {/* HERO */}
       <section ref={heroRef} className="relative min-h-screen overflow-hidden">
         <motion.div style={{ y: yVideo, scale: scaleVideo }} className="absolute inset-0">
-          <video 
-            className="w-full h-full object-cover" 
-            src={videoUrl} 
-            autoPlay 
-            loop 
-            muted 
+          <video
+            className="w-full h-full object-cover"
+            src={videoUrl}
+            autoPlay
+            loop
+            muted
             playsInline
             preload="metadata"
             poster="/renders/251027_FINAL_Cinema-View 1_IVY PARK.jpg"
@@ -433,9 +426,7 @@ export default function Home() {
               APARTMENT COLLECTIONS
             </motion.h2>
             <div className="flex items-center justify-center gap-6">
-              <motion.div initial={{ width: 0 }} animate={isCollectionsInView ? { width: 120 } : {}} transition={{ delay: 0.4 }} className="h-0.5 bg-[#bfa544]" />
-              <GoldStar />
-              <motion.div initial={{ width: 0 }} animate={isCollectionsInView ? { width: 120 } : {}} transition={{ delay: 0.4 }} className="h-0.5 bg-[#bfa544]" />
+              <motion.div initial={{ width: 0 }} animate={isCollectionsInView ? { width: 240 } : {}} transition={{ delay: 0.4 }} className="h-0.5 bg-[#bfa544]" />
             </div>
           </div>
 
@@ -488,9 +479,7 @@ export default function Home() {
               Why Choose IVY GROUP
             </h2>
             <div className="flex items-center justify-center gap-6">
-              <div className="h-px w-32 bg-[#bfa544]" />
-              <GoldStar />
-              <div className="h-px w-32 bg-[#bfa544]" />
+              <div className="h-px w-64 bg-[#bfa544]" />
             </div>
           </div>
 
@@ -539,9 +528,7 @@ export default function Home() {
               What Our Clients Say
             </h2>
             <div className="flex items-center justify-center gap-6">
-              <div className="h-px w-32 bg-[#bfa544]" />
-              <GoldStar />
-              <div className="h-px w-32 bg-[#bfa544]" />
+              <div className="h-px w-64 bg-[#bfa544]" />
             </div>
           </div>
 
@@ -685,9 +672,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold font-serif text-[#222] mb-4">GET IN TOUCH</h2>
             <div className="flex items-center justify-center gap-6">
-              <div className="h-px w-32 bg-[#bfa544]" />
-              <GoldStar />
-              <div className="h-px w-32 bg-[#bfa544]" />
+              <div className="h-px w-64 bg-[#bfa544]" />
             </div>
           </div>
 
