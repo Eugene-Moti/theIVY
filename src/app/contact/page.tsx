@@ -111,10 +111,10 @@ export default function ContactPage() {
             <div>
               <FaPhoneAlt className="text-2xl sm:text-3xl text-black mx-auto mb-4 animate-pulse" />
               <h3 className="text-lg sm:text-xl font-serif font-bold text-black mb-2">Call Us</h3>
-              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">+254 797 236 333<br/>+254 799 008 564</p>
+              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">+254 799 008 564</p>
             </div>
             <a
-              href="tel:+254797236333"
+              href="tel:+254799008564"
               className="bg-gold text-black px-4 sm:px-6 py-2 rounded-lg font-semibold text-sm sm:text-base hover:bg-[#bfa14a] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg scale-100 hover:scale-105 inline-block mt-4"
             >
               Call Now

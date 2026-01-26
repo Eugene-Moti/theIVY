@@ -182,10 +182,10 @@ export default function BookReservation() {
             <div>
               <FaPhoneAlt className="text-3xl text-blue-600 mx-auto mb-4 animate-pulse" />
               <h3 className="text-xl font-serif font-bold font-bold text-black mb-2">Call Us</h3>
-              <p className="text-gray-700 leading-relaxed">+254 798 888 866<br/>+254 799 008 564</p>
+              <p className="text-gray-700 leading-relaxed">+254 799 008 564</p>
             </div>
             <a
-              href="tel:+254798888866"
+              href="tel:+254799008564"
               className="bg-gold text-black px-6 py-2 rounded-lg font-semibold hover:bg-[#bfa14a] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg scale-100 hover:scale-105 inline-block mt-4"
             >
               Call Now
