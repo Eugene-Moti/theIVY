@@ -1,8 +1,10 @@
-import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next"
+import type { Metadata, Viewport, } from "next";
 import { Playfair_Display } from "next/font/google";
 import "./css/globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+
 
 // Load Playfair Display font (luxurious serif)
 const playfair = Playfair_Display({
