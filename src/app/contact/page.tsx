@@ -124,10 +124,10 @@ export default function ContactPage() {
             <div>
               <FaEnvelope className="text-2xl sm:text-3xl text-black mx-auto mb-4 animate-pulse" />
               <h3 className="text-lg sm:text-xl font-serif font-bold text-black mb-2">Email Us</h3>
-              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">blossomivymarketing@gmail.com</p>
+              <p className="text-gray-700 leading-relaxed text-sm sm:text-base">sales@rsunproperty.net</p>
             </div>
             <a
-              href="mailto:blossomivymarketing@gmail.com"
+              href="mailto:sales@rsunproperty.net"
               className="bg-gold text-black px-4 sm:px-6 py-2 rounded-lg font-semibold text-sm sm:text-base hover:bg-[#bfa14a] hover:text-white transition-all duration-200 shadow-md hover:shadow-lg scale-100 hover:scale-105 inline-block mt-4"
             >
               Send Email
