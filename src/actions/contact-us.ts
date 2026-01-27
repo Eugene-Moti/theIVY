@@ -118,7 +118,7 @@ function getEmailTemplate(data: ContactFormPayload, type: "contact" | "reservati
   }
 }
 
-export async function sendContactEmail(data: ContactFormPayload) {
+export async function sendResendContactEmail(data: ContactFormPayload) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const formType = data.formType || "contact";
 
@@ -132,6 +132,59 @@ export async function sendContactEmail(data: ContactFormPayload) {
       subject: template.subject,
       html: template.html,
     });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Contact email failed:", error);
+    return { success: false, error: "Failed to send message" };
+  }
+}
+
+// interface ContactFormPayload {
+//   name: string;
+//   email: string;
+//   message: string;
+//   formType?: string;   // optional
+//   // add more fields if needed (phone, subject, etc.)
+// }
+
+export async function sendContactEmail(data: ContactFormPayload) {
+  const formType = data.formType || "contact";
+
+  // Generate time on server (better than client — consistent timezone)
+  const currentTime = new Date().toLocaleString("en-KE", {
+    timeZone: "Africa/Nairobi",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+
+  try {
+    const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        service_id: process.env.EMAILJS_SERVICE_ID,
+        template_id: "template_iy4vr1q",          // ← add this! (from dashboard)
+        user_id: process.env.EMAILJS_PUBLIC_KEY,
+        accessToken: process.env.EMAILJS_PRIVATE_KEY,  // required for server-side
+        template_params: {
+          name: process.env.EMAILJS_PUBLIC_NAME,                             // matches {{name}}
+          email: data.email,                           // for Reply-To
+          message: data.message,                       // matches {{message}}
+          time: currentTime,                           // matches {{time}}
+          form_type: formType,                         // optional – can use in subject
+          // Add more if your template uses them, e.g.:
+          // subject: `Contact: ${data.name}`,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`EmailJS error: ${errorText}`);
+    }
 
     return { success: true };
   } catch (error) {
