@@ -5,7 +5,7 @@ export async function GET() {
 
   try {
     return NextResponse.json(
-      { message: "Email sent successfully" },
+      { message: "Sent successfully" },
       { status: 200 }
     );
   } catch (error) {
