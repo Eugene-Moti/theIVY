@@ -144,7 +144,7 @@ export default function ContactForm() {
       <section className="py-16 px-4 max-w-4xl mx-auto w-full">
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gold/40 animate-fade-in">
           <h2 className="text-2xl sm:text-3xl font-serif font-bold text-green-600 mb-8 text-center animate-slide-down">Send Us a Message</h2>
-          <form reonSubmit={handleSubmit} f={formRef} className="space-y-6" noValidate>
+          <form ref={formRef} onSubmit={handleSubmit}  className="space-y-6" noValidate>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <input 
