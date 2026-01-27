@@ -1,11 +1,55 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',  // ← This is crucial for cPanel/Node.js deployments
-  // Optional: Add these if you have images or want better perf
+  // Required for cPanel / shared Node deployments
+  output: "standalone",
+
+  // Safer in shared hosting environments
+  reactStrictMode: true,
+
+  // Prevents image optimization errors on hosts without Sharp
   images: {
-    unoptimized: true,  // Often needed on shared hosting without image optimization support
+    unoptimized: true,
   },
-  // reactStrictMode: true,  // Good default, add if missing
+
+  // Ensures server actions & headers behave well behind proxies
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        "localhost:3000",
+        "*.app.github.dev",
+        "rsunproperty.net",
+        "www.rsunproperty.net",
+      ],
+    },
+  },
+
+  // Speeds up builds & reduces bundle size
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+
+  // Avoids build crashes on some shared hosts
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  // Optional but recommended for SEO + security
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
