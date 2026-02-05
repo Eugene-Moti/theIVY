@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import { Resend } from "resend";
 
@@ -149,6 +149,7 @@ export async function sendResendContactEmail(data: ContactFormPayload) {
 // }
 
 export async function sendContactEmail(data: ContactFormPayload) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const formType = data.formType || "contact";
 
   // Generate time on server (better than client — consistent timezone)
@@ -158,33 +159,49 @@ export async function sendContactEmail(data: ContactFormPayload) {
     timeStyle: "short",
   });
 
-  try {
-    const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        service_id: process.env.EMAILJS_SERVICE_ID,
-        template_id: "template_iy4vr1q",          // ← add this! (from dashboard)
-        user_id: process.env.EMAILJS_PUBLIC_KEY,
-        accessToken: process.env.EMAILJS_PRIVATE_KEY,  // required for server-side
-        template_params: {
-          name: process.env.EMAILJS_PUBLIC_NAME,                             // matches {{name}}
-          email: data.email,                           // for Reply-To
-          message: data.message,                       // matches {{message}}
-          time: currentTime,                           // matches {{time}}
-          form_type: formType,                         // optional – can use in subject
-          // Add more if your template uses them, e.g.:
-          // subject: `Contact: ${data.name}`,//
-        },
-      }),
-    });
+  const clientName = `${data.firstName} ${data.lastName}`;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`EmailJS error: ${errorText}`);
-    }
+  try {
+    await resend.emails.send({
+      from: "Ivy Group <onboarding@resend.dev>",
+      to: ["sales@rsunproperty.net"],
+      replyTo: data.email,
+      subject: `New ${formType.charAt(0).toUpperCase() + formType.slice(1)} Inquiry from ${clientName}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #2c5530; border-bottom: 3px solid #d4af37; padding-bottom: 10px;">
+            New Client Inquiry
+          </h2>
+
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="font-size: 16px; margin: 0;">
+              A message by <strong>${clientName}</strong> has been received.<br>
+              Kindly respond at your earliest convenience.<br>
+              <em>(${currentTime})</em>
+            </p>
+          </div>
+
+          <div style="background: #fff; padding: 20px; border-left: 4px solid #d4af37; margin: 20px 0;">
+            <h3 style="color: #2c5530; margin-top: 0;">Client Details</h3>
+            <p><strong>Name:</strong> ${clientName}</p>
+            <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+            <p><strong>Phone:</strong> <a href="tel:${data.phone}">${data.phone}</a></p>
+            <p><strong>Inquiry Type:</strong> ${data.inquiryType}</p>
+            ${data.propertyInterest ? `<p><strong>Property Interest:</strong> ${data.propertyInterest}</p>` : ''}
+          </div>
+
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #2c5530; margin-top: 0;">Message</h3>
+            <p style="white-space: pre-wrap;">${data.message}</p>
+          </div>
+
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
+            <p>This inquiry was submitted via the Ivy Group website ${formType} form.</p>
+            <p>Please respond promptly to maintain excellent customer service.</p>
+          </div>
+        </div>
+      `,
+    });
 
     return { success: true };
   } catch (error) {
