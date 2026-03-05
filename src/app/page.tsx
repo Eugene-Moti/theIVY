@@ -9,7 +9,7 @@ import { PROPERTIES, Property } from "@/lib/properties";
 // Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] as const } }
 };
 
 const staggerContainer = {
@@ -22,7 +22,7 @@ const staggerContainer = {
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] as const } }
 };
 
 // 3D CINEMATIC CAROUSEL
@@ -114,7 +114,7 @@ function ProjectsCarousel() {
             <motion.div
               className="h-full bg-gradient-to-r from-[#bfa544] to-[#d4c07a]"
               animate={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
-              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] as const }}
             />
           </div>
 
@@ -566,9 +566,6 @@ export default function Home() {
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-serif text-white drop-shadow-2xl">
                 <span className="gradient-text">IVY GROUP</span>
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 mt-4 font-light tracking-wider">
-                Premium Real Estate Development
-              </p>
             </motion.div>
 
             {/* Tagline */}
@@ -576,7 +573,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl text-white max-w-3xl mx-auto leading-relaxed drop-shadow-lg font-medium"
             >
               Experience luxury living in Nairobi's most prestigious locations.
               Modern apartments with premium amenities and flexible payment plans.
