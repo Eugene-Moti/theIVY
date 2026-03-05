@@ -3,189 +3,30 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { PROPERTIES } from "@/lib/properties";
 
-interface Room {
-  type: string;
-  price: string;
-}
-
-interface Property {
-  name: string;
-  description: string;
-  image: string;
-  brochure: string;
-  rooms: Room[];
-}
-
-const PropertyCard = ({ property, index }: { property: Property; index: number }) => {
-  const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-100px" });
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer group min-h-[500px] flex flex-col"
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.2,
-        ease: "easeOut",
-      }}
-      whileHover={{
-        y: -10,
-        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-        transition: { duration: 0.3 },
-      }}
-    >
-      <div className="md:flex flex-1">
-        <motion.div
-          className="md:w-1/2 relative overflow-hidden"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div className="absolute inset-0 bg-gradient-to-r from-[#bfa14a]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-          <motion.div
-            initial={{ filter: "blur(10px)" }}
-            animate={isInView ? { filter: "blur(0px)" } : { filter: "blur(10px)" }}
-            transition={{ duration: 0.8, delay: index * 0.2 + 0.3 }}
-          >
-            <Image
-              src={property.image}
-              alt={property.name}
-              width={600}
-              height={400}
-              className="w-full h-64 md:h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-          </motion.div>
-        </motion.div>
-
-        <div className="md:w-1/2 p-8 flex flex-col justify-center flex-1">
-          <motion.h3
-            className="text-2xl font-bold font-serif text-gray-800 mb-4"
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-            transition={{ duration: 0.6, delay: index * 0.2 + 0.4 }}
-          >
-            {property.name}
-          </motion.h3>
-
-          <motion.p
-            className="text-gray-600 mb-6"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 + 0.5 }}
-          >
-            {property.description}
-          </motion.p>
-
-          <motion.div
-            className="space-y-4 mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: index * 0.2 + 0.6 }}
-          >
-            {property.rooms.map((room, roomIndex) => (
-              <div key={roomIndex} className="flex justify-between items-center border-b border-gray-200 pb-2">
-                <span className="font-semibold text-gray-800">{room.type}</span>
-                <span className="text-gray-600">{room.price}</span>
-              </div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 mt-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: index * 0.2 + 0.7 }}
-          >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/contact"
-                className="block bg-[#bfa14a] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#a68a3f] transition-all duration-300 text-center shadow-lg hover:shadow-xl"
-              >
-                Inquire Now
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <a
-                href={property.brochure}
-                download
-                className="block bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-all duration-300 text-center shadow-lg hover:shadow-xl"
-              >
-                Download Brochure
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>
-  );
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] } }
 };
 
 export default function BuyPage() {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const backgroundColor = useTransform(scrollYProgress, [0, 1], ["#fcfbf7", "#f9f6f0"]);
-
-  const properties: Property[] = [
-    {
-      name: "Blossom Ivy",
-      description: "A luxurious residential complex offering modern living spaces with premium amenities.",
-      image: "/designs/Blossom Ivy.jpg",
-      brochure: "/Brochure/BlossomsIvy_brochure.pdf",
-      rooms: [
-        { type: "1 Bedroom", price: "Sold Out" },
-        { type: "2 Bedrooms", price: "Sold Out" },
-        { type: "3 Bedrooms", price: "Starting from Ksh 19M" },
-        { type: "4 Bedrooms", price: "Sold Out" },
-      ],
-    },
-    {
-      name: "Luckinn Ivy",
-      description: "Elegant apartments designed for comfort and style, featuring state-of-the-art facilities.",
-      image: "/designs/Luckinn Ivy.jpg",
-      brochure: "/Brochure/LuckinnIvy_brochure.pdf",
-      rooms: [
-        { type: "1 Bedroom", price: "Sold Out" },
-        { type: "2 Bedrooms", price: "Starting from Ksh 16.3M" },
-        { type: "3 Bedrooms", price: "Starting from Ksh 19.3M" },
-      ],
-    },
-    {
-      name: "Ivy Park",
-      description: "Spacious homes in a serene park setting, perfect for families seeking tranquility.",
-      image: "/designs/Ivy Park.png",
-      brochure: "/Brochure/IVY_Park.pdf",
-      rooms: [
-        { type: "1 Bedroom", price: "Starting from Ksh 6.82M" },
-        { type: "2 Bedrooms", price: "Starting from Ksh 10.78M" },
-        { type: "3 Bedrooms", price: "Starting from Ksh 15.62M" },
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-[#fcfbf7]">
-      {/* HERO SECTION WITH NIGHT DRONE BACKGROUND */}
+      {/* HERO SECTION */}
       <section
         className="relative py-32 md:py-40 bg-cover bg-center bg-no-repeat bg-fixed overflow-hidden"
         style={{
           backgroundImage: `url('/renders/251118_D01_Droneview-Night%20new_Ivy%20Park.jpg')`,
         }}
       >
-        {/* Dark overlay for perfect text readability */}
         <div className="absolute inset-0 bg-black/70"></div>
 
-        {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-          {/* Optional: Keep the animated house icon above the text */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -233,7 +74,7 @@ export default function BuyPage() {
       </section>
 
       {/* PROPERTIES SECTION */}
-      <motion.section ref={sectionRef} className="py-20 px-4" style={{ backgroundColor }}>
+      <motion.section ref={sectionRef} className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -246,12 +87,185 @@ export default function BuyPage() {
           </motion.h2>
 
           <div className="space-y-20">
-            {properties.map((property, index) => (
-              <PropertyCard key={index} property={property} index={index} />
+            {PROPERTIES.map((property, index) => (
+              <motion.div
+                key={property.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer group hover:shadow-2xl transition-all"
+              >
+                <div className="md:flex">
+                  <motion.div
+                    className="md:w-1/2 relative overflow-hidden"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#bfa14a]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                    <div className="img-zoom-container h-64 md:h-80">
+                      <Image
+                        src={property.image}
+                        alt={property.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </motion.div>
+
+                  <div className="md:w-1/2 p-8 flex flex-col justify-center flex-1">
+                    <motion.h3
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      className="text-2xl md:text-3xl font-bold font-serif text-gray-800 mb-2"
+                    >
+                      {property.name}
+                    </motion.h3>
+                    
+                    <p className="text-[#bfa544] font-medium mb-4">{property.locationDetail}</p>
+
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      className="text-gray-600 mb-6"
+                    >
+                      {property.description}
+                    </motion.p>
+
+                    {/* Quick Stats */}
+                    <div className="grid grid-cols-3 gap-4 mb-6">
+                      <div className="glass-card rounded-lg px-3 py-2 text-center">
+                        <span className="text-gray-500 text-xs">Blocks</span>
+                        <p className="text-gray-900 font-bold">{property.blocks}</p>
+                      </div>
+                      <div className="glass-card rounded-lg px-3 py-2 text-center">
+                        <span className="text-gray-500 text-xs">Floors</span>
+                        <p className="text-gray-900 font-bold">{property.floors}</p>
+                      </div>
+                      <div className="glass-card rounded-lg px-3 py-2 text-center">
+                        <span className="text-gray-500 text-xs">Units</span>
+                        <p className="text-gray-900 font-bold">{property.units}</p>
+                      </div>
+                    </div>
+
+                    {/* Unit Options */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="space-y-3 mb-6"
+                    >
+                      <h4 className="font-semibold text-gray-800">Available Units</h4>
+                      {property.unitsList.map((unit, unitIndex) => (
+                        <div key={unitIndex} className="flex justify-between items-center border-b border-gray-100 pb-2">
+                          <div>
+                            <span className="font-medium text-gray-800">{unit.type}</span>
+                            <span className="text-gray-500 text-sm ml-2">({unit.size})</span>
+                          </div>
+                          <span className={`font-semibold ${unit.status === 'available' ? 'text-[#bfa544]' : 'text-red-400'}`}>
+                            {unit.price}
+                          </span>
+                        </div>
+                      ))}
+                    </motion.div>
+
+                    {/* Completion Date */}
+                    <p className="text-sm text-gray-500 mb-6">
+                      <span className="font-semibold">Completion:</span> {property.completionDate}
+                    </p>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="flex flex-col sm:flex-row gap-4 mt-auto"
+                    >
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Link
+                          href="/contact"
+                          className="block bg-[#bfa14a] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#a68a3f] transition-all duration-300 text-center shadow-lg hover:shadow-xl"
+                        >
+                          Inquire Now
+                        </Link>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <Link
+                          href="/book-reservation"
+                          className="block bg-gray-800 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-700 transition-all duration-300 text-center shadow-lg hover:shadow-xl"
+                        >
+                          Book Viewing
+                        </Link>
+                      </motion.div>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Amenities */}
+                <div className="border-t border-gray-100 p-8 bg-gray-50">
+                  <h4 className="font-semibold text-gray-800 mb-4">Key Amenities</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {property.amenities.slice(0, 6).map((amenity, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#bfa544]"></span>
+                        {amenity}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </motion.section>
+
+      {/* PAYMENT PLANS SECTION */}
+      <section className="py-20 px-4 bg-gradient-to-r from-[#151c27] to-[#1a2836]">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold font-serif text-white mb-8"
+          >
+            Flexible Payment Plans
+          </motion.h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Deposit Plan",
+                description: "20% deposit within 7 days of booking",
+                detail: "Balance spread through construction period"
+              },
+              {
+                title: "Cash Buyer",
+                description: "Pay full balance within 30 days",
+                detail: "Get discounted price"
+              },
+              {
+                title: "Mortgage",
+                description: "20% deposit required",
+                detail: "Bank financing on completion"
+              }
+            ].map((plan, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-card rounded-2xl p-6 text-center hover-lift"
+              >
+                <h3 className="text-xl font-bold text-[#bfa544] mb-3">{plan.title}</h3>
+                <p className="text-white mb-2">{plan.description}</p>
+                <p className="text-white/70 text-sm">{plan.detail}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CALL TO ACTION */}
       <section className="bg-[#bfa14a] py-20 px-4">
@@ -264,7 +278,7 @@ export default function BuyPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-white text-[#bfa14a] px-10 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
+            className="inline-block bg-white text-[#bfa14a] px-10 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
           >
             Get In Touch
           </Link>
@@ -273,3 +287,4 @@ export default function BuyPage() {
     </div>
   );
 }
+
