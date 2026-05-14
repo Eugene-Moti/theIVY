@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { BrochureDownload } from "@/components/brochure-download";
+import { projects } from "@/lib/data";
 
 type ProjectPageProps = {
   project: any;
@@ -16,6 +17,10 @@ type ProjectPageProps = {
 };
 
 export function ProjectPage({ project, hero, intro, details, amenities, units, gallery, investment = [] }: ProjectPageProps) {
+  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+  const previousProject = projects[(currentIndex - 1 + projects.length) % projects.length];
+  const nextProject = projects[(currentIndex + 1) % projects.length];
+
   return (
     <>
       <section className="relative min-h-[86vh] overflow-hidden px-6 pt-32">
@@ -83,6 +88,67 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
                 <Image src={image} alt={`${project.name} gallery ${index + 1}`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-700 hover:scale-105" />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+      {project.mapEmbed && (
+        <section className="section bg-[#111815]">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <div>
+                <p className="eyebrow">Project location</p>
+                <h2 className="mt-3 font-serif text-5xl font-semibold">{project.name} on the map</h2>
+              </div>
+              <p className="max-w-xl text-white/62 md:text-right">
+                Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
+              </p>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-white/10 bg-[#0d1110] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+              <iframe
+                src={project.mapEmbed}
+                width="100%"
+                height="560"
+                style={{ border: 0, width: "100%" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`${project.name} location map`}
+                className="block min-h-[420px] w-full"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+      <section className="section bg-[#0d1110]">
+        <div className="mx-auto max-w-7xl rounded-lg border border-white/10 bg-white/[0.035] p-5 md:p-7">
+          <p className="eyebrow">Explore more residences</p>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <Link
+              href={`/projects/${previousProject.slug}`}
+              className="group flex items-center gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#c9a15b] transition group-hover:border-[#c9a15b]">
+                <ArrowLeft size={18} />
+              </span>
+              <span>
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Previous project</span>
+                <span className="mt-1 block font-serif text-2xl text-white">{previousProject.name}</span>
+                <span className="mt-1 block text-sm text-white/58">{previousProject.location}</span>
+              </span>
+            </Link>
+            <Link
+              href={`/projects/${nextProject.slug}`}
+              className="group flex items-center justify-between gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 text-right transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
+            >
+              <span>
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Next project</span>
+                <span className="mt-1 block font-serif text-2xl text-white">{nextProject.name}</span>
+                <span className="mt-1 block text-sm text-white/58">{nextProject.location}</span>
+              </span>
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#c9a15b] transition group-hover:border-[#c9a15b]">
+                <ArrowRight size={18} />
+              </span>
+            </Link>
           </div>
         </div>
       </section>

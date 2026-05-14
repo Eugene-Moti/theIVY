@@ -42,6 +42,8 @@ export const projects = [
     image: assets.ivyParkHero,
     logo: assets.ivyParkLogo,
     brochure: "/IVY PARK RESIDENCE/IvyPark Brochure/Ivypark Brochure.pdf",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2378.066417849596!2d36.783541489703445!3d-1.2916384041454692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1b000d6f3f39%3A0x854c68bdc588cef5!2sIVY%20PARK%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766282335!5m2!1sen!2ske",
     description:
       "A landmark Kilimani address with 660 apartments, rooftop living, heated pools, co-working spaces, and high investment potential near Yaya Centre.",
     stats: ["660 apartments", "22 residential floors", "1.06 acres", "3 blocks"],
@@ -57,6 +59,8 @@ export const projects = [
     image: assets.blossomsHero,
     logo: assets.blossomsLogo,
     brochure: "/BLOSSOMS_IVY/Brochure/Blossoms Brochure.pdf",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4747.119710069173!2d36.782766475697066!3d-1.2771360987107108!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766518082!5m2!1sen!2ske",
     description:
       "Luxury residences in Kileleshwa with indoor pool, gym, coffee bar, play areas, smart locks, and fast access to Westlands and CBD.",
     stats: ["220 apartments", "2 blocks", "0.62 acres", "3BR available"],
@@ -74,6 +78,8 @@ export const projects = [
     secondaryLogo: "/Luckinn/Logo/1x/Artboard 1.png",
     logoClass: "brightness-0 saturate-100 invert-[70%] sepia-[44%] saturate-[503%] hue-rotate-[358deg] brightness-[88%] contrast-[87%]",
     brochure: "/Luckinn/Brochure/Luckinn Ivy Residence Brochure.pdf",
+    mapEmbed:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2400.7090070955387!2d36.80838449207145!3d-1.2675000854185314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766624658!5m2!1sen!2ske",
     description:
       "A refined Westlands tower with 120 units, indoor pool, gym, co-working space, yoga room, smart locks, and strong urban convenience.",
     stats: ["120 units", "20 floors", "1 tower", "3BR available"],

@@ -4,6 +4,7 @@ import Image from "next/image";
 // motion is client-only; placeholder page uses static markup for SSR safety.
 
 import Link from "next/link";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BrochureDownload } from "@/components/brochure-download";
 import { projects, assets } from "@/lib/data";
 
@@ -41,6 +42,10 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
   const project = projects.find((p) => p.slug === (slug as string));
 
   if (!project) notFound();
+
+  const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+  const previousProject = projects[(currentIndex - 1 + projects.length) % projects.length];
+  const nextProject = projects[(currentIndex + 1) % projects.length];
 
   return (
     <div className="py-24">
@@ -88,6 +93,31 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
           </div>
         </div>
 
+        <section className="mt-14">
+          <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Project location</p>
+              <h2 className="mt-3 font-serif text-4xl font-light md:text-5xl">{project.name} on the map</h2>
+            </div>
+            <p className="max-w-xl text-white/60 md:text-right">
+              Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
+            </p>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+            <iframe
+              src={project.mapEmbed}
+              width="100%"
+              height="560"
+              style={{ border: 0, width: "100%" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`${project.name} location map`}
+              className="block min-h-[420px] w-full"
+            />
+          </div>
+        </section>
+
         <div className="mt-14">
           <div className="rounded-2xl border border-white/10 bg-[#111111] p-6">
             <p className="text-white/70">
@@ -96,6 +126,38 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             </p>
           </div>
         </div>
+
+        <section className="mt-14 rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 md:p-7">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Explore more residences</p>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <Link
+              href={`/projects/${previousProject.slug}`}
+              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
+            >
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#C9A96E] transition group-hover:border-[#C9A96E]">
+                <ArrowLeft size={18} />
+              </span>
+              <span>
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Previous project</span>
+                <span className="mt-1 block font-serif text-2xl text-white">{previousProject.name}</span>
+                <span className="mt-1 block text-sm text-white/58">{previousProject.location}</span>
+              </span>
+            </Link>
+            <Link
+              href={`/projects/${nextProject.slug}`}
+              className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-right transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
+            >
+              <span>
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Next project</span>
+                <span className="mt-1 block font-serif text-2xl text-white">{nextProject.name}</span>
+                <span className="mt-1 block text-sm text-white/58">{nextProject.location}</span>
+              </span>
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#C9A96E] transition group-hover:border-[#C9A96E]">
+                <ArrowRight size={18} />
+              </span>
+            </Link>
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, CreditCard, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { BrochureDownload } from "@/components/brochure-download";
 import { projects } from "@/lib/data";
 
@@ -56,9 +56,6 @@ export default function Buy() {
                     Learn More <ArrowRight size={17} />
                   </Link>
                   <BrochureDownload brochure={project.brochure} projectName={project.name} variant="dark" />
-                  <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#c9a15b] px-6 py-3 font-bold text-[#111]">
-                    <CreditCard size={17} /> Request Payment Plan
-                  </Link>
                 </div>
               </div>
             </article>
