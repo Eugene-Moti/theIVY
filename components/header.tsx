@@ -43,8 +43,8 @@ export function Header() {
           <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition hover:border-[#c9a15b] hover:text-[#c9a15b]" aria-label="Call The Ivy Group">
             <Phone size={18} />
           </a>
-          <Link href="/contact" className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
-            Book a Site Visit
+          <Link href="/contact#brochures" className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
+            Download Brochure
           </Link>
         </div>
         <button className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 lg:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
@@ -65,8 +65,8 @@ export function Header() {
             <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition hover:border-[#c9a15b] hover:text-[#c9a15b]" aria-label="Call The Ivy Group">
               <Phone size={18} />
             </a>
-            <Link href="/contact" onClick={() => setOpen(false)} className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
-              Book a Site Visit
+            <Link href="/contact#brochures" onClick={() => setOpen(false)} className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
+              Download Brochure
             </Link>
           </div>
         </div>

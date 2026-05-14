@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BrochureDownload } from "@/components/brochure-download";
 import { assets, projects } from "@/lib/data";
 
 const slides = [
@@ -89,9 +90,7 @@ export function Hero() {
             <Link href={`/${activeSlide.project.slug}`} className="gold-gradient flex items-center justify-center gap-2 rounded-full px-6 py-4 font-bold text-[#111]">
               Learn More <ArrowRight size={18} />
             </Link>
-            <Link href="/contact" className="rounded-full border border-white/22 px-6 py-4 text-center font-bold text-white backdrop-blur transition hover:border-[#c9a15b]">
-              Book a Site Visit
-            </Link>
+            <BrochureDownload brochure={activeSlide.project.brochure} projectName={activeSlide.project.name} variant="outline" />
           </div>
         </div>
       </div>

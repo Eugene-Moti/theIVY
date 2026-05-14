@@ -61,7 +61,7 @@ export default function Contact() {
           <div className="mt-6 overflow-hidden rounded-lg border border-[#d8c49a]/25">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1546.6308911294905!2d36.78450723800919!3d-1.2772002238879356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778488647639!5m2!1sen!2ske" width="600" height="450" style={{ border: 0, width: "100%" }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Blossoms Ivy Residence head office map" />
           </div>
-          <div className="mt-6 rounded-lg border border-[#d8c49a]/25 bg-[#111815] p-6 text-white">
+          <div id="brochures" className="mt-6 rounded-lg border border-[#d8c49a]/25 bg-[#111815] p-6 text-white">
             <p className="eyebrow">Brochures</p>
             <h2 className="mt-3 text-2xl font-semibold">Download project brochures</h2>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">

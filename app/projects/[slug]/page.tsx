@@ -4,6 +4,7 @@ import Image from "next/image";
 // motion is client-only; placeholder page uses static markup for SSR safety.
 
 import Link from "next/link";
+import { BrochureDownload } from "@/components/brochure-download";
 import { projects, assets } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -64,9 +65,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             </p>
 
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link href="/contact" className="rounded-full bg-[#C9A96E] px-6 py-3 font-bold text-black">
-                Book a Viewing
-              </Link>
+              <BrochureDownload brochure={project.brochure} projectName={project.name} />
               <Link
                 href="/floor-plans"
                 className="rounded-full border border-white/20 bg-black/30 px-6 py-3 font-bold text-white"

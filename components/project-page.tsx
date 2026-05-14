@@ -29,8 +29,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
             <p className="mt-4 flex items-center gap-2 text-lg text-white/76"><MapPin size={19} /> {project.location}</p>
             <p className="mt-6 max-w-3xl text-xl leading-8 text-white/76">{intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact" className="gold-gradient rounded-full px-6 py-4 font-bold text-[#111]">Book a Site Visit</Link>
-              <BrochureDownload brochure={project.brochure} projectName={project.name} variant="outline" />
+              <BrochureDownload brochure={project.brochure} projectName={project.name} />
               <Link href="/floor-plans" className="rounded-full border border-white/20 px-6 py-4 font-bold">View Floor Plans</Link>
             </div>
           </div>
