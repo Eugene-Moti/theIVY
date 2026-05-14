@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileBar } from "@/components/mobile-bar";
+import { SocialQrPopup } from "@/components/social-qr-popup";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { AmbientEffects } from "@/components/ambient-effects";
 import { assets, contact } from "@/lib/data";
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         <main>{children}</main>
         <Footer />
+        <SocialQrPopup />
         <WhatsAppWidget />
         <MobileBar />
       </body>
