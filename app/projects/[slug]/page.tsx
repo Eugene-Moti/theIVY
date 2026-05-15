@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BrochureDownload } from "@/components/brochure-download";
+import { ProjectShowcaseCarousel } from "@/components/project-showcase-carousel";
 import { projects, assets } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -48,28 +49,42 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
   const nextProject = projects[(currentIndex + 1) % projects.length];
 
   return (
-    <div className="py-24">
-      {/* Placeholder luxury page: will be fully rebuilt per spec in next step. */}
-      <div className="relative mx-auto max-w-7xl px-4">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0A0A0A]">
+    <div className="pb-24 pt-24">
+      <div className="relative">
+        <div className="relative overflow-hidden border-y border-white/10 bg-[#0A0A0A]">
           <div className="absolute inset-0">
-            <Image
-              src={project.image}
-              alt={`${project.name} hero image`}
-              fill
-              priority
-              className="object-cover brightness-[0.65]"
-              sizes="(max-width: 1024px) 100vw, 60vw"
-            />
+            {"heroVideo" in project && project.heroVideo ? (
+              <video
+                className="h-full w-full object-cover brightness-[0.62]"
+                src={project.heroVideo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={project.image}
+                aria-label={`${project.name} cinematic video`}
+              />
+            ) : (
+              <Image
+                src={project.image}
+                alt={`${project.name} hero image`}
+                fill
+                priority
+                className="object-cover brightness-[0.65]"
+                sizes="100vw"
+              />
+            )}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,0.72),rgba(10,10,10,0.08)_58%,rgba(10,10,10,0.38)),linear-gradient(0deg,rgba(10,10,10,0.78),transparent_56%)]" />
           </div>
-          <div className="relative p-8 md:p-14">
+          <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end p-6 md:min-h-[82vh] md:p-14">
             <h1 className="font-serif text-5xl font-light md:text-7xl">{project.name}</h1>
 
             <p className="mt-4 max-w-2xl text-white/70">
-              {project.location} · Completion: {project.completion}
+              {project.location} · {project.completion}
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-3">
               <BrochureDownload brochure={project.brochure} projectName={project.name} />
               <Link
                 href="/floor-plans"
@@ -80,20 +95,12 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             </div>
 
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {project.stats.map((s) => (
-                <div key={s} className="rounded-2xl border border-white/10 bg-black/30 p-4">
-                  <p className="text-white/90 font-bold">{s.split(" ")[0]}</p>
-                  <p className="mt-1 text-xs uppercase tracking-wide text-white/50">
-                    {s.replace(s.split(" ")[0], "").trim()}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
-        <section className="mt-14">
+        <ProjectShowcaseCarousel projectName={project.name} items={project.showcase} />
+
+        <section className="mx-auto mt-14 max-w-7xl px-4">
           <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Project location</p>
@@ -118,16 +125,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
           </div>
         </section>
 
-        <div className="mt-14">
-          <div className="rounded-2xl border border-white/10 bg-[#111111] p-6">
-            <p className="text-white/70">
-              Next step will replace this placeholder with the full spec: amenities list, unit mix table, VR modal,
-              floor plan tabs, sticky CTA, and SEO/schema.
-            </p>
-          </div>
-        </div>
-
-        <section className="mt-14 rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 md:p-7">
+        <section className="mx-auto mt-14 max-w-7xl rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 md:p-7">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Explore more residences</p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <Link

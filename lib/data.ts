@@ -47,7 +47,35 @@ export const projects = [
     description:
       "A landmark Kilimani address with 660 apartments, rooftop living, heated pools, co-working spaces, and high investment potential near Yaya Centre.",
     stats: ["660 apartments", "22 residential floors", "1.06 acres", "3 blocks"],
-    paymentPlans: ["Reserve with a 20% deposit", "Spread balance during construction", "Mortgage and cash buyer support", "Projected completion: December 2028"]
+    paymentPlans: ["Reserve with a 20% deposit", "Spread balance during construction", "Mortgage and cash buyer support", "Projected completion: December 2028"],
+    heroVideo: "/IVY PARK RESIDENCE/IVY PARK WIDE.mp4",
+    showcase: [
+      {
+        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Aerial Images + Rooftop/251211_D03-Rooftop_IVY PARK.jpg",
+        title: "Rooftop living",
+        caption: "Sky-level leisure spaces designed for views, gatherings, and everyday downtime above Kilimani."
+      },
+      {
+        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png",
+        title: "Pool and spa deck",
+        caption: "Resort-style amenities create a calm daily rhythm, from warm afternoon swims to evening relaxation."
+      },
+      {
+        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/GYM/GYM_V4.png",
+        title: "Wellness studio",
+        caption: "A fully considered fitness environment for cardio, strength training, yoga, and recovery."
+      },
+      {
+        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg",
+        title: "Sunset arrival",
+        caption: "The architecture reads boldly from the skyline while staying connected to the life of the street."
+      },
+      {
+        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/INTERIOR/IVY PARK 2 BR FINAL Day/enhanced_Living.png",
+        title: "Bright interiors",
+        caption: "Open-plan living spaces balance clean finishes, natural light, and practical apartment layouts."
+      }
+    ]
   },
   {
     slug: "blossoms-ivy-residence",
@@ -64,7 +92,39 @@ export const projects = [
     description:
       "Luxury residences in Kileleshwa with indoor pool, gym, coffee bar, play areas, smart locks, and fast access to Westlands and CBD.",
     stats: ["220 apartments", "2 blocks", "0.62 acres", "3BR available"],
-    paymentPlans: ["Flexible deposit structure", "Construction-linked instalments", "Ready guidance for owner-occupiers", "Projected completion: December 2026"]
+    paymentPlans: ["Flexible deposit structure", "Construction-linked instalments", "Ready guidance for owner-occupiers", "Projected completion: December 2026"],
+    showcase: [
+      {
+        src: "/BLOSSOMS_IVY/Blossoms Ivy_Lobby_R1_View 07.1 (1).jpg",
+        title: "Grand lobby arrival",
+        caption: "A polished welcome sequence with layered lighting, generous seating, and a calm residential tone."
+      },
+      {
+        src: "/BLOSSOMS_IVY/13_KCGV_Blossom Ivy_R1 Pool 2.jpg",
+        title: "Indoor pool retreat",
+        caption: "A bright pool amenity gives Blossoms Ivy a private wellness escape within the building."
+      },
+      {
+        src: "/BLOSSOMS_IVY/09_KCGV_Blossom Ivy_R1 Cafe 2.jpg",
+        title: "Cafe lounge",
+        caption: "A relaxed social setting for coffee, quiet meetings, and easy moments between home and the city."
+      },
+      {
+        src: "/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Gym 4.jpg",
+        title: "Fitness floor",
+        caption: "Dedicated training spaces support everyday wellness without leaving the residence."
+      },
+      {
+        src: "/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Spa 5.jpg",
+        title: "Spa calm",
+        caption: "Soft finishes and warm lighting shape a restful amenity layer for residents."
+      },
+      {
+        src: "/BLOSSOMS_IVY/20_KCGV_Blossom Ivy_Play_Area6.png",
+        title: "Family play spaces",
+        caption: "Playful, protected amenity areas make family living more flexible and complete."
+      }
+    ]
   },
   {
     slug: "luckinn-ivy-residence",
@@ -83,7 +143,39 @@ export const projects = [
     description:
       "A refined Westlands tower with 120 units, indoor pool, gym, co-working space, yoga room, smart locks, and strong urban convenience.",
     stats: ["120 units", "20 floors", "1 tower", "3BR available"],
-    paymentPlans: ["Reservation support available", "Staged payments during build", "Mortgage introduction on request", "Projected completion: December 2026"]
+    paymentPlans: ["Reservation support available", "Staged payments during build", "Mortgage introduction on request", "Projected completion: December 2026"],
+    showcase: [
+      {
+        src: "/Luckinn/Luckinn Exterior.jpeg",
+        title: "Westlands tower profile",
+        caption: "Luckinn Ivy Residence brings a refined vertical address to a connected urban neighborhood."
+      },
+      {
+        src: "/Luckinn/Swimming pool 1.jpeg",
+        title: "Indoor pool",
+        caption: "A sheltered pool environment adds year-round wellness and a quiet retreat from the city."
+      },
+      {
+        src: "/Luckinn/Lounge wide view.jpeg",
+        title: "Residents lounge",
+        caption: "A generous lounge creates room for informal meetings, reading, and relaxed social time."
+      },
+      {
+        src: "/Luckinn/Study area + Garden.jpeg",
+        title: "Study and garden",
+        caption: "Focused work zones and greenery give residents practical spaces beyond the apartment."
+      },
+      {
+        src: "/Luckinn/Gym Area.jpeg",
+        title: "Gym area",
+        caption: "Compact, accessible fitness amenities support everyday routines at home."
+      },
+      {
+        src: "/Luckinn/Kids Play Area.jpeg",
+        title: "Kids play area",
+        caption: "A dedicated play amenity makes the residence easier for families to use every day."
+      }
+    ]
   }
 ];
 
