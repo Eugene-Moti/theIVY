@@ -118,7 +118,7 @@ export function SocialQrPopup() {
           <motion.button
             type="button"
             onClick={openManually}
-            className="fixed bottom-20 left-4 z-40 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#c9a15b]/45 bg-[#0d1110]/88 px-4 py-3 text-sm font-bold text-white shadow-[0_18px_44px_rgba(0,0,0,0.36)] backdrop-blur-xl transition hover:border-[#e2bd75] md:bottom-6 md:left-6"
+            className="fixed bottom-24 left-3 z-40 inline-flex max-w-[calc(100vw-1.5rem)] items-center gap-2 overflow-hidden rounded-full border border-[#c9a15b]/45 bg-[#0d1110]/88 px-3 py-2.5 text-xs font-bold text-white shadow-[0_18px_44px_rgba(0,0,0,0.36)] backdrop-blur-xl transition hover:border-[#e2bd75] md:bottom-6 md:left-6 md:px-4 md:py-3 md:text-sm"
             initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -24, scale: 0.94 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -18, scale: 0.96 }}
@@ -135,7 +135,7 @@ export function SocialQrPopup() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-[#050706]/72 px-4 py-8 backdrop-blur-md"
+            className="fixed inset-0 z-[90] flex items-end justify-center bg-[#050706]/72 px-2 py-2 backdrop-blur-md md:items-center md:px-4 md:py-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -144,7 +144,7 @@ export function SocialQrPopup() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="social-qr-title"
-              className="relative w-full max-w-4xl overflow-hidden rounded-lg border border-white/12 bg-[#0d1110] text-white shadow-[0_34px_120px_rgba(0,0,0,0.55)]"
+              className="relative max-h-[calc(100dvh-1rem)] w-full max-w-[calc(100vw-1rem)] overflow-y-auto overflow-x-hidden rounded-lg border border-white/12 bg-[#0d1110] text-white shadow-[0_34px_120px_rgba(0,0,0,0.55)] md:max-w-4xl"
               initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 26, scale: 0.97, rotateX: 4 }}
               animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
               exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.98 }}
@@ -154,14 +154,14 @@ export function SocialQrPopup() {
               <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-[#c9a15b] to-transparent" />
 
               <div className="relative grid lg:grid-cols-[0.92fr_1.08fr]">
-                <div className="border-b border-white/10 p-6 sm:p-8 lg:border-b-0 lg:border-r">
+                <div className="border-b border-white/10 p-4 sm:p-8 lg:border-b-0 lg:border-r">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="eyebrow">Stay connected</p>
-                      <h2 id="social-qr-title" className="mt-3 font-serif text-4xl font-semibold leading-tight">
+                      <h2 id="social-qr-title" className="mt-2 font-serif text-[2rem] font-semibold leading-tight md:mt-3 md:text-4xl">
                         Scan and follow The Ivy Group.
                       </h2>
-                      <p className="mt-4 text-sm leading-6 text-white/64">
+                      <p className="mt-3 text-sm leading-6 text-white/64 md:mt-4">
                         Get project updates, launch moments, lifestyle previews, and buyer guidance on your preferred channel.
                       </p>
                     </div>
@@ -175,7 +175,7 @@ export function SocialQrPopup() {
                     </button>
                   </div>
 
-                  <div className="mt-7 grid gap-3">
+                  <div className="mt-5 grid gap-2 md:mt-7 md:gap-3">
                     {qrCodes.map((item, index) => {
                       const Icon = item.icon;
                       const isActive = item.label === activeQr.label;
@@ -185,7 +185,7 @@ export function SocialQrPopup() {
                           key={item.label}
                           type="button"
                           onClick={() => setActive(item.label)}
-                          className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
+                          className={`flex min-h-12 items-center justify-between rounded-lg border px-3 py-2.5 text-left transition md:px-4 md:py-3 ${
                             isActive
                               ? "border-[#c9a15b] bg-white/[0.08] text-white"
                               : "border-white/10 bg-white/[0.035] text-white/68 hover:border-white/24 hover:text-white"
@@ -206,7 +206,7 @@ export function SocialQrPopup() {
                     })}
                   </div>
 
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <div className="mt-5 flex flex-col gap-3 sm:flex-row md:mt-6">
                     <a
                       href={socialHref}
                       target="_blank"
@@ -228,9 +228,9 @@ export function SocialQrPopup() {
                   </button>
                 </div>
 
-                <div className="relative min-h-[420px] p-6 sm:p-8">
+                <div className="relative min-h-0 p-4 pt-2 sm:p-8 md:min-h-[420px]">
                   <div className="absolute inset-x-8 top-8 h-20 rounded-full opacity-40 blur-3xl" style={{ background: activeQr.accent }} />
-                  <div className="relative mx-auto flex max-w-sm flex-col items-center">
+                  <div className="relative mx-auto flex max-w-[240px] flex-col items-center md:max-w-sm">
                     <div className="relative w-full overflow-hidden rounded-lg border border-white/14 bg-white p-4 shadow-[0_22px_70px_rgba(0,0,0,0.32)]">
                       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-gradient-to-b from-white to-white/0" />
                       <AnimatePresence mode="wait">
@@ -257,7 +257,7 @@ export function SocialQrPopup() {
                         transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
                       />
                     </div>
-                    <div className="mt-4 h-1 w-full max-w-sm overflow-hidden rounded-full bg-white/10">
+                    <div className="mt-3 h-1 w-full max-w-sm overflow-hidden rounded-full bg-white/10 md:mt-4">
                       <motion.div
                         key={activeQr.label}
                         className="h-full origin-left rounded-full"
@@ -267,7 +267,7 @@ export function SocialQrPopup() {
                         transition={{ duration: prefersReducedMotion ? 0.01 : 15, ease: "linear" }}
                       />
                     </div>
-                    <p className="mt-5 text-center text-sm leading-6 text-white/58">
+                    <p className="mt-3 text-center text-xs leading-5 text-white/58 md:mt-5 md:text-sm md:leading-6">
                       Point your camera at the code, or use the button if you are browsing on your phone.
                     </p>
                   </div>

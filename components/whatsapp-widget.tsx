@@ -32,9 +32,9 @@ export function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-4 z-[60] flex flex-col items-end gap-4 md:bottom-6 md:right-6">
+    <div className="fixed bottom-24 right-3 z-[60] flex max-w-[calc(100vw-1.5rem)] flex-col items-end gap-3 md:bottom-6 md:right-6 md:gap-4">
       <div
-        className={`w-[min(calc(100vw-2rem),360px)] origin-bottom-right overflow-hidden rounded-lg border border-[#c9a15b]/30 bg-[#0d1110]/92 shadow-[0_24px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl transition duration-300 ${
+        className={`w-[min(calc(100vw-1.5rem),340px)] origin-bottom-right overflow-hidden rounded-lg border border-[#c9a15b]/30 bg-[#0d1110]/92 shadow-[0_24px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl transition duration-300 md:w-[min(calc(100vw-2rem),360px)] ${
           open ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-4 scale-95 opacity-0"
         }`}
       >
@@ -86,11 +86,11 @@ export function WhatsAppWidget() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="group relative flex h-16 w-16 items-center justify-center rounded-full bg-[#25d366] text-[#06140b] shadow-[0_18px_48px_rgba(37,211,102,0.36)] transition hover:-translate-y-1 hover:bg-[#5bed8c]"
+        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-[#06140b] shadow-[0_18px_48px_rgba(37,211,102,0.36)] transition hover:-translate-y-1 hover:bg-[#5bed8c] md:h-16 md:w-16"
         aria-label={open ? "Close WhatsApp quick help" : "Open WhatsApp quick help"}
         aria-expanded={open}
       >
-        <span className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 translate-x-2 whitespace-nowrap rounded-full border border-[#c9a15b]/35 bg-[#0d1110]/92 px-4 py-2 text-sm font-bold text-white opacity-0 shadow-[0_12px_36px_rgba(0,0,0,0.34)] backdrop-blur transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+        <span className="pointer-events-none absolute right-full top-1/2 mr-3 hidden -translate-y-1/2 translate-x-2 whitespace-nowrap rounded-full border border-[#c9a15b]/35 bg-[#0d1110]/92 px-4 py-2 text-sm font-bold text-white opacity-0 shadow-[0_12px_36px_rgba(0,0,0,0.34)] backdrop-blur transition duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block">
           Chat with Us
         </span>
         <span className="absolute inset-0 rounded-full border border-[#25d366]/55 animate-ping" />

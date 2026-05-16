@@ -23,19 +23,19 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
 
   return (
     <>
-      <section className="relative min-h-[86vh] overflow-hidden px-6 pt-32">
+      <section className="relative min-h-[86vh] overflow-hidden px-4 pt-28 md:px-6 md:pt-32">
         <div className="image-vignette absolute inset-0">
           <Image src={hero} alt={project.name} fill priority sizes="100vw" className="object-cover" />
         </div>
-        <div className="relative z-10 mx-auto grid min-h-[calc(86vh-8rem)] max-w-7xl items-end gap-8 pb-16 lg:grid-cols-[1fr_390px]">
+        <div className="relative z-10 mx-auto grid min-h-[calc(86vh-7rem)] max-w-7xl items-end gap-8 pb-14 lg:grid-cols-[1fr_390px]">
           <div>
             <p className="eyebrow">{project.status}</p>
-            <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight md:text-7xl">{project.name}</h1>
-            <p className="mt-4 flex items-center gap-2 text-lg text-white/76"><MapPin size={19} /> {project.location}</p>
-            <p className="mt-6 max-w-3xl text-xl leading-8 text-white/76">{intro}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <h1 className="mt-4 font-serif text-[clamp(2.8rem,14vw,4.8rem)] font-semibold leading-none md:text-7xl">{project.name}</h1>
+            <p className="mt-4 flex items-center gap-2 text-base text-white/76 md:text-lg"><MapPin size={19} className="shrink-0" /> {project.location}</p>
+            <p className="mt-5 max-w-3xl text-base leading-7 text-white/76 md:mt-6 md:text-xl md:leading-8">{intro}</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <BrochureDownload brochure={project.brochure} projectName={project.name} />
-              <Link href="/floor-plans" className="rounded-full border border-white/20 px-6 py-4 font-bold">View Floor Plans</Link>
+              <Link href="/floor-plans" className="mobile-tap flex min-h-12 items-center justify-center rounded-full border border-white/20 px-6 py-4 font-bold">View Floor Plans</Link>
             </div>
           </div>
           <LeadForm compact />
@@ -50,7 +50,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
             </div>
           </aside>
           <div>
-            <h2 className="font-serif text-5xl font-semibold">Residence highlights</h2>
+            <h2 className="font-serif text-[2.4rem] font-semibold leading-none md:text-5xl">Residence highlights</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               {amenities.map((item) => (
                 <div key={item} className="flex gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 text-white/76">
@@ -61,7 +61,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
             <h2 className="mt-14 font-serif text-4xl font-semibold">Unit mix</h2>
             <div className="mt-6 grid gap-4">
               {units.map((unit) => (
-                <div key={unit} className="flex items-center justify-between rounded-lg border border-white/10 bg-[#0d1110] p-5">
+                <div key={unit} className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-[#0d1110] p-5">
                   <span>{unit}</span>
                   <ArrowRight className="text-[#c9a15b]" size={18} />
                 </div>
@@ -81,7 +81,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
       <section className="section bg-[#f3eddf] text-[#121512]">
         <div className="container">
           <p className="eyebrow">Gallery</p>
-          <h2 className="mt-3 font-serif text-5xl font-semibold">Lifestyle, interiors, and architecture</h2>
+          <h2 className="mt-3 font-serif text-[2.4rem] font-semibold leading-none md:text-5xl">Lifestyle, interiors, and architecture</h2>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {gallery.map((image, index) => (
               <div key={image} className={`relative overflow-hidden rounded-lg ${index === 0 ? "min-h-[420px] md:col-span-2" : "min-h-[280px]"}`}>
@@ -97,7 +97,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
             <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
               <div>
                 <p className="eyebrow">Project location</p>
-                <h2 className="mt-3 font-serif text-5xl font-semibold">{project.name} on the map</h2>
+                <h2 className="mt-3 font-serif text-[2.4rem] font-semibold leading-none md:text-5xl">{project.name} on the map</h2>
               </div>
               <p className="max-w-xl text-white/62 md:text-right">
                 Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
@@ -120,12 +120,12 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
         </section>
       )}
       <section className="section bg-[#0d1110]">
-        <div className="mx-auto max-w-7xl rounded-lg border border-white/10 bg-white/[0.035] p-5 md:p-7">
+        <div className="mx-auto max-w-7xl rounded-lg border border-white/10 bg-white/[0.035] p-4 md:p-7">
           <p className="eyebrow">Explore more residences</p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <Link
               href={`/projects/${previousProject.slug}`}
-              className="group flex items-center gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
+              className="group flex min-w-0 items-center gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#c9a15b] transition group-hover:border-[#c9a15b]">
                 <ArrowLeft size={18} />
@@ -138,7 +138,7 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
             </Link>
             <Link
               href={`/projects/${nextProject.slug}`}
-              className="group flex items-center justify-between gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 text-right transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
+              className="group flex min-w-0 items-center justify-between gap-4 rounded-lg border border-white/10 bg-[#111815] p-4 text-right transition hover:border-[#c9a15b]/70 hover:bg-white/[0.06]"
             >
               <span>
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Next project</span>

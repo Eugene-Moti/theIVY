@@ -49,7 +49,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
   const nextProject = projects[(currentIndex + 1) % projects.length];
 
   return (
-    <div className="pb-24 pt-24">
+    <div className="overflow-x-hidden pb-24 pt-16 md:pt-24">
       <div className="relative">
         <div className="relative overflow-hidden border-y border-white/10 bg-[#0A0A0A]">
           <div className="absolute inset-0">
@@ -77,18 +77,18 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             )}
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,0.72),rgba(10,10,10,0.08)_58%,rgba(10,10,10,0.38)),linear-gradient(0deg,rgba(10,10,10,0.78),transparent_56%)]" />
           </div>
-          <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end p-6 md:min-h-[82vh] md:p-14">
-            <h1 className="font-serif text-5xl font-light md:text-7xl">{project.name}</h1>
+          <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end p-4 pb-8 md:min-h-[82vh] md:p-14">
+            <h1 className="font-serif text-[clamp(2.8rem,14vw,4.8rem)] font-light leading-none md:text-7xl">{project.name}</h1>
 
             <p className="mt-4 max-w-2xl text-white/70">
               {project.location} · {project.completion}
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <BrochureDownload brochure={project.brochure} projectName={project.name} />
               <Link
                 href="/floor-plans"
-                className="rounded-full border border-white/20 bg-black/30 px-6 py-3 font-bold text-white"
+                className="mobile-tap flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-black/30 px-6 py-3 font-bold text-white"
               >
                 View Floor Plans
               </Link>
@@ -100,11 +100,11 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
 
         <ProjectShowcaseCarousel projectName={project.name} items={project.showcase} />
 
-        <section className="mx-auto mt-14 max-w-7xl px-4">
+        <section className="mx-auto mt-12 max-w-7xl px-4 md:mt-14">
           <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Project location</p>
-              <h2 className="mt-3 font-serif text-4xl font-light md:text-5xl">{project.name} on the map</h2>
+              <h2 className="mt-3 font-serif text-[2.25rem] font-light leading-none md:text-5xl">{project.name} on the map</h2>
             </div>
             <p className="max-w-xl text-white/60 md:text-right">
               Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
@@ -130,7 +130,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <Link
               href={`/projects/${previousProject.slug}`}
-              className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
+              className="group flex min-w-0 items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-[#C9A96E] transition group-hover:border-[#C9A96E]">
                 <ArrowLeft size={18} />
@@ -143,7 +143,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             </Link>
             <Link
               href={`/projects/${nextProject.slug}`}
-              className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-right transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
+              className="group flex min-w-0 items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-right transition hover:border-[#C9A96E]/70 hover:bg-white/[0.06]"
             >
               <span>
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-white/42">Next project</span>

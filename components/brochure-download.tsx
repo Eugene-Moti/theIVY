@@ -48,14 +48,14 @@ export function BrochureDownload({ brochure, projectName, variant = "gold", labe
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className={`inline-flex items-center justify-center gap-2 ${buttonClass}`}>
+      <button type="button" onClick={() => setOpen(true)} className={`mobile-tap inline-flex min-h-12 items-center justify-center gap-2 ${buttonClass}`}>
         <Download size={18} /> {label}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/65 px-4 py-8 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/65 px-4 py-8 backdrop-blur-sm max-md:items-end max-md:pb-4">
           <div className="w-full max-w-lg overflow-hidden rounded-lg border border-[#c9a15b]/30 bg-[#0d1110] text-white shadow-[0_30px_90px_rgba(0,0,0,0.45)]">
-            <div className="flex items-start justify-between gap-4 border-b border-white/10 bg-white/[0.04] p-6">
+            <div className="flex items-start justify-between gap-4 border-b border-white/10 bg-white/[0.04] p-5 md:p-6">
               <div>
                 <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-[#c9a15b]">
                   <FileText size={16} /> Brochure access
@@ -68,11 +68,11 @@ export function BrochureDownload({ brochure, projectName, variant = "gold", labe
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="grid gap-3 p-6">
+            <form onSubmit={handleSubmit} className="grid gap-3 p-5 md:p-6">
               <input name="name" required placeholder="Full name" className="rounded-md border border-white/10 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/45 focus:border-[#c9a15b]" />
               <input name="phone" required placeholder="Phone number" className="rounded-md border border-white/10 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/45 focus:border-[#c9a15b]" />
               <input name="email" required type="email" placeholder="Email address" className="rounded-md border border-white/10 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/45 focus:border-[#c9a15b]" />
-              <button type="submit" className="gold-gradient mt-2 inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold text-[#111]">
+              <button type="submit" className="gold-gradient mobile-tap mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold text-[#111]">
                 <Download size={16} /> Submit & Download
               </button>
               {submitted && <p className="text-sm text-white/58">Your brochure is opening in a new tab. Please allow pop-ups if your browser blocks it.</p>}

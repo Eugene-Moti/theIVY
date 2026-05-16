@@ -74,12 +74,12 @@ export function FloorPlanGallery() {
 
   return (
     <>
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid min-w-0 gap-3 md:grid-cols-3">
         {floorPlans.map((group) => (
           <button
             key={group.slug}
             onClick={() => setActiveProject(group.slug)}
-            className={`flex min-h-24 cursor-pointer items-center justify-between gap-4 rounded-lg border p-4 text-left shadow-[0_10px_26px_rgba(36,28,12,0.08)] transition duration-200 hover:-translate-y-1 hover:border-[#c9a15b] hover:bg-[#fff8e8] hover:shadow-[0_18px_38px_rgba(36,28,12,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f1e7] ${
+            className={`mobile-tap flex min-h-24 min-w-0 cursor-pointer items-center justify-between gap-3 rounded-lg border p-4 text-left shadow-[0_10px_26px_rgba(36,28,12,0.08)] transition duration-200 hover:-translate-y-1 hover:border-[#c9a15b] hover:bg-[#fff8e8] hover:shadow-[0_18px_38px_rgba(36,28,12,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f1e7] ${
               activeProject === group.slug ? "border-[#c9a15b] bg-[#111815] text-white hover:bg-[#111815]" : "border-[#d8c49a]/35 bg-white/70 text-[#121512]"
             }`}
           >
@@ -87,14 +87,14 @@ export function FloorPlanGallery() {
               <span className="block text-sm font-bold uppercase tracking-[0.14em] text-[#c9a15b]">Project</span>
               <span className="mt-1 block text-lg font-semibold">{group.project}</span>
             </span>
-            <Image src={group.logo} alt={`${group.project} logo`} width={96} height={42} className={`max-h-12 w-auto ${group.logoClass ?? ""}`} />
+            <Image src={group.logo} alt={`${group.project} logo`} width={96} height={42} className={`max-h-10 w-auto shrink-0 md:max-h-12 ${group.logoClass ?? ""}`} />
           </button>
         ))}
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-6 flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
         {tabs.map((tab) => (
-          <button key={tab} onClick={() => setActiveType(tab)} className={`cursor-pointer rounded-full px-4 py-2 text-sm font-bold transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(36,28,12,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f1e7] ${activeType === tab ? "bg-[#c9a15b] text-[#111] hover:bg-[#d8b36f]" : "border border-[#d8c49a]/40 text-[#121512]/68 hover:border-[#c9a15b] hover:bg-[#fff8e8] hover:text-[#121512]"}`}>
+          <button key={tab} onClick={() => setActiveType(tab)} className={`mobile-tap shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-bold transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(36,28,12,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f6f1e7] ${activeType === tab ? "bg-[#c9a15b] text-[#111] hover:bg-[#d8b36f]" : "border border-[#d8c49a]/40 text-[#121512]/68 hover:border-[#c9a15b] hover:bg-[#fff8e8] hover:text-[#121512]"}`}>
             {tab}
           </button>
         ))}
@@ -116,21 +116,21 @@ export function FloorPlanGallery() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-[70] bg-black/88 p-4 text-white backdrop-blur">
+        <div className="fixed inset-0 z-[70] overflow-hidden bg-black/88 p-2 text-white backdrop-blur md:p-4">
           <div className="mx-auto flex h-full max-w-6xl flex-col">
-            <div className="mb-3 flex items-center justify-between">
-              <div>
+            <div className="mb-3 flex min-w-0 items-center justify-between gap-2">
+              <div className="min-w-0">
                 <p className="text-sm text-white/54">{selected.project}</p>
                 <p className="font-semibold">{selected.label}</p>
               </div>
-              <div className="flex gap-2">
-                <button className="rounded-full border border-white/15 p-3" onClick={() => setZoom(Math.max(0.7, zoom - 0.15))} aria-label="Zoom out"><ZoomOut size={18} /></button>
-                <button className="rounded-full border border-white/15 p-3" onClick={() => setZoom(Math.min(1.8, zoom + 0.15))} aria-label="Zoom in"><ZoomIn size={18} /></button>
-                <button className="rounded-full border border-white/15 p-3" onClick={() => setSelected(null)} aria-label="Close"><X size={18} /></button>
+              <div className="flex shrink-0 gap-1 md:gap-2">
+                <button className="rounded-full border border-white/15 p-2.5 md:p-3" onClick={() => setZoom(Math.max(0.7, zoom - 0.15))} aria-label="Zoom out"><ZoomOut size={18} /></button>
+                <button className="rounded-full border border-white/15 p-2.5 md:p-3" onClick={() => setZoom(Math.min(1.8, zoom + 0.15))} aria-label="Zoom in"><ZoomIn size={18} /></button>
+                <button className="rounded-full border border-white/15 p-2.5 md:p-3" onClick={() => setSelected(null)} aria-label="Close"><X size={18} /></button>
               </div>
             </div>
             <div className="relative min-h-0 flex-1 overflow-auto rounded-lg bg-white">
-              <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }} className="relative mx-auto h-[78vh] max-w-5xl transition">
+              <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }} className="relative mx-auto h-[72vh] max-w-full transition md:h-[78vh] md:max-w-5xl">
                 <Image src={selected.path} alt={selected.label} fill sizes="100vw" className="object-contain" />
               </div>
             </div>

@@ -14,6 +14,8 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -21,11 +23,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  width: 100%;
+  overflow-x: clip;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+span {
+  overflow-wrap: anywhere;
 }
 
 :where(
@@ -48,6 +66,14 @@ a {
 
 img {
   max-width: 100%;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .section {
@@ -178,8 +204,188 @@ img {
   opacity: 1;
 }
 
+.mobile-tap {
+  transform: translateZ(0);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.mobile-tap:active {
+  transform: scale(0.97);
+}
+
+.mobile-menu-link {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 0 14px;
+  color: rgba(255, 255, 255, 0.88);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.mobile-menu-link:hover {
+  border-color: rgba(201, 161, 91, 0.42);
+  background: rgba(201, 161, 91, 0.08);
+  color: #f6f1e7;
+}
+
+.mobile-menu-link:active {
+  transform: scale(0.99);
+}
+
+.mobile-dock {
+  padding-bottom: max(4px, env(safe-area-inset-bottom));
+}
+
+.mobile-dock-item {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.84);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.mobile-dock-item:active {
+  transform: scale(0.95);
+}
+
+.mobile-spotlight {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(201, 161, 91, 0.18), transparent 34%),
+    linear-gradient(180deg, transparent 0%, rgba(13, 17, 16, 0.18) 50%, rgba(13, 17, 16, 0.72) 100%);
+}
+
+.mobile-image-card {
+  box-shadow: 0 24px 70px rgba(80, 55, 22, 0.18);
+}
+
+.mobile-project-card {
+  transition:
+    transform 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.mobile-project-card:active {
+  transform: scale(0.985);
+}
+
 @media (max-width: 760px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    padding-bottom: 76px;
+    overflow-x: hidden;
+  }
+
   .section {
-    padding: 72px 18px;
+    padding: 64px 16px;
+  }
+
+  .container {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .section h1,
+  .section h2 {
+    max-width: 100%;
+    font-size: clamp(2.35rem, 12vw, 3.55rem);
+    line-height: 0.98;
+  }
+
+  .section p {
+    max-width: 100%;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    overflow-wrap: normal;
+  }
+
+  .hero-mobile-shell {
+    min-height: 100svh;
+  }
+
+  .hero-mobile-image {
+    object-position: center;
+  }
+
+  .mobile-stat-rail {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .mobile-stat-rail::-webkit-scrollbar,
+  .mobile-chip-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-stat-pill {
+    min-width: 0;
+    scroll-snap-align: none;
+    border: 1px solid rgba(18, 21, 18, 0.09);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.45);
+    padding: 12px;
+    box-shadow: 0 14px 34px rgba(80, 55, 22, 0.08);
+  }
+
+  .mobile-card-stack {
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  .mobile-chip-rail {
+    margin-inline: -20px;
+    overflow-x: auto;
+    padding-inline: 20px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .mobile-chip-rail > * {
+    scroll-snap-align: start;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
