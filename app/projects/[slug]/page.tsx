@@ -4,10 +4,11 @@ import Image from "next/image";
 // motion is client-only; placeholder page uses static markup for SSR safety.
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
 import { BrochureDownload } from "@/components/brochure-download";
+import { Reveal } from "@/components/motion";
 import { ProjectShowcaseCarousel } from "@/components/project-showcase-carousel";
-import { projects, assets } from "@/lib/data";
+import { contact, projects, assets } from "@/lib/data";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -78,6 +79,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,0.72),rgba(10,10,10,0.08)_58%,rgba(10,10,10,0.38)),linear-gradient(0deg,rgba(10,10,10,0.78),transparent_56%)]" />
           </div>
           <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end p-4 pb-8 md:min-h-[82vh] md:p-14">
+            <Reveal x={-86} distance={0} duration={0.9}>
             <h1 className="font-serif text-[clamp(2.8rem,14vw,4.8rem)] font-light leading-none md:text-7xl">{project.name}</h1>
 
             <p className="mt-4 max-w-2xl text-white/70">
@@ -85,32 +87,42 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <BrochureDownload brochure={project.brochure} projectName={project.name} />
+              <div className="featured-cta-wrap">
+                <BrochureDownload brochure={project.brochure} projectName={project.name} />
+              </div>
               <Link
                 href="/floor-plans"
-                className="mobile-tap flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-black/30 px-6 py-3 font-bold text-white"
+                className="featured-cta mobile-tap flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-black/30 px-6 py-3 font-bold text-white"
               >
                 View Floor Plans
               </Link>
             </div>
 
 
+            </Reveal>
           </div>
         </div>
 
-        <ProjectShowcaseCarousel projectName={project.name} items={project.showcase} />
+        <Reveal distance={30} scale={0.98} duration={0.82}>
+          <ProjectShowcaseCarousel projectName={project.name} items={project.showcase} />
+        </Reveal>
 
         <section className="mx-auto mt-12 max-w-7xl px-4 md:mt-14">
-          <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+          <Reveal x={-64} distance={0} duration={0.82} className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Project location</p>
               <h2 className="mt-3 font-serif text-[2.25rem] font-light leading-none md:text-5xl">{project.name} on the map</h2>
             </div>
-            <p className="max-w-xl text-white/60 md:text-right">
-              Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
+            <div className="flex max-w-xl flex-col gap-3 md:items-end">
+              <p className="text-white/60 md:text-right">
+                Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
+              </p>
+              <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="mobile-tap inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-full border border-[#C9A96E] px-5 py-3 text-sm font-bold text-[#C9A96E] transition hover:bg-[#C9A96E] hover:text-[#111]">
+                <Phone size={17} /> Call Before Visiting
+              </a>
+            </div>
+          </Reveal>
+          <Reveal x={64} distance={18} duration={0.82} className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
             <iframe
               src={project.mapEmbed}
               width="100%"
@@ -122,10 +134,10 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
               title={`${project.name} location map`}
               className="block min-h-[420px] w-full"
             />
-          </div>
+          </Reveal>
         </section>
 
-        <section className="mx-auto mt-14 max-w-7xl rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 md:p-7">
+        <Reveal distance={28} scale={0.97} duration={0.78} className="mx-auto mt-14 max-w-7xl rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 md:p-7">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#C9A96E]">Explore more residences</p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <Link
@@ -155,7 +167,7 @@ export default function ProjectSlugPage({ params }: { params: Promise<{ slug: st
               </span>
             </Link>
           </div>
-        </section>
+        </Reveal>
       </div>
     </div>
   );

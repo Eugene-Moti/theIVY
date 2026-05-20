@@ -183,6 +183,36 @@ textarea {
   animation: ivyShimmer 1.05s ease-out;
 }
 
+.featured-cta,
+.featured-cta-wrap > button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(93, 63, 22, 0.12);
+}
+
+.featured-cta::before,
+.featured-cta-wrap > button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.34) 42%, transparent 72%);
+  transform: translateX(-120%) skewX(-15deg);
+  transition: transform 520ms ease;
+}
+
+.featured-cta:hover,
+.featured-cta-wrap > button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 46px rgba(93, 63, 22, 0.2);
+}
+
+.featured-cta:hover::before,
+.featured-cta-wrap > button:hover::before {
+  transform: translateX(120%) skewX(-15deg);
+}
+
 /* subtle shimmering border */
 .animated-border {
   position: relative;
@@ -271,6 +301,10 @@ textarea {
   background:
     radial-gradient(circle at 50% 35%, rgba(201, 161, 91, 0.18), transparent 34%),
     linear-gradient(180deg, transparent 0%, rgba(13, 17, 16, 0.18) 50%, rgba(13, 17, 16, 0.72) 100%);
+}
+
+.hero-readable-copy {
+  text-shadow: 0 3px 22px rgba(0, 0, 0, 0.72);
 }
 
 .mobile-image-card {

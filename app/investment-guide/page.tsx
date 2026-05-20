@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, TrendingUp } from "lucide-react";
+import { Reveal } from "@/components/motion";
 
 export const metadata: Metadata = {
   title: "Investment Guide",
@@ -18,20 +19,26 @@ export default function InvestmentGuide() {
   return (
     <section className="section pt-36">
       <div className="container">
-        <p className="eyebrow">Buyer intelligence</p>
-        <h1 className="mt-4 max-w-4xl font-serif text-6xl font-semibold">A clearer path to buying off-plan apartments in Nairobi.</h1>
+        <Reveal x={-72} distance={0} duration={0.85}>
+          <p className="eyebrow">Buyer intelligence</p>
+          <h1 className="mt-4 max-w-4xl font-serif text-6xl font-semibold">A clearer path to buying off-plan apartments in Nairobi.</h1>
+        </Reveal>
         <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {items.map(([title, copy]) => (
-            <article key={title} className="rounded-lg border border-white/10 bg-white/[0.045] p-7">
-              <TrendingUp className="text-[#c9a15b]" />
-              <h2 className="mt-6 text-2xl font-semibold">{title}</h2>
-              <p className="mt-3 leading-7 text-white/64">{copy}</p>
-            </article>
+          {items.map(([title, copy], index) => (
+            <Reveal key={title} delay={index * 0.08} x={index % 2 === 0 ? -48 : 48} distance={22} scale={0.97} duration={0.74}>
+              <article className="h-full rounded-lg border border-white/10 bg-white/[0.045] p-7">
+                <TrendingUp className="text-[#c9a15b]" />
+                <h2 className="mt-6 text-2xl font-semibold">{title}</h2>
+                <p className="mt-3 leading-7 text-white/64">{copy}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
-        <Link href="/contact" className="gold-gradient mt-10 inline-flex items-center gap-2 rounded-full px-6 py-4 font-bold text-[#111]">
-          Talk to Sales <ArrowRight size={17} />
-        </Link>
+        <Reveal delay={0.2} distance={20} scale={0.94} duration={0.62}>
+          <Link href="/contact" className="featured-cta gold-gradient mt-10 inline-flex items-center gap-2 rounded-full px-6 py-4 font-bold text-[#111]">
+            Talk to Sales <ArrowRight size={17} />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

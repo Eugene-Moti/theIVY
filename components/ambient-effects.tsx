@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function AmbientEffects() {
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 hidden overflow-hidden md:block">
       {/* Aurora / drifting light blobs */}
       <motion.div
         className="absolute left-[-10%] top-[-20%] h-[520px] w-[520px] rounded-full bg-[#c9a15b]/25 blur-3xl"

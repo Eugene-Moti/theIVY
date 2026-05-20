@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowLeft, ArrowRight, MapPin } from "lucide-react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 import { BrochureDownload } from "@/components/brochure-download";
 import { assets, projects } from "@/lib/data";
@@ -11,18 +11,15 @@ import { assets, projects } from "@/lib/data";
 const slides = [
   {
     project: projects[0],
-    image: assets.ivyParkHero,
-    eyebrow: "Latest launch in Kilimani"
+    image: assets.ivyParkHero
   },
   {
     project: projects[1],
-    image: assets.blossomsHero,
-    eyebrow: "Luxury residences in Kileleshwa"
+    image: assets.blossomsHero
   },
   {
     project: projects[2],
-    image: assets.luckinnHero,
-    eyebrow: "Refined Westlands living"
+    image: assets.luckinnHero
   }
 ];
 
@@ -58,24 +55,28 @@ export function Hero() {
   return (
     <section className="hero-mobile-shell relative min-h-screen overflow-hidden">
       <div className="absolute inset-0">
-        {slides.map((slide, index) => (
+        <AnimatePresence initial={false}>
           <motion.div
-            key={slide.project.slug}
-            className={`absolute inset-0 transition-opacity duration-1000 ${active === index ? "opacity-100" : "opacity-0"}`}
-            style={{ scale: active === index ? backgroundScale : 1 }}
+            key={activeSlide.project.slug}
+            className="absolute inset-0"
+            style={{ scale: backgroundScale }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <Image
-              src={slide.image}
-              alt={`${slide.project.name} exterior`}
+              src={activeSlide.image}
+              alt={`${activeSlide.project.name} exterior`}
               fill
-              priority={index === 0}
+              priority={active === 0}
               sizes="100vw"
               className="hero-mobile-image object-cover"
             />
           </motion.div>
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d1110]/50 via-[#0d1110]/22 to-[#0d1110]/82 md:from-[#0d1110]/55 md:via-[#0d1110]/28 md:to-[#0d1110]/78" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0d1110]/50 via-transparent to-[#0d1110]/50" />
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0d1110]/46 via-[#0d1110]/14 to-[#0d1110]/72 md:from-[#0d1110]/44 md:via-[#0d1110]/12 md:to-[#0d1110]/68" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d1110]/34 via-transparent to-[#0d1110]/34" />
         <div className="mobile-spotlight absolute inset-0 md:hidden" />
       </div>
 
@@ -97,7 +98,7 @@ export function Hero() {
       </button>
 
       <motion.div
-        className="relative z-10 flex min-h-screen touch-pan-y items-center justify-center px-5 pb-24 pt-24 text-center md:px-6 md:pb-0 md:pt-20"
+        className="relative z-10 flex min-h-screen touch-pan-y items-center justify-center px-5 pb-24 pt-24 text-center md:px-6 md:pb-12 md:pt-20"
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.16}
@@ -113,7 +114,7 @@ export function Hero() {
       >
         <motion.div
           key={activeSlide.project.slug}
-          className="mx-auto max-w-4xl"
+          className="hero-readable-copy mx-auto max-w-4xl"
           initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
@@ -124,14 +125,12 @@ export function Hero() {
               <Image src={activeSlide.project.secondaryLogo} alt={`${activeSlide.project.name} secondary logo`} width={150} height={70} className={`max-h-14 w-auto drop-shadow-[0_0_22px_rgba(0,0,0,0.45)] md:max-h-20 ${activeSlide.project.logoClass ?? ""}`} />
             )}
           </div>
-          <p className="eyebrow">{activeSlide.eyebrow}</p>
-          <h1 className="mt-4 font-serif text-[clamp(3.1rem,18vw,5.8rem)] font-semibold leading-[0.9] md:mt-5 md:text-8xl">{activeSlide.project.name}</h1>
-          <div className="mx-auto mt-5 flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/82 backdrop-blur-md md:hidden">
+          <h1 className="font-serif text-[clamp(3rem,16vw,5.6rem)] font-semibold leading-[0.92] md:text-8xl">{activeSlide.project.name}</h1>
+          <div className="mx-auto mt-5 flex w-fit max-w-full items-center gap-2 rounded-full border border-white/18 bg-[#0d1110]/42 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md md:mt-6 md:px-5 md:py-2.5 md:text-base">
             <MapPin size={15} className="text-[#c9a15b]" />
             {activeSlide.project.location}
           </div>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-white/80 md:mt-6 md:text-xl md:leading-8">{activeSlide.project.description}</p>
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row md:mt-9">
+          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row md:mt-8">
             <Link href={`/${activeSlide.project.slug}`} className="gold-gradient mobile-tap flex min-h-14 items-center justify-center gap-2 rounded-full px-6 py-4 font-bold text-[#111]">
               Learn More <ArrowRight size={18} />
             </Link>

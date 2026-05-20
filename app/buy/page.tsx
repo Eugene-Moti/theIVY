@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { BrochureDownload } from "@/components/brochure-download";
+import { Reveal } from "@/components/motion";
 import { projects } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -14,15 +15,18 @@ export default function Buy() {
   return (
     <section className="section bg-[#f3eddf] pt-36 text-[#121512]">
       <div className="container">
-        <p className="eyebrow">Buy with The Ivy Group</p>
-        <h1 className="mt-4 max-w-5xl font-serif text-6xl font-semibold">Explore available residences and flexible payment pathways.</h1>
-        <p className="mt-5 max-w-3xl text-lg leading-8 text-black/64">
-          Compare our Nairobi developments, review current purchase guidance, and choose the project that fits your lifestyle, rental strategy, or long-term portfolio goals.
-        </p>
+        <Reveal x={-72} distance={0} duration={0.85}>
+          <p className="eyebrow">Buy with The Ivy Group</p>
+          <h1 className="mt-4 max-w-5xl font-serif text-6xl font-semibold">Explore available residences and flexible payment pathways.</h1>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-black/64">
+            Compare our Nairobi developments, review current purchase guidance, and choose the project that fits your lifestyle, rental strategy, or long-term portfolio goals.
+          </p>
+        </Reveal>
 
         <div className="mt-12 grid gap-6">
-          {projects.map((project) => (
-            <article key={project.slug} className="grid overflow-hidden rounded-lg border border-[#d8c49a]/25 bg-[#111815] text-white shadow-[0_18px_50px_rgba(36,28,12,0.14)] lg:grid-cols-[0.95fr_1.05fr]">
+          {projects.map((project, index) => (
+            <Reveal key={project.slug} delay={index * 0.1} x={index % 2 === 0 ? -72 : 72} distance={16} duration={0.82}>
+              <article className="grid overflow-hidden rounded-lg border border-[#d8c49a]/25 bg-[#111815] text-white shadow-[0_18px_50px_rgba(36,28,12,0.14)] lg:grid-cols-[0.95fr_1.05fr]">
               <div className="relative min-h-[360px]">
                 <Image src={project.image} alt={`${project.name} exterior`} fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0d1110]/90 via-transparent to-transparent" />
@@ -52,13 +56,16 @@ export default function Buy() {
                 </div>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link href={`/${project.slug}`} className="inline-flex items-center justify-center gap-2 rounded-full border border-[#c9a15b] px-6 py-3 font-bold text-[#c9a15b]">
+                  <Link href={`/${project.slug}`} className="featured-cta group inline-flex items-center justify-center gap-2 rounded-full border border-[#c9a15b] px-6 py-3 font-bold text-[#c9a15b]">
                     Learn More <ArrowRight size={17} />
                   </Link>
-                  <BrochureDownload brochure={project.brochure} projectName={project.name} variant="dark" />
+                  <div className="featured-cta-wrap">
+                    <BrochureDownload brochure={project.brochure} projectName={project.name} variant="dark" />
+                  </div>
                 </div>
               </div>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>

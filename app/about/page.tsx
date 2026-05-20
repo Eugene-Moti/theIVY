@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Handshake, MapPin, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/motion";
 import { assets, projects } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ export default function About() {
     <>
       <section className="section bg-[#f3eddf] pt-36 text-[#121512]">
         <div className="container grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
+          <Reveal x={-84} distance={0} duration={0.9}>
             <p className="eyebrow">About The Ivy Group</p>
             <h1 className="mt-4 font-serif text-6xl font-semibold">Real estate shaped around lifestyle and investment performance.</h1>
             <p className="mt-6 text-lg leading-8 text-black/64">
@@ -50,26 +51,27 @@ export default function About() {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="relative min-h-[560px] overflow-hidden rounded-lg">
+          </Reveal>
+          <Reveal x={84} distance={0} duration={0.9} className="relative min-h-[560px] overflow-hidden rounded-lg">
             <Image src={assets.blossomsHero} alt="Blossoms Ivy Residence lobby" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="section bg-[#0d1110] text-white">
         <div className="container">
-          <div className="mb-10 max-w-3xl">
+          <Reveal x={-64} distance={0} duration={0.82} className="mb-10 max-w-3xl">
             <p className="eyebrow">Our developments</p>
             <h2 className="mt-4 font-serif text-5xl font-semibold">A portfolio across Nairobi's most active residential addresses.</h2>
             <p className="mt-5 text-lg leading-8 text-white/66">
               Each Ivy project is planned around location strength, resident experience, amenity depth, and flexible buyer pathways, making the homes attractive for both owner-occupiers and investors.
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid gap-5 lg:grid-cols-3">
-            {projects.map((project) => (
-              <article key={project.slug} className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.045]">
+            {projects.map((project, index) => (
+              <Reveal key={project.slug} delay={index * 0.1} x={index === 1 ? 0 : index === 0 ? -56 : 56} distance={24} duration={0.78}>
+                <article className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.045]">
                 <div className="relative h-64">
                   <Image src={project.image} alt={project.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0d1110] to-transparent" />
@@ -93,7 +95,8 @@ export default function About() {
                     View project <ArrowRight size={16} />
                   </Link>
                 </div>
-              </article>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -101,22 +104,24 @@ export default function About() {
 
       <section className="section bg-[#f3eddf] text-[#121512]">
         <div className="container grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
+          <Reveal x={-72} distance={0} duration={0.82}>
             <p className="eyebrow">How we build</p>
             <h2 className="mt-4 font-serif text-5xl font-semibold">A company standard built around trust, comfort, and lasting value.</h2>
             <p className="mt-5 text-lg leading-8 text-black/64">
               The Ivy Group is guided by a simple idea: a home should feel exceptional to live in today and remain valuable as Nairobi continues to grow.
             </p>
-          </div>
+          </Reveal>
           <div className="grid gap-4 md:grid-cols-2">
-            {companyPillars.map((pillar) => {
+            {companyPillars.map((pillar, index) => {
               const Icon = pillar.icon;
               return (
-                <div key={pillar.title} className="rounded-lg border border-[#d8c49a]/35 bg-white/70 p-6 shadow-[0_12px_32px_rgba(36,28,12,0.08)]">
-                  <Icon className="text-[#c9a15b]" size={26} />
-                  <h3 className="mt-5 text-2xl font-semibold">{pillar.title}</h3>
-                  <p className="mt-3 leading-7 text-black/62">{pillar.copy}</p>
-                </div>
+                <Reveal key={pillar.title} delay={index * 0.08} distance={26} scale={0.96} duration={0.72}>
+                  <div className="h-full rounded-lg border border-[#d8c49a]/35 bg-white/70 p-6 shadow-[0_12px_32px_rgba(36,28,12,0.08)]">
+                    <Icon className="text-[#c9a15b]" size={26} />
+                    <h3 className="mt-5 text-2xl font-semibold">{pillar.title}</h3>
+                    <p className="mt-3 leading-7 text-black/62">{pillar.copy}</p>
+                  </div>
+                </Reveal>
               );
             })}
           </div>
@@ -129,12 +134,14 @@ export default function About() {
             ["Completed Portfolio", "A growing development history that supports buyer confidence and brand credibility."],
             ["Premium Residences", "Homes planned with amenities, finishes, security, and convenience at the center."],
             ["Investor-Aware Planning", "Projects positioned for rental demand, location advantage, and long-term ownership value."]
-          ].map(([title, copy]) => (
-            <div key={title} className="rounded-lg border border-white/10 bg-white/[0.045] p-7">
-              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#c9a15b]">The Ivy Group</p>
-              <h3 className="mt-4 text-2xl font-semibold">{title}</h3>
-              <p className="mt-3 leading-7 text-white/64">{copy}</p>
-            </div>
+          ].map(([title, copy], index) => (
+            <Reveal key={title} delay={index * 0.1} distance={28} scale={0.95} duration={0.72}>
+              <div className="h-full rounded-lg border border-white/10 bg-white/[0.045] p-7">
+                <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#c9a15b]">The Ivy Group</p>
+                <h3 className="mt-4 text-2xl font-semibold">{title}</h3>
+                <p className="mt-3 leading-7 text-white/64">{copy}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>

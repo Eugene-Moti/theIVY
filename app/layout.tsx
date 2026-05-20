@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https:ivygroup.ke"),
+  metadataBase: new URL("https://ivygroup.ke"),
   title: {
     default: "The Ivy Group | Luxury Apartments for Sale in Nairobi",
     template: "%s | The Ivy Group"
@@ -46,6 +46,39 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _iub = _iub || [];
+              _iub.csConfiguration = {
+                "siteId":4538623,
+                "cookiePolicyId":61671428,
+                "lang":"en",
+                "storage":{"useSiteId":true},
+                "googleConsentMode":true,
+                "googleAdsDataRedaction":true,
+                "googleUrlPassthrough":true
+              };
+            `
+          }}
+        />
+        <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/4538623.js" />
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js" />
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charSet="UTF-8" async />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-G4MF7YCDPV" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-G4MF7YCDPV');
+            `
+          }}
+        />
+      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <AmbientEffects />

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Phone } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { BrochureDownload } from "@/components/brochure-download";
-import { projects } from "@/lib/data";
+import { contact, projects } from "@/lib/data";
 
 type ProjectPageProps = {
   project: any;
@@ -99,9 +99,14 @@ export function ProjectPage({ project, hero, intro, details, amenities, units, g
                 <p className="eyebrow">Project location</p>
                 <h2 className="mt-3 font-serif text-[2.4rem] font-semibold leading-none md:text-5xl">{project.name} on the map</h2>
               </div>
-              <p className="max-w-xl text-white/62 md:text-right">
-                Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
-              </p>
+              <div className="flex max-w-xl flex-col gap-3 md:items-end">
+                <p className="text-white/62 md:text-right">
+                  Explore the surrounding roads, nearby lifestyle hubs, and access routes around {project.location}.
+                </p>
+                <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="mobile-tap inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-full border border-[#c9a15b] px-5 py-3 text-sm font-bold text-[#c9a15b] transition hover:bg-[#c9a15b] hover:text-[#111]">
+                  <Phone size={17} /> Call Before Visiting
+                </a>
+              </div>
             </div>
             <div className="overflow-hidden rounded-lg border border-white/10 bg-[#0d1110] shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
               <iframe

@@ -79,7 +79,7 @@ export function Header() {
           <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white transition hover:border-[#c9a15b] hover:text-[#c9a15b]" aria-label="Call The Ivy Group">
             <Phone size={18} />
           </a>
-          <Link href="/contact#brochures" className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
+          <Link href="/contact#download-brochure" className="rounded-full bg-[#c9a15b] px-5 py-3 text-sm font-bold text-[#111] transition hover:bg-[#e2bd75]">
             Download Brochure
           </Link>
         </div>
@@ -127,7 +127,7 @@ export function Header() {
               <a href={`tel:${contact.phone.replaceAll(" ", "")}`} className="mobile-tap flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white transition hover:border-[#c9a15b] hover:text-[#c9a15b]" aria-label="Call The Ivy Group">
                 <Phone size={18} />
               </a>
-              <Link href="/contact#brochures" onClick={closeMenu} className="gold-gradient mobile-tap flex min-h-12 items-center justify-center gap-2 rounded-full px-5 text-sm font-bold text-[#111]">
+              <Link href="/contact#download-brochure" onClick={closeMenu} className="gold-gradient mobile-tap flex min-h-12 items-center justify-center gap-2 rounded-full px-5 text-sm font-bold text-[#111]">
                 <Download size={16} /> Download Brochure
               </Link>
             </div>
