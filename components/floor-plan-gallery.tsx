@@ -17,8 +17,38 @@ type VisiblePlan = {
   category: string;
 };
 
+function cleanAssetPath(path: string) {
+  let value = path;
+
+  try {
+    value = new URL(path).pathname;
+  } catch {
+    value = path;
+  }
+
+  for (let index = 0; index < 2; index += 1) {
+    try {
+      value = decodeURIComponent(value);
+    } catch {
+      break;
+    }
+  }
+
+  return value.replace(/^\/public\//, "/");
+}
+
 function filename(path: string) {
-  return path.split("/").pop()?.replace(/\.(jpeg|jpg|png)$/i, "") ?? "Floor plan";
+  return cleanAssetPath(path).split("/").pop()?.replace(/\.(jpeg|jpg|png)$/i, "") ?? "Floor plan";
+}
+
+function prettyFloorPlanName(name: string) {
+  return name
+    .replace(/^1BEDROOM\s*/i, "1 Bedroom ")
+    .replace(/^2BEDROOM\s*/i, "2 Bedroom ")
+    .replace(/^2BR\+DSQ\s*/i, "2BR + DSQ ")
+    .replace(/^3BR\s*\+?DSQ\s*/i, "3BR + DSQ ")
+    .replace(/Floor Plan Block - A,B & C/i, "Floor Plan Block - A, B & C")
+    .trim();
 }
 
 function category(path: string) {
@@ -34,7 +64,7 @@ function category(path: string) {
 function labelFromPath(path: string, project: string, index: number) {
   const name = filename(path);
   if (!name.startsWith("WhatsApp Image")) {
-    return name;
+    return prettyFloorPlanName(name);
   }
 
   return `${project.replace(" Residence", "")} floor plan ${index + 1}`;
