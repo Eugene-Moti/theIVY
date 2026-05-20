@@ -8,6 +8,7 @@ import { MobileBar } from "@/components/mobile-bar";
 import { SocialQrPopup } from "@/components/social-qr-popup";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { AmbientEffects } from "@/components/ambient-effects";
+import { assetUrl } from "@/lib/assets";
 import { assets, contact } from "@/lib/data";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -22,9 +23,9 @@ export const metadata: Metadata = {
   description: "Explore The Ivy Group's premium Nairobi residences, including Ivy Park Residence in Kilimani, Blossoms Ivy in Kileleshwa, and Luckinn Ivy in Westlands.",
   keywords: ["luxury apartments Nairobi", "apartments for sale in Kilimani", "Ivy Park Residence", "off-plan apartments Nairobi", "Kileleshwa apartments for sale"],
   icons: {
-    icon: "/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png",
-    shortcut: "/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png",
-    apple: "/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png"
+    icon: assetUrl("/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png"),
+    shortcut: assetUrl("/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png"),
+    apple: assetUrl("/The Ivygroup/Logo/IVY Group/1x/Artboard 1.png")
   },
   openGraph: {
     title: "The Ivy Group",

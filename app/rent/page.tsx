@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Bell, Building2, Clock3 } from "lucide-react";
+import { assetUrl } from "@/lib/assets";
 import { contact } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -14,13 +15,13 @@ export default function Rent() {
     <section className="relative min-h-screen overflow-hidden pt-20 text-white">
       <video
         className="absolute inset-0 h-full w-full object-cover"
-        src="/IVY PARK RESIDENCE/IVY PARK WIDE.mp4"
+        src={assetUrl("/IVY PARK RESIDENCE/IVY PARK WIDE.mp4")}
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
-        poster="/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg"
+        poster={assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg")}
         aria-label="Ivy Park Residence background video"
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,7,0.86),rgba(7,8,7,0.38)_54%,rgba(7,8,7,0.7)),linear-gradient(0deg,rgba(7,8,7,0.92),rgba(7,8,7,0.08)_58%)]" />

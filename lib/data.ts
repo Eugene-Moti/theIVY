@@ -1,3 +1,5 @@
+import { assetUrl } from "@/lib/assets";
+
 export const contact = {
   office: "Gatundu Road 23, Blossoms Ivy Residence",
   email: "marketing.ivy-group@rsunproperty.net",
@@ -13,22 +15,22 @@ export const socials = [
 ];
 
 export const assets = {
-  ivyLogo: "/The Ivygroup/Logo/3x/Artboard 1@3x.png",
-  ivyParkLogo: "/IVY PARK RESIDENCE/Logo/SVG/Artboard 1.svg",
-  blossomsLogo: "/BLOSSOMS_IVY/logo/SVG/Artboard 1.svg",
-  luckinnLogo: "/Luckinn/Logo/LUCKINN LOGO-blck02.png",
-  ivyParkHero: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg",
-  ivyParkExterior: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Daylight_EXTERIOS_01.png",
-  ivyParkRooftop: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Aerial Images + Rooftop/251211_D03-Rooftop_IVY PARK.jpg",
-  ivyParkPool: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png",
-  ivyParkGym: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/GYM/GYM_V4.png",
-  ivyParkInterior: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/INTERIOR/IVY PARK 2 BR FINAL Day/enhanced_Living.png",
-  blossomsHero: "/BLOSSOMS_IVY/Blossoms Ivy_Lobby_R1_View 01-1.jpg",
-  blossomsPool: "/BLOSSOMS_IVY/13_KCGV_Blossom Ivy_R1 Pool 2.jpg",
-  blossomsCafe: "/BLOSSOMS_IVY/09_KCGV_Blossom Ivy_R1 Cafe 2.jpg",
-  luckinnHero: "/Luckinn/Luckinn Exterior gate.jpeg",
-  luckinnPool: "/Luckinn/Swimming pool 1.jpeg",
-  luckinnLounge: "/Luckinn/Lounge wide view.jpeg"
+  ivyLogo: assetUrl("/The Ivygroup/Logo/3x/Artboard 1@3x.png"),
+  ivyParkLogo: assetUrl("/IVY PARK RESIDENCE/Logo/SVG/Artboard 1.svg"),
+  blossomsLogo: assetUrl("/BLOSSOMS_IVY/logo/SVG/Artboard 1.svg"),
+  luckinnLogo: assetUrl("/Luckinn/Logo/LUCKINN LOGO-blck02.png"),
+  ivyParkHero: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg"),
+  ivyParkExterior: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Daylight_EXTERIOS_01.png"),
+  ivyParkRooftop: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Aerial Images + Rooftop/251211_D03-Rooftop_IVY PARK.jpg"),
+  ivyParkPool: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png"),
+  ivyParkGym: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/GYM/GYM_V4.png"),
+  ivyParkInterior: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/INTERIOR/IVY PARK 2 BR FINAL Day/enhanced_Living.png"),
+  blossomsHero: assetUrl("/BLOSSOMS_IVY/Blossoms Ivy_Lobby_R1_View 01-1.jpg"),
+  blossomsPool: assetUrl("/BLOSSOMS_IVY/13_KCGV_Blossom Ivy_R1 Pool 2.jpg"),
+  blossomsCafe: assetUrl("/BLOSSOMS_IVY/09_KCGV_Blossom Ivy_R1 Cafe 2.jpg"),
+  luckinnHero: assetUrl("/Luckinn/Luckinn Exterior gate.jpeg"),
+  luckinnPool: assetUrl("/Luckinn/Swimming pool 1.jpeg"),
+  luckinnLounge: assetUrl("/Luckinn/Lounge wide view.jpeg")
 };
 
 export const projects = [
@@ -41,37 +43,37 @@ export const projects = [
     completion: "December 2028",
     image: assets.ivyParkHero,
     logo: assets.ivyParkLogo,
-    brochure: "/IVY PARK RESIDENCE/IvyPark Brochure/Ivypark Brochure.pdf",
+    brochure: assetUrl("/IVY PARK RESIDENCE/IvyPark Brochure/Ivypark Brochure.pdf"),
     mapEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2378.066417849596!2d36.783541489703445!3d-1.2916384041454692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1b000d6f3f39%3A0x854c68bdc588cef5!2sIVY%20PARK%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766282335!5m2!1sen!2ske",
     description:
       "A landmark Kilimani address with 660 apartments, rooftop living, heated pools, co-working spaces, and high investment potential near Yaya Centre.",
     stats: ["660 apartments", "22 residential floors", "1.06 acres", "3 blocks"],
     paymentPlans: ["Reserve with a 20% deposit", "Spread balance during construction", "Mortgage and cash buyer support", "Projected completion: December 2028"],
-    heroVideo: "/IVY PARK RESIDENCE/IVY PARK WIDE.mp4",
+    heroVideo: assetUrl("/IVY PARK RESIDENCE/IVY PARK WIDE.mp4"),
     showcase: [
       {
-        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Aerial Images + Rooftop/251211_D03-Rooftop_IVY PARK.jpg",
+        src: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Aerial Images + Rooftop/251211_D03-Rooftop_IVY PARK.jpg"),
         title: "Rooftop living",
         caption: "Sky-level leisure spaces designed for views, gatherings, and everyday downtime above Kilimani."
       },
       {
-        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png",
+        src: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png"),
         title: "Pool and spa deck",
         caption: "Resort-style amenities create a calm daily rhythm, from warm afternoon swims to evening relaxation."
       },
       {
-        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/GYM/GYM_V4.png",
+        src: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/AMENITIES/GYM/GYM_V4.png"),
         title: "Wellness studio",
         caption: "A fully considered fitness environment for cardio, strength training, yoga, and recovery."
       },
       {
-        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg",
+        src: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg"),
         title: "Sunset arrival",
         caption: "The architecture reads boldly from the skyline while staying connected to the life of the street."
       },
       {
-        src: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/INTERIOR/IVY PARK 2 BR FINAL Day/enhanced_Living.png",
+        src: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/INTERIOR/IVY PARK 2 BR FINAL Day/enhanced_Living.png"),
         title: "Bright interiors",
         caption: "Open-plan living spaces balance clean finishes, natural light, and practical apartment layouts."
       }
@@ -86,7 +88,7 @@ export const projects = [
     completion: "December 2026",
     image: assets.blossomsHero,
     logo: assets.blossomsLogo,
-    brochure: "/BLOSSOMS_IVY/Brochure/Blossoms Brochure.pdf",
+    brochure: assetUrl("/BLOSSOMS_IVY/Brochure/Blossoms Brochure.pdf"),
     mapEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4747.119710069173!2d36.782766475697066!3d-1.2771360987107108!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766518082!5m2!1sen!2ske",
     description:
@@ -95,32 +97,32 @@ export const projects = [
     paymentPlans: ["Flexible deposit structure", "Construction-linked instalments", "Ready guidance for owner-occupiers", "Projected completion: December 2026"],
     showcase: [
       {
-        src: "/BLOSSOMS_IVY/Blossoms Ivy_Lobby_R1_View 07.1 (1).jpg",
+        src: assetUrl("/BLOSSOMS_IVY/Blossoms Ivy_Lobby_R1_View 07.1 (1).jpg"),
         title: "Grand lobby arrival",
         caption: "A polished welcome sequence with layered lighting, generous seating, and a calm residential tone."
       },
       {
-        src: "/BLOSSOMS_IVY/13_KCGV_Blossom Ivy_R1 Pool 2.jpg",
+        src: assetUrl("/BLOSSOMS_IVY/13_KCGV_Blossom Ivy_R1 Pool 2.jpg"),
         title: "Indoor pool retreat",
         caption: "A bright pool amenity gives Blossoms Ivy a private wellness escape within the building."
       },
       {
-        src: "/BLOSSOMS_IVY/09_KCGV_Blossom Ivy_R1 Cafe 2.jpg",
+        src: assetUrl("/BLOSSOMS_IVY/09_KCGV_Blossom Ivy_R1 Cafe 2.jpg"),
         title: "Cafe lounge",
         caption: "A relaxed social setting for coffee, quiet meetings, and easy moments between home and the city."
       },
       {
-        src: "/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Gym 4.jpg",
+        src: assetUrl("/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Gym 4.jpg"),
         title: "Fitness floor",
         caption: "Dedicated training spaces support everyday wellness without leaving the residence."
       },
       {
-        src: "/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Spa 5.jpg",
+        src: assetUrl("/BLOSSOMS_IVY/KCGV_Blossom Ivy_R2_Spa 5.jpg"),
         title: "Spa calm",
         caption: "Soft finishes and warm lighting shape a restful amenity layer for residents."
       },
       {
-        src: "/BLOSSOMS_IVY/20_KCGV_Blossom Ivy_Play_Area6.png",
+        src: assetUrl("/BLOSSOMS_IVY/20_KCGV_Blossom Ivy_Play_Area6.png"),
         title: "Family play spaces",
         caption: "Playful, protected amenity areas make family living more flexible and complete."
       }
@@ -135,9 +137,9 @@ export const projects = [
     completion: "December 2026",
     image: assets.luckinnHero,
     logo: assets.luckinnLogo,
-    secondaryLogo: "/Luckinn/Logo/1x/Artboard 1.png",
+    secondaryLogo: assetUrl("/Luckinn/Logo/1x/Artboard 1.png"),
     logoClass: "brightness-0 saturate-100 invert-[70%] sepia-[44%] saturate-[503%] hue-rotate-[358deg] brightness-[88%] contrast-[87%]",
-    brochure: "/Luckinn/Brochure/Luckinn Ivy Residence Brochure.pdf",
+    brochure: assetUrl("/Luckinn/Brochure/Luckinn Ivy Residence Brochure.pdf"),
     mapEmbed:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2400.7090070955387!2d36.80838449207145!3d-1.2675000854185314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE!5e1!3m2!1sen!2ske!4v1778766624658!5m2!1sen!2ske",
     description:
@@ -146,32 +148,32 @@ export const projects = [
     paymentPlans: ["Reservation support available", "Staged payments during build", "Mortgage introduction on request", "Projected completion: December 2026"],
     showcase: [
       {
-        src: "/Luckinn/Luckinn Exterior.jpeg",
+        src: assetUrl("/Luckinn/Luckinn Exterior.jpeg"),
         title: "Westlands tower profile",
         caption: "Luckinn Ivy Residence brings a refined vertical address to a connected urban neighborhood."
       },
       {
-        src: "/Luckinn/Swimming pool 1.jpeg",
+        src: assetUrl("/Luckinn/Swimming pool 1.jpeg"),
         title: "Indoor pool",
         caption: "A sheltered pool environment adds year-round wellness and a quiet retreat from the city."
       },
       {
-        src: "/Luckinn/Lounge wide view.jpeg",
+        src: assetUrl("/Luckinn/Lounge wide view.jpeg"),
         title: "Residents lounge",
         caption: "A generous lounge creates room for informal meetings, reading, and relaxed social time."
       },
       {
-        src: "/Luckinn/Study area + Garden.jpeg",
+        src: assetUrl("/Luckinn/Study area + Garden.jpeg"),
         title: "Study and garden",
         caption: "Focused work zones and greenery give residents practical spaces beyond the apartment."
       },
       {
-        src: "/Luckinn/Gym Area.jpeg",
+        src: assetUrl("/Luckinn/Gym Area.jpeg"),
         title: "Gym area",
         caption: "Compact, accessible fitness amenities support everyday routines at home."
       },
       {
-        src: "/Luckinn/Kids Play Area.jpeg",
+        src: assetUrl("/Luckinn/Kids Play Area.jpeg"),
         title: "Kids play area",
         caption: "A dedicated play amenity makes the residence easier for families to use every day."
       }
@@ -183,7 +185,7 @@ export const blogPosts = [
   {
     title: "Why Kilimani continues to lead Nairobi apartment demand",
     excerpt: "A practical look at access, rental depth, lifestyle amenities, and why Ivy Park Residence is positioned for modern buyers.",
-    image: "/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Night_EXTERIOS_06_Detail Rooftop.png",
+    image: assetUrl("/IVY PARK RESIDENCE/IVY PARK RESIDENCE - RENDERS/EXTERIORS/Night_EXTERIOS_06_Detail Rooftop.png"),
     author: "Ivy Advisory Team",
     authorImage: assets.ivyLogo,
     views: "2.4k",
@@ -228,23 +230,23 @@ export const floorPlans = [
     slug: "ivy-park-residence",
     logo: assets.ivyParkLogo,
     plans: [
-      "/Floor Plans/1BEDROOM 62SQM.jpeg",
-      "/Floor Plans/1BEDROOM 66SQM.jpeg",
-      "/Floor Plans/1BEDROOM 67SQM.jpeg",
-      "/Floor Plans/1BEDROOM 69SQM.jpeg",
-      "/Floor Plans/1BEDROOM 73SQ.jpeg",
-      "/Floor Plans/1BEDROOM 76SQM.jpeg",
-      "/Floor Plans/2BEDROOM 98SQM.jpeg",
-      "/Floor Plans/2BEDROOM 110SQM.jpeg",
-      "/Floor Plans/2BEDROOM 114SQM.jpeg",
-      "/Floor Plans/2BEDROOM 115SQM.jpeg",
-      "/Floor Plans/2BR+DSQ 108SQM.jpeg",
-      "/Floor Plans/2BR+DSQ 128SQM.jpeg",
-      "/Floor Plans/3BR +DSQ 142SQM.jpeg",
-      "/Floor Plans/Floor Plan Block - A,B & C.jpeg",
-      "/Floor Plans/Floor Plan Block - A.jpeg",
-      "/Floor Plans/Floor Plan Block - B.jpeg",
-      "/Floor Plans/Floor Plan Block - C.jpeg"
+      assetUrl("/Floor Plans/1BEDROOM 62SQM.jpeg"),
+      assetUrl("/Floor Plans/1BEDROOM 66SQM.jpeg"),
+      assetUrl("/Floor Plans/1BEDROOM 67SQM.jpeg"),
+      assetUrl("/Floor Plans/1BEDROOM 69SQM.jpeg"),
+      assetUrl("/Floor Plans/1BEDROOM 73SQ.jpeg"),
+      assetUrl("/Floor Plans/1BEDROOM 76SQM.jpeg"),
+      assetUrl("/Floor Plans/2BEDROOM 98SQM.jpeg"),
+      assetUrl("/Floor Plans/2BEDROOM 110SQM.jpeg"),
+      assetUrl("/Floor Plans/2BEDROOM 114SQM.jpeg"),
+      assetUrl("/Floor Plans/2BEDROOM 115SQM.jpeg"),
+      assetUrl("/Floor Plans/2BR+DSQ 108SQM.jpeg"),
+      assetUrl("/Floor Plans/2BR+DSQ 128SQM.jpeg"),
+      assetUrl("/Floor Plans/3BR +DSQ 142SQM.jpeg"),
+      assetUrl("/Floor Plans/Floor Plan Block - A,B & C.jpeg"),
+      assetUrl("/Floor Plans/Floor Plan Block - A.jpeg"),
+      assetUrl("/Floor Plans/Floor Plan Block - B.jpeg"),
+      assetUrl("/Floor Plans/Floor Plan Block - C.jpeg")
     ]
   },
   {
@@ -253,13 +255,13 @@ export const floorPlans = [
     logo: assets.luckinnLogo,
     logoClass: "brightness-0 saturate-100 invert-[70%] sepia-[44%] saturate-[503%] hue-rotate-[358deg] brightness-[88%] contrast-[87%]",
     plans: [
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.35.jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36 (1).jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36 (2).jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36.jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.37 (1).jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.37.jpeg",
-      "/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.38.jpeg"
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.35.jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36 (1).jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36 (2).jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.36.jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.37 (1).jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.37.jpeg"),
+      assetUrl("/Luckinn/Floor plans/WhatsApp Image 2026-05-11 at 13.01.38.jpeg")
     ]
   },
   {
@@ -267,11 +269,11 @@ export const floorPlans = [
     slug: "blossoms-ivy-residence",
     logo: assets.blossomsLogo,
     plans: [
-      "/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55 (1).jpeg",
-      "/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55 (2).jpeg",
-      "/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55.jpeg",
-      "/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.56 (1).jpeg",
-      "/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.56.jpeg"
+      assetUrl("/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55 (1).jpeg"),
+      assetUrl("/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55 (2).jpeg"),
+      assetUrl("/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.55.jpeg"),
+      assetUrl("/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.56 (1).jpeg"),
+      assetUrl("/BLOSSOMS_IVY/FloorPlans/WhatsApp Image 2026-05-11 at 13.07.56.jpeg")
     ]
   }
 ];

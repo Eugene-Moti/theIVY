@@ -4,24 +4,25 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Facebook, Instagram, Music2, QrCode, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { assetUrl } from "@/lib/assets";
 import { socials } from "@/lib/data";
 
 const qrCodes = [
   {
     label: "Instagram",
-    file: "/The Ivygroup/Social media QR Codes/SOCIAL MEDIA INSTAGRAM QR CODE_page-0001.jpg",
+    file: assetUrl("/The Ivygroup/Social media QR Codes/SOCIAL MEDIA INSTAGRAM QR CODE_page-0001.jpg"),
     accent: "#c86aa8",
     icon: Instagram
   },
   {
     label: "TikTok",
-    file: "/The Ivygroup/Social media QR Codes/SOCIAL MEDIA TIKTOK QR CODE_page-0001.jpg",
+    file: assetUrl("/The Ivygroup/Social media QR Codes/SOCIAL MEDIA TIKTOK QR CODE_page-0001.jpg"),
     accent: "#5ee4d6",
     icon: Music2
   },
   {
     label: "Facebook",
-    file: "/The Ivygroup/Social media QR Codes/SOCIAL MEDIA FACEBOOK QR CODE_page-0001.jpg",
+    file: assetUrl("/The Ivygroup/Social media QR Codes/SOCIAL MEDIA FACEBOOK QR CODE_page-0001.jpg"),
     accent: "#6ea8ff",
     icon: Facebook
   }
