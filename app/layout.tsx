@@ -10,6 +10,7 @@ import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { AmbientEffects } from "@/components/ambient-effects";
 import { assetUrl } from "@/lib/assets";
 import { assets, contact } from "@/lib/data";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SocialQrPopup />
         <WhatsAppWidget />
         <MobileBar />
+        <SpeedInsights />
       </body>
     </html>
   );
