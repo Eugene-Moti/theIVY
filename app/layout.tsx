@@ -8,6 +8,7 @@ import { MobileBar } from "@/components/mobile-bar";
 import { SocialQrPopup } from "@/components/social-qr-popup";
 import { WhatsAppWidget } from "@/components/whatsapp-widget";
 import { AmbientEffects } from "@/components/ambient-effects";
+import { Analytics } from "@vercel/analytics/next";
 import { assetUrl } from "@/lib/assets";
 import { assets, contact } from "@/lib/data";
 
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SocialQrPopup />
         <WhatsAppWidget />
         <MobileBar />
+        <Analytics />
       </body>
     </html>
   );
