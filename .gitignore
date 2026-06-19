@@ -28,17 +28,3 @@ next-env.d.ts
 
 # Vercel
 .vercel
-
-# Large binary assets — host via CDN or re-add when disk space allows
-/public/*.png
-/public/*.jpg
-/public/*.jpeg
-/public/*.pdf
-/public/*.webp
-/public/*.avif
-/public/**/*.png
-/public/**/*.jpg
-/public/**/*.jpeg
-/public/**/*.pdf
-/public/**/*.webp
-/public/**/*.avif
