@@ -73,7 +73,7 @@ export default function RentPage() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="flex-1 bg-white/8 border border-white/20 text-white placeholder:text-white/30 px-5 py-3.5 text-sm font-sans focus:outline-none focus:border-gold transition-colors"
+                  className="flex-1 bg-white/8 border border-white/20 text-black placeholder:text-black/30 px-5 py-3.5 text-sm font-sans focus:outline-none focus:border-gold transition-colors"
                 />
                 <button
                   type="submit"
