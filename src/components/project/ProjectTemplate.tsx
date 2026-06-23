@@ -4,9 +4,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { MapPin, Check, ArrowRight, Download, Sparkles, Phone, Mail } from 'lucide-react'
+import { MapPin, Check, ArrowRight, Download, Sparkles, Phone } from 'lucide-react'
 import { type ProjectData, projects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
+import VirtualTourSection from '@/components/project/VirtualTourSection'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -214,6 +215,11 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </div>
       </section>
 
+      {/* ── VIRTUAL TOURS ── */}
+      {data.vrTours && data.vrTours.length > 0 && (
+        <VirtualTourSection tours={data.vrTours} />
+      )}
+
       {/* ── WHY INVEST ── */}
       <section className="py-24 lg:py-32 bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -271,7 +277,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               src={data.mapSrc}
               width="100%"
               height="100%"
-              style={{ border: 0 }}
+              className="border-0"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

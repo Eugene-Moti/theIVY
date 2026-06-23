@@ -12,6 +12,14 @@ export interface ProjectAmenity {
   image: string
 }
 
+export interface VrTour {
+  category: string
+  title: string
+  description: string
+  url: string
+  thumbnail: string
+}
+
 export interface ProjectData {
   slug: string
   name: string
@@ -38,6 +46,7 @@ export interface ProjectData {
   locationAdvantages: string[]
   mapSrc: string
   brochurePath: string
+  vrTours?: VrTour[]
 }
 
 export const projects: ProjectData[] = [
@@ -167,6 +176,43 @@ export const projects: ProjectData[] = [
     ],
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d2148.455932025552!2d36.810185702436065!3d-1.2677446121873845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE%20Nairobi%2C%20Mogotio%20Rd%2C%20KE!3m2!1d-1.2670761!2d36.8102079!5e1!3m2!1sen!2ske!4v1781851024052!5m2!1sen!2ske',
     brochurePath: p('/Luckinn Ivy Assets/Luckinn Brochure.pdf'),
+    vrTours: [
+      {
+        category: 'Common Areas',
+        title: 'Amenities Floor',
+        description: 'Explore the gym, heated swimming pool, and luxury lounge on the 2nd floor.',
+        url: 'https://vr.justeasy.cn/view/lg5174d6h0036a26-1746078378.html',
+        thumbnail: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'),
+      },
+      {
+        category: 'Common Areas',
+        title: 'Co-working & Meeting Rooms',
+        description: 'Shared office spaces and meeting rooms surrounded by lush greenery.',
+        url: 'https://vr.justeasy.cn/view/1w746q0pl0l37741-1746078298.html',
+        thumbnail: p('/Luckinn Ivy Assets/Amenities/Lounge Area.jpeg'),
+      },
+      {
+        category: 'Unit Types',
+        title: '1 Bedroom Residence',
+        description: 'Walk through a fully furnished 1 bedroom apartment — 78 SQM.',
+        url: 'https://vr.justeasy.cn/view/1746fqe00v3o32x3-1746003487.html',
+        thumbnail: p('/Luckinn Ivy Assets/Amenities/Lounge Area close up.jpeg'),
+      },
+      {
+        category: 'Unit Types',
+        title: '2 Bedroom Residence',
+        description: 'Tour a spacious 2 bedroom apartment with premium finishes — 126–140 SQM.',
+        url: 'https://vr.justeasy.cn/view/5g1n8746l003j824-1746070867.html',
+        thumbnail: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'),
+      },
+      {
+        category: 'Unit Types',
+        title: '3 Bedroom Residence',
+        description: 'Experience the full 3 bedroom layout with DSQ — 170–172 SQM.',
+        url: 'https://vr.justeasy.cn/view/l174xmx6900392o9-1746074641.html',
+        thumbnail: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'),
+      },
+    ],
   },
 
   /* ─────────────────────── IVY PARK ─────────────────────── */
