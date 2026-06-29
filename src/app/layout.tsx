@@ -24,8 +24,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ivygroup.ke'),
   title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',
-  description:
-    "The Ivy Group is a premium real estate developer with over 10 years of experience delivering luxury residential developments across Nairobi's most prestigious neighbourhoods — Kileleshwa, Westlands and Kilimani.",
+  description: "Nairobi's premier luxury residential developer. 10+ years delivering landmark apartments in Kileleshwa, Westlands and Kilimani. Explore our portfolio.",
   keywords:
     'luxury apartments Nairobi, Kileleshwa apartments, Westlands apartments, Kilimani apartments, The Ivy Group, Blossom Ivy, Luckinn Ivy, Ivy Park, Ivy Myst',
   alternates: { canonical: '/' },
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/The Ivy Group  Luxury Real Estate Developer in Nairobi.png',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'The Ivy Group — Luxury Real Estate Developer in Nairobi',
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',
     description: 'Building Modern Communities. Creating Lasting Value.',
-    images: ['/The Ivy Group  Luxury Real Estate Developer in Nairobi.png'],
+    images: ['/og-image.jpg'],
   },
 }
 
