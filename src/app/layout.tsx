@@ -36,11 +36,20 @@ export const metadata: Metadata = {
     siteName: 'The Ivy Group',
     locale: 'en_KE',
     type: 'website',
+    images: [
+      {
+        url: '/The Ivy Group  Luxury Real Estate Developer in Nairobi.png',
+        width: 1200,
+        height: 630,
+        alt: 'The Ivy Group — Luxury Real Estate Developer in Nairobi',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',
     description: 'Building Modern Communities. Creating Lasting Value.',
+    images: ['/The Ivy Group  Luxury Real Estate Developer in Nairobi.png'],
   },
 }
 
