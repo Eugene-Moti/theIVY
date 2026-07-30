@@ -65,9 +65,30 @@ const interiors = [
 ]
 
 const units = [
-  { type: '1 Bedroom', sizes: '79 – 84 SQM', price: 'From KES 8,800,000', note: 'Garden terrace on select units' },
-  { type: '2 Bedroom', sizes: '121 – 159 SQM', price: 'From KES 14,200,000', note: 'Garden terrace options available' },
-  { type: '3 Bedroom + DSQ', sizes: '169 – 231 SQM', price: 'From KES 19,800,000', note: 'DSQ & garden terrace on select units' },
+  {
+    type: '1 Bedroom',
+    sizes: '78 – 84 SQM',
+    priceRange: 'KES 8.8M – 10.5M',
+    roiUnfurnished: '13.67%',
+    roiFurnished: '19.75%',
+    note: 'Garden terrace on select units',
+  },
+  {
+    type: '2 Bedroom',
+    sizes: '121 – 159 SQM',
+    priceRange: 'KES 14.2M – 20.4M',
+    roiUnfurnished: '10.95%',
+    roiFurnished: '15.17%',
+    note: 'Garden terrace options available',
+  },
+  {
+    type: '3 Bedroom + DSQ',
+    sizes: '169 – 231 SQM',
+    priceRange: 'KES 19.8M – 29.6M',
+    roiUnfurnished: '12.06%',
+    roiFurnished: '18.09%',
+    note: 'DSQ & garden terrace on select units',
+  },
 ]
 
 export default function IvyMystTemplate() {
@@ -107,7 +128,7 @@ export default function IvyMystTemplate() {
               />
             </div>
             <p className="text-white/65 text-sm font-sans font-light max-w-lg leading-relaxed mb-8">
-              1, 2 &amp; 3 Bedroom Luxury Residences with Garden Terraces — Now Selling
+              1, 2 &amp; 3 Bedroom Luxury Residences with Garden Terraces — Now Selling · Est. Completion August 2029
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -131,12 +152,13 @@ export default function IvyMystTemplate() {
       {/* ── OVERVIEW STRIP ── */}
       <div className="bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 divide-x divide-white/10 border-t border-b border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-white/10 border-t border-b border-white/10">
             {[
-              { label: 'Location', value: 'Kileleshwa' },
+              { label: 'Location', value: 'Gatundu Rd, Kileleshwa' },
               { label: 'Type', value: 'Luxury Residences' },
               { label: 'Wings', value: '2 Wings (A & B)' },
               { label: 'Unit Types', value: '1, 2 & 3 Bedroom' },
+              { label: 'Completion', value: 'August 2029' },
               { label: 'Status', value: 'Now Selling' },
             ].map(item => (
               <div key={item.label} className="py-5 px-6 text-center">
@@ -163,10 +185,10 @@ export default function IvyMystTemplate() {
                 Comprising two wings of generously proportioned 1, 2 and 3 bedroom residences — many with private garden terraces — Ivy Myst raises the benchmark for luxury living in Nairobi. Its sweeping curved architecture, lush green balconies, and world-class rooftop amenities define an entirely new standard for the city.
               </p>
               <p className="text-dark/60 text-sm font-sans font-light leading-[1.9]">
-                Every detail has been considered — from the sculptural reception lobby to the signature Celestial Pool with cascading waterfall overlooking the Nairobi skyline. This is not merely a residence; it is an experience.
+                Every detail has been considered — from the sculptural reception lobby to the signature Celestial Pool with cascading waterfall overlooking the Nairobi skyline. This is not merely a residence; it is an experience. Estimated completion: <strong className="text-dark/80 font-medium">August 2029</strong>.
               </p>
               <div className="flex flex-wrap gap-3 mt-6">
-                {['Wing A & Wing B', 'Garden Terraces', 'Rooftop Amenities', 'Smart Home Ready'].map(tag => (
+                {['Wing A & Wing B', 'Garden Terraces', 'Rooftop Amenities', 'Completion Aug 2029'].map(tag => (
                   <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
                 ))}
               </div>
@@ -208,21 +230,29 @@ export default function IvyMystTemplate() {
               >
                 <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.2em] uppercase mb-3">AVAILABLE</p>
                 <h3 className="font-serif text-xl text-dark font-light mb-2">{unit.type}</h3>
-                <p className="text-dark/50 text-xs font-sans mb-1">{unit.sizes}</p>
-                <p className="text-dark/35 text-[10px] font-sans italic mb-5">{unit.note}</p>
-                <div className="border-t border-dark/8 pt-4 flex items-end justify-between">
-                  <div>
-                    <p className="text-dark/40 text-[9px] font-sans tracking-widest uppercase mb-1">From</p>
-                    <p className="font-serif text-lg text-dark">{unit.price}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setBrochureOpen(true)}
-                    className="text-[10px] font-sans font-semibold tracking-wider uppercase text-gold hover:underline flex items-center gap-1"
-                  >
-                    ENQUIRE <ArrowRight size={10} />
-                  </button>
+                <p className="text-dark/50 text-xs font-sans mb-0.5">{unit.sizes}</p>
+                <p className="text-dark/35 text-[10px] font-sans italic mb-4">{unit.note}</p>
+                <div className="border-t border-dark/8 pt-4 mb-4">
+                  <p className="text-dark/40 text-[9px] font-sans tracking-widest uppercase mb-1">Price Range</p>
+                  <p className="font-serif text-lg text-dark">{unit.priceRange}</p>
                 </div>
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  <div className="bg-dark/4 p-2.5 text-center">
+                    <p className="text-dark/35 text-[8px] font-sans tracking-widest uppercase mb-1">ROI Unfurnished</p>
+                    <p className="text-dark font-sans font-semibold text-sm">{unit.roiUnfurnished}</p>
+                  </div>
+                  <div className="bg-gold/10 p-2.5 text-center">
+                    <p className="text-dark/35 text-[8px] font-sans tracking-widest uppercase mb-1">ROI Furnished</p>
+                    <p className="text-gold font-sans font-semibold text-sm">{unit.roiFurnished}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setBrochureOpen(true)}
+                  className="w-full text-[10px] font-sans font-semibold tracking-wider uppercase text-gold hover:underline flex items-center justify-center gap-1"
+                >
+                  ENQUIRE <ArrowRight size={10} />
+                </button>
               </motion.div>
             ))}
           </div>
@@ -501,19 +531,19 @@ export default function IvyMystTemplate() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LOCATION</p>
-            <h2 className="font-serif text-4xl font-light text-dark">Kileleshwa, Nairobi</h2>
+            <h2 className="font-serif text-4xl font-light text-dark">Gatundu Road, Kileleshwa</h2>
             <div className="w-12 h-[2px] bg-gold mt-4" />
           </motion.div>
           <div className="w-full h-[420px] overflow-hidden">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d451.6556133047034!2d36.78503743441678!3d-1.276938025382227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE%2C%20Nairobi!3m2!1d-1.2771432999999999!2d36.785353199999996!5e1!3m2!1sen!2ske!4v1781850935628!5m2!1sen!2ske"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.3640841920273!2d36.7854601!3d-1.2774497999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f171eb89deccd%3A0xe0d248c01f726963!2sIVY%20MYST%20RESIDENCE!5e1!3m2!1sen!2ske!4v1785406432997!5m2!1sen!2ske"
               width="100%"
               height="100%"
               className="border-0"
               allowFullScreen
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ivy Myst location map"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Ivy Myst — Gatundu Road, Kileleshwa"
             />
           </div>
         </div>
