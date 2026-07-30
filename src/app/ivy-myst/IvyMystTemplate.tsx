@@ -1,146 +1,229 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { MapPin, Check, ArrowRight, Download, Phone } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MapPin, Check, ArrowRight, Download, Phone, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import BrochureModal from '@/components/shared/BrochureModal'
 
 const p = (path: string) => encodeURI(path)
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: 'easeOut' } },
 }
 
 type FloorPlanTab = 'overview' | 'wing-a' | 'wing-b'
 
-const floorPlanTabs = [
-  { key: 'overview' as FloorPlanTab, label: 'Full Overview' },
-  { key: 'wing-a' as FloorPlanTab, label: 'Wing A' },
-  { key: 'wing-b' as FloorPlanTab, label: 'Wing B' },
+type LightboxImage = { src: string; label: string }
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const wingAPlans: LightboxImage[] = [
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 01 -3BR 213SQM.jpg'), label: 'Unit 1 — 3 Bed + DSQ · 213 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Odd - 3BR 217SQM.jpg'), label: 'Unit 2 Odd Floors — 3 Bed + Garden · 217 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Even - 3BR 231QM.jpg'), label: 'Unit 2 Even Floors — 3 Bed + Garden · 231 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 03&04 -1BR 84SQM.jpg'), label: 'Units 3 & 4 — 1 Bed + Garden · 84 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 05&06 - 2BR 142SQM.jpg'), label: 'Units 5 & 6 — 2 Bed + Garden · 142 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Odd- 2BR 146SQM.jpg'), label: 'Unit 7 Odd Floors — 2 Bed + Garden · 146 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Even- 2BR 159SQM.jpg'), label: 'Unit 7 Even Floors — 2 Bed + Garden · 159 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 08-2BR 142SQM.jpg'), label: 'Unit 8 — 2 Bedroom · 142 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 09&010&11 -1BR 79SQM.jpg'), label: 'Units 9, 10 & 11 — 1 Bedroom · 79 SQM' },
 ]
 
-const wingAPlans = [
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 01 -3BR 213SQM.jpg'), label: '3 Bed + DSQ', size: '213 SQM', unit: 'Unit 1' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Odd - 3BR 217SQM.jpg'), label: '3 Bed + Garden', size: '217 SQM', unit: 'Unit 2 — Odd Floors' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Even - 3BR 231QM.jpg'), label: '3 Bed + Garden', size: '231 SQM', unit: 'Unit 2 — Even Floors' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 03&04 -1BR 84SQM.jpg'), label: '1 Bed + Garden', size: '84 SQM', unit: 'Units 3 & 4' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 05&06 - 2BR 142SQM.jpg'), label: '2 Bed + Garden', size: '142 SQM', unit: 'Units 5 & 6' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Odd- 2BR 146SQM.jpg'), label: '2 Bed + Garden', size: '146 SQM', unit: 'Unit 7 — Odd Floors' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Even- 2BR 159SQM.jpg'), label: '2 Bed + Garden', size: '159 SQM', unit: 'Unit 7 — Even Floors' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 08-2BR 142SQM.jpg'), label: '2 Bedroom', size: '142 SQM', unit: 'Unit 8' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 09&010&11 -1BR 79SQM.jpg'), label: '1 Bedroom', size: '79 SQM', unit: 'Units 9, 10 & 11' },
+const wingBPlans: LightboxImage[] = [
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 01 - 3BR 212SQM.jpg'), label: 'Unit 1 — 3 Bed + DSQ · 212 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 02 - 3BR 169SQM.jpg'), label: 'Unit 2 — 3 Bed + DSQ · 169 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 03 - 2BR 128SQM.jpg'), label: 'Unit 3 — 2 Bedroom · 128 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 04 - 2BR 128SQM.jpg'), label: 'Unit 4 — 2 Bedroom · 128 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 05 - 2BR 121SQM.jpg'), label: 'Unit 5 — 2 Bedroom · 121 SQM' },
+  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 07&08 -1BR 79SQM.jpg'), label: 'Units 7 & 8 — 1 Bedroom · 79 SQM' },
 ]
 
-const wingBPlans = [
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 01 - 3BR 212SQM.jpg'), label: '3 Bed + DSQ', size: '212 SQM', unit: 'Unit 1' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 02 - 3BR 169SQM.jpg'), label: '3 Bed + DSQ', size: '169 SQM', unit: 'Unit 2' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 03 - 2BR 128SQM.jpg'), label: '2 Bedroom', size: '128 SQM', unit: 'Unit 3' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 04 - 2BR 128SQM.jpg'), label: '2 Bedroom', size: '128 SQM', unit: 'Unit 4' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 05 - 2BR 121SQM.jpg'), label: '2 Bedroom', size: '121 SQM', unit: 'Unit 5' },
-  { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 07&08 -1BR 79SQM.jpg'), label: '1 Bedroom', size: '79 SQM', unit: 'Units 7 & 8' },
-]
-
-const amenities = [
+const amenityImages: LightboxImage[] = [
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'), label: 'Celestial Rooftop Pool' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'), label: 'Rooftop Restaurant' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop bar area.png'), label: 'Rooftop Bar & Lounge' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop lounge area night view.png'), label: 'Rooftop Lounge' },
+  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop lounge area night view.png'), label: 'Rooftop Night Lounge' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'), label: 'Gym & Yoga Studio' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'), label: 'Garden Stream' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/indoor restaurant.png'), label: 'Indoor Restaurant' },
   { src: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'), label: 'Grand Reception' },
 ]
 
-const interiors = [
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (6).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (8).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (10).png'),
-  p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'),
+const interiorImages: LightboxImage[] = [
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'), label: 'Living & Dining' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'), label: 'Master Bedroom' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (6).png'), label: 'Kitchen' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png'), label: 'Living Room' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (8).png'), label: 'Master Suite' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (10).png'), label: 'Dining Space' },
+  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'), label: 'Bedroom' },
+]
+
+const exteriorImages: LightboxImage[] = [
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), label: 'Day View' },
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), label: 'Night View' },
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'), label: 'Gate' },
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png'), label: 'Rooftop Deck' },
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), label: 'Rooftop City View' },
+  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Surrounding Views.png'), label: 'Rooftop Surrounds' },
 ]
 
 const units = [
-  {
-    type: '1 Bedroom',
-    sizes: '78 – 84 SQM',
-    priceRange: 'KES 8.8M – 10.5M',
-    roiUnfurnished: '13.67%',
-    roiFurnished: '19.75%',
-    note: 'Garden terrace on select units',
-  },
-  {
-    type: '2 Bedroom',
-    sizes: '121 – 159 SQM',
-    priceRange: 'KES 14.2M – 20.4M',
-    roiUnfurnished: '10.95%',
-    roiFurnished: '15.17%',
-    note: 'Garden terrace options available',
-  },
-  {
-    type: '3 Bedroom + DSQ',
-    sizes: '169 – 231 SQM',
-    priceRange: 'KES 19.8M – 29.6M',
-    roiUnfurnished: '12.06%',
-    roiFurnished: '18.09%',
-    note: 'DSQ & garden terrace on select units',
-  },
+  { type: '1 Bedroom', sizes: '78–84 SQM', priceRange: 'KES 8.8M – 10.5M', roiU: '13.67%', roiF: '19.75%', note: 'Garden terrace on select units' },
+  { type: '2 Bedroom', sizes: '121–159 SQM', priceRange: 'KES 14.2M – 20.4M', roiU: '10.95%', roiF: '15.17%', note: 'Garden terrace options available' },
+  { type: '3 Bedroom + DSQ', sizes: '169–231 SQM', priceRange: 'KES 19.8M – 29.6M', roiU: '12.06%', roiF: '18.09%', note: 'DSQ & garden terrace on select units' },
 ]
+
+// ─── LIGHTBOX ───────────────────────────────────────────────────────────────
+
+function Lightbox({ images, initialIndex, onClose }: { images: LightboxImage[]; initialIndex: number; onClose: () => void }) {
+  const [current, setCurrent] = useState(initialIndex)
+
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') setCurrent(i => (i - 1 + images.length) % images.length)
+      if (e.key === 'ArrowRight') setCurrent(i => (i + 1) % images.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [onClose, images.length])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-[200] bg-black/97 flex flex-col items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4 z-10">
+        <p className="text-white/40 text-[10px] font-sans tracking-[0.25em] uppercase">
+          {String(current + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+        </p>
+        <p className="text-white/50 text-xs font-sans">{images[current].label}</p>
+        <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">
+          <X size={20} />
+        </button>
+      </div>
+
+      {/* Image */}
+      <div
+        className="relative w-full"
+        style={{ height: 'calc(100vh - 120px)', maxWidth: '90vw' }}
+        onClick={e => e.stopPropagation()}
+      >
+        <Image
+          src={images[current].src}
+          alt={images[current].label}
+          fill
+          className="object-contain"
+          quality={95}
+          sizes="90vw"
+        />
+      </div>
+
+      {/* Prev / Next */}
+      <div className="absolute inset-y-0 left-0 flex items-center px-3 lg:px-5" onClick={e => e.stopPropagation()}>
+        <button
+          onClick={() => setCurrent(i => (i - 1 + images.length) % images.length)}
+          className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white/50 transition-colors"
+        >
+          <ChevronLeft size={20} />
+        </button>
+      </div>
+      <div className="absolute inset-y-0 right-0 flex items-center px-3 lg:px-5" onClick={e => e.stopPropagation()}>
+        <button
+          onClick={() => setCurrent(i => (i + 1) % images.length)}
+          className="w-10 h-10 border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white/50 transition-colors"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+
+      {/* Thumbnail strip */}
+      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-2 px-4 py-4 overflow-x-auto" onClick={e => e.stopPropagation()}>
+        {images.map((img, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`flex-shrink-0 w-12 h-8 relative overflow-hidden border-2 transition-all ${i === current ? 'border-gold' : 'border-white/20 opacity-50 hover:opacity-80'}`}
+          >
+            <Image src={img.src} alt="" fill className="object-cover" sizes="48px" quality={40} />
+          </button>
+        ))}
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── MAIN COMPONENT ─────────────────────────────────────────────────────────
 
 export default function IvyMystTemplate() {
   const [brochureOpen, setBrochureOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<FloorPlanTab>('overview')
+  const [lightbox, setLightbox] = useState<{ images: LightboxImage[]; index: number } | null>(null)
+
+  const openLB = (images: LightboxImage[], index: number) => setLightbox({ images, index })
 
   return (
     <>
-      {/* ── VIDEO HERO ── */}
+      <AnimatePresence>
+        {lightbox && (
+          <Lightbox images={lightbox.images} initialIndex={lightbox.index} onClose={() => setLightbox(null)} />
+        )}
+      </AnimatePresence>
+
+      {/* ── HERO ── */}
       <section className="relative h-screen w-full overflow-hidden bg-dark">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src={p('/Ivy Myst Assets/New Renders/ivy-myst-bg.webm')} type="video/webm" />
-          {/* Fallback image if video can't play */}
-          <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png')} alt="Ivy Myst" fill className="object-cover" priority sizes="100vw" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-dark/20" />
+        <Image
+          src={p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png')}
+          alt="Ivy Myst Grand Reception"
+          fill
+          priority
+          quality={92}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/50 to-dark/15" />
 
         <div className="relative h-full flex flex-col justify-end pb-16 max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.95, delay: 0.3 }}>
             <div className="flex items-center gap-2 mb-5">
               <MapPin size={11} className="text-gold" />
-              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.28em] uppercase">KILELESHWA, NAIROBI</p>
+              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.28em] uppercase">GATUNDU ROAD, KILELESHWA</p>
             </div>
-            <div className="mb-4 w-48">
-              <Image
-                src={p('/Ivy Myst Assets/Ivy Myst Logo.png')}
-                alt="Ivy Myst"
-                width={192}
-                height={70}
-                className="object-contain"
-              />
-            </div>
-            <p className="text-white/65 text-sm font-sans font-light max-w-lg leading-relaxed mb-8">
-              1, 2 &amp; 3 Bedroom Luxury Residences with Garden Terraces — Now Selling · Est. Completion August 2029
+            <h1 className="font-serif text-[clamp(4rem,10vw,8rem)] text-white font-light leading-[0.95] mb-5">Ivy Myst</h1>
+            <p className="text-white/60 text-sm font-sans font-light max-w-md leading-relaxed mb-3">
+              1, 2 &amp; 3 Bedroom Luxury Residences with Garden Terraces
             </p>
+            <div className="flex items-center gap-3 mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse flex-shrink-0" />
+              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.25em] uppercase">
+                Now Selling · Completion August 2029
+              </p>
+            </div>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#floor-plans"
+                href="#units"
                 className="bg-gold text-dark px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors"
               >
-                VIEW FLOOR PLANS
+                VIEW UNITS & PRICING
               </a>
               <button
                 type="button"
                 onClick={() => setBrochureOpen(true)}
-                className="flex items-center gap-2 border border-white/60 text-white px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 border border-white/50 text-white px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-colors"
               >
                 <Download size={12} /> DOWNLOAD BROCHURE
               </button>
@@ -152,70 +235,164 @@ export default function IvyMystTemplate() {
       {/* ── OVERVIEW STRIP ── */}
       <div className="bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-white/10 border-t border-b border-white/10">
+          <div className="grid grid-cols-3 lg:grid-cols-6 divide-x divide-white/10 border-t border-b border-white/10">
             {[
-              { label: 'Location', value: 'Gatundu Rd, Kileleshwa' },
+              { label: 'Location', value: 'Kileleshwa' },
               { label: 'Type', value: 'Luxury Residences' },
-              { label: 'Wings', value: '2 Wings (A & B)' },
-              { label: 'Unit Types', value: '1, 2 & 3 Bedroom' },
-              { label: 'Completion', value: 'August 2029' },
+              { label: 'Wings', value: 'A & B' },
+              { label: 'Units', value: '1, 2 & 3 Bed' },
+              { label: 'Completion', value: 'Aug 2029' },
               { label: 'Status', value: 'Now Selling' },
             ].map(item => (
-              <div key={item.label} className="py-5 px-6 text-center">
-                <p className="text-white/30 text-[9px] font-sans tracking-[0.2em] uppercase mb-1">{item.label}</p>
-                <p className="text-white text-xs font-sans font-medium">{item.value}</p>
+              <div key={item.label} className="py-5 px-4 text-center">
+                <p className="text-white/30 text-[8px] font-sans tracking-[0.2em] uppercase mb-1">{item.label}</p>
+                <p className="text-white text-[11px] font-sans font-medium">{item.value}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── DESCRIPTION + EXTERIOR ── */}
-      <section className="py-24 lg:py-32 bg-white">
+      {/* ── IN-PAGE NAV ── */}
+      <nav className="sticky top-16 lg:top-[72px] z-30 bg-white border-b border-dark/8 overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-6 flex items-center">
+          {[
+            { href: '#overview', label: 'Overview' },
+            { href: '#units', label: 'Residences' },
+            { href: '#amenities', label: 'Amenities' },
+            { href: '#floor-plans', label: 'Floor Plans' },
+            { href: '#location', label: 'Location' },
+          ].map(item => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="flex-shrink-0 px-5 py-4 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase text-dark/40 hover:text-gold border-b-2 border-transparent hover:border-gold transition-all"
+            >
+              {item.label}
+            </a>
+          ))}
+          <div className="ml-auto pl-4 flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setBrochureOpen(true)}
+              className="flex items-center gap-1.5 py-4 text-[9px] font-sans font-semibold tracking-[0.2em] uppercase text-gold"
+            >
+              <Download size={10} /> BROCHURE
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── OVERVIEW / DESCRIPTION ── */}
+      <section id="overview" className="py-24 lg:py-36 bg-white scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20 items-start">
+
+            {/* Text */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-2">
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">Ivy Myst</h2>
+              <h2 className="font-serif text-4xl lg:text-5xl font-light text-dark leading-[1.1] mb-5">
+                A New Icon<br />for Nairobi
+              </h2>
               <div className="w-12 h-[2px] bg-gold mb-7" />
               <p className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-4">
-                Ivy Myst is a landmark luxury residential development in the heart of Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — offering buyers the opportunity to secure one of Nairobi's most architecturally distinctive addresses.
+                Ivy Myst is a landmark luxury residential development on Gatundu Road, Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — offering buyers the opportunity to secure one of Nairobi's most architecturally distinctive addresses.
               </p>
               <p className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-4">
                 Comprising two wings of generously proportioned 1, 2 and 3 bedroom residences — many with private garden terraces — Ivy Myst raises the benchmark for luxury living in Nairobi. Its sweeping curved architecture, lush green balconies, and world-class rooftop amenities define an entirely new standard for the city.
               </p>
-              <p className="text-dark/60 text-sm font-sans font-light leading-[1.9]">
-                Every detail has been considered — from the sculptural reception lobby to the signature Celestial Pool with cascading waterfall overlooking the Nairobi skyline. This is not merely a residence; it is an experience. Estimated completion: <strong className="text-dark/80 font-medium">August 2029</strong>.
+              <p className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-7">
+                From the sculptural reception lobby to the signature Celestial Pool overlooking the Nairobi skyline. Estimated completion: <strong className="text-dark/80 font-medium">August 2029</strong>.
               </p>
-              <div className="flex flex-wrap gap-3 mt-6">
-                {['Wing A & Wing B', 'Garden Terraces', 'Rooftop Amenities', 'Completion Aug 2029'].map(tag => (
-                  <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
+              <div className="flex flex-wrap gap-2">
+                {['Wing A & B', 'Garden Terraces', 'Rooftop Amenities', 'Aug 2029'].map(tag => (
+                  <span key={tag} className="border border-dark/15 text-dark/50 text-[9px] font-sans tracking-widest px-3 py-1.5 uppercase">{tag}</span>
                 ))}
               </div>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-              <div className="col-span-2 relative aspect-[16/7] overflow-hidden">
-                <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png')} alt="Ivy Myst Day View" fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="100vw" />
+            {/* Exterior image gallery */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-3 flex flex-col gap-3">
+              {/* Large primary */}
+              <div
+                className="relative overflow-hidden cursor-zoom-in group"
+                style={{ aspectRatio: '16/8' }}
+                onClick={() => openLB(exteriorImages, 0)}
+              >
+                <Image
+                  src={exteriorImages[0].src}
+                  alt="Ivy Myst Day Exterior"
+                  fill
+                  quality={92}
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
+                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ZoomIn size={14} className="text-white" />
+                </div>
               </div>
-              <div className="relative aspect-square overflow-hidden">
-                <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png')} alt="Ivy Myst Night View" fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="50vw" />
-              </div>
-              <div className="relative aspect-square overflow-hidden">
-                <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png')} alt="Ivy Myst Gate" fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="50vw" />
+              {/* Two secondary */}
+              <div className="grid grid-cols-2 gap-3">
+                {exteriorImages.slice(1, 3).map((img, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden cursor-zoom-in group"
+                    style={{ aspectRatio: '4/3' }}
+                    onClick={() => openLB(exteriorImages, i + 1)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.label}
+                      fill
+                      quality={90}
+                      sizes="(max-width: 768px) 50vw, 30vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                    />
+                    <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn size={13} className="text-white" />
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
+      {/* ── ROOFTOP PANORAMA ── full-width clickable ── */}
+      <div
+        className="relative overflow-hidden cursor-zoom-in group"
+        style={{ height: '60vh' }}
+        onClick={() => openLB(exteriorImages, 4)}
+      >
+        <Image
+          src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png')}
+          alt="Ivy Myst Rooftop City View"
+          fill
+          quality={92}
+          sizes="100vw"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark/65 via-dark/20 to-transparent" />
+        <div className="absolute bottom-10 left-10 lg:left-16">
+          <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-2">NAIROBI SKYLINE</p>
+          <p className="font-serif text-white text-3xl lg:text-5xl font-light">Above the City</p>
+        </div>
+        <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <ZoomIn size={16} className="text-white" />
+        </div>
+      </div>
+
       {/* ── UNITS & PRICING ── */}
-      <section id="units" className="py-24 lg:py-32 bg-cream">
+      <section id="units" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">UNITS & PRICING</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Available Residences</h2>
             <div className="w-12 h-[2px] bg-gold mt-5" />
+            <p className="text-dark/45 text-sm font-sans font-light mt-4 max-w-lg leading-relaxed">
+              Select units include private garden terraces — a rare offering in Nairobi. 20% deposit secures your unit.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -225,42 +402,78 @@ export default function IvyMystTemplate() {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="bg-white p-7 border border-dark/8 hover:border-gold/40 transition-colors"
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className="bg-white border border-dark/8 hover:border-gold/30 transition-colors overflow-hidden"
               >
-                <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.2em] uppercase mb-3">AVAILABLE</p>
-                <h3 className="font-serif text-xl text-dark font-light mb-2">{unit.type}</h3>
-                <p className="text-dark/50 text-xs font-sans mb-0.5">{unit.sizes}</p>
-                <p className="text-dark/35 text-[10px] font-sans italic mb-4">{unit.note}</p>
-                <div className="border-t border-dark/8 pt-4 mb-4">
-                  <p className="text-dark/40 text-[9px] font-sans tracking-widest uppercase mb-1">Price Range</p>
-                  <p className="font-serif text-lg text-dark">{unit.priceRange}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  <div className="bg-dark/4 p-2.5 text-center">
-                    <p className="text-dark/35 text-[8px] font-sans tracking-widest uppercase mb-1">ROI Unfurnished</p>
-                    <p className="text-dark font-sans font-semibold text-sm">{unit.roiUnfurnished}</p>
+                <div className="p-7">
+                  <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.25em] uppercase mb-3">AVAILABLE NOW</p>
+                  <h3 className="font-serif text-2xl text-dark font-light mb-1">{unit.type}</h3>
+                  <p className="text-dark/40 text-xs font-sans mb-0.5">{unit.sizes}</p>
+                  <p className="text-dark/30 text-[10px] font-sans italic mb-5">{unit.note}</p>
+                  <div className="border-t border-dark/8 pt-4 mb-4">
+                    <p className="text-dark/35 text-[9px] font-sans tracking-widest uppercase mb-1">PRICE RANGE</p>
+                    <p className="font-serif text-xl text-dark">{unit.priceRange}</p>
                   </div>
-                  <div className="bg-gold/10 p-2.5 text-center">
-                    <p className="text-dark/35 text-[8px] font-sans tracking-widest uppercase mb-1">ROI Furnished</p>
-                    <p className="text-gold font-sans font-semibold text-sm">{unit.roiFurnished}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-dark/4 p-3 text-center">
+                      <p className="text-dark/30 text-[8px] font-sans tracking-widest uppercase mb-1.5">ROI Unfurnished</p>
+                      <p className="text-dark font-sans font-bold text-base">{unit.roiU}</p>
+                    </div>
+                    <div className="bg-gold/8 border border-gold/20 p-3 text-center">
+                      <p className="text-dark/30 text-[8px] font-sans tracking-widest uppercase mb-1.5">ROI Furnished</p>
+                      <p className="text-gold font-sans font-bold text-base">{unit.roiF}</p>
+                    </div>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setBrochureOpen(true)}
-                  className="w-full text-[10px] font-sans font-semibold tracking-wider uppercase text-gold hover:underline flex items-center justify-center gap-1"
+                  className="w-full py-3.5 bg-dark/3 hover:bg-gold/8 text-dark/50 hover:text-gold text-[9px] font-sans font-semibold tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-1.5 border-t border-dark/8"
                 >
-                  ENQUIRE <ArrowRight size={10} />
+                  ENQUIRE ABOUT THIS UNIT <ArrowRight size={10} />
                 </button>
               </motion.div>
             ))}
           </div>
+
+          <p className="text-center text-dark/30 text-[10px] font-sans tracking-wider mt-6">
+            Mortgage financing available · Instalment plan available throughout construction
+          </p>
         </div>
       </section>
 
+      {/* ── CELESTIAL POOL showcase ── */}
+      <div
+        className="relative overflow-hidden cursor-zoom-in group"
+        style={{ height: '70vh' }}
+        onClick={() => openLB(amenityImages, 0)}
+      >
+        <Image
+          src={p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png')}
+          alt="Ivy Myst Celestial Rooftop Pool"
+          fill
+          quality={92}
+          sizes="100vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        <div className="absolute inset-0 bg-dark/45" />
+        <div className="relative h-full flex flex-col items-center justify-center text-center px-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">CROWNING JEWEL</p>
+            <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-light mb-5">The Celestial Pool</h2>
+            <div className="w-12 h-[2px] bg-gold mx-auto mb-5" />
+            <p className="text-white/55 text-sm font-sans font-light max-w-sm mx-auto leading-relaxed">
+              An infinity pool with signature waterfall, perched at the pinnacle of Ivy Myst — overlooking the Nairobi skyline.
+            </p>
+          </motion.div>
+        </div>
+        <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <ZoomIn size={16} className="text-white" />
+        </div>
+      </div>
+
       {/* ── AMENITIES ── */}
-      <section className="py-24 lg:py-32 bg-dark">
+      <section id="amenities" className="py-24 lg:py-32 bg-dark scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LIFESTYLE</p>
@@ -268,28 +481,72 @@ export default function IvyMystTemplate() {
             <div className="w-12 h-[2px] bg-gold mt-5" />
           </motion.div>
 
-          {/* Gallery — Celestial Pool spans 2 cols/rows */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-            {amenities.map((amenity, i) => (
+          {/* 2×2 large grid — items 1-4 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {amenityImages.slice(1, 5).map((img, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.06 }}
-                className={`group relative overflow-hidden ${i === 0 ? 'col-span-2 row-span-2 aspect-[16/9] lg:aspect-auto lg:min-h-[360px]' : 'aspect-[4/3]'}`}
+                transition={{ duration: 0.55, delay: i * 0.07 }}
+                className="group relative overflow-hidden cursor-zoom-in"
+                style={{ aspectRatio: '16/9' }}
+                onClick={() => openLB(amenityImages, i + 1)}
               >
-                <Image src={amenity.src} alt={amenity.label} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent" />
-                <p className="absolute bottom-4 left-4 text-white text-xs font-sans font-semibold tracking-wider uppercase">{amenity.label}</p>
+                <Image
+                  src={img.src}
+                  alt={img.label}
+                  fill
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/10 to-transparent" />
+                <div className="absolute bottom-4 left-5 flex items-center gap-2">
+                  <p className="text-white text-xs font-sans font-semibold tracking-widest uppercase">{img.label}</p>
+                </div>
+                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ZoomIn size={13} className="text-white" />
+                </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Amenity list */}
+          {/* 3-col row — items 5-7 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
+            {amenityImages.slice(5).map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="group relative overflow-hidden cursor-zoom-in"
+                style={{ aspectRatio: '4/3' }}
+                onClick={() => openLB(amenityImages, i + 5)}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.label}
+                  fill
+                  quality={88}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent" />
+                <p className="absolute bottom-4 left-4 text-white text-xs font-sans font-semibold tracking-wider uppercase">{img.label}</p>
+                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ZoomIn size={13} className="text-white" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Checklist */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              'Celestial Rooftop Pool with Waterfall Feature',
+              'Celestial Rooftop Pool with Waterfall',
               'Rooftop Bar & Lounge',
               'Rooftop & Indoor Restaurant',
               'Gymnasium & Yoga Studio',
@@ -311,83 +568,97 @@ export default function IvyMystTemplate() {
         </div>
       </section>
 
-      {/* ── CELESTIAL POOL SHOWCASE ── */}
-      <section className="relative h-[70vh] overflow-hidden">
-        <Image
-          src={p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png')}
-          alt="Ivy Myst Celestial Rooftop Pool"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-dark/55" />
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-6">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">CROWNING JEWEL</p>
-            <h2 className="font-serif text-4xl md:text-6xl text-white font-light mb-5">The Celestial Rooftop Pool</h2>
-            <div className="w-12 h-[2px] bg-gold mx-auto mb-5" />
-            <p className="text-white/60 text-sm font-sans font-light max-w-md mx-auto leading-relaxed">
-              Perched at the pinnacle of Ivy Myst, a cascading infinity pool with signature waterfall feature looks out over the Nairobi skyline — the defining statement of this extraordinary development.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── INTERIOR RENDERS ── */}
+      {/* ── INTERIORS ── */}
       <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">INTERIORS</p>
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Living in Luxury</h2>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Crafted to Perfection</h2>
             <div className="w-12 h-[2px] bg-gold mt-5" />
-            <p className="text-dark/55 text-sm font-sans font-light mt-5 max-w-2xl leading-relaxed">
-              Every residence at Ivy Myst is finished to an uncompromising standard — premium marble floors, bespoke kitchen and joinery, and curated interiors that define contemporary luxury living in Nairobi.
+            <p className="text-dark/45 text-sm font-sans font-light mt-4 max-w-xl leading-relaxed">
+              Premium marble floors, bespoke kitchen and joinery, and curated interiors that define luxury living.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {interiors.map((src, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.07 }}
-                className={`relative overflow-hidden ${i === 0 ? 'md:col-span-2 aspect-[16/7]' : 'aspect-[4/3]'}`}
-              >
-                <Image
-                  src={src}
-                  alt={`Ivy Myst Interior ${i + 1}`}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </motion.div>
-            ))}
+          {/* First image full-width, rest 2-col */}
+          <div className="flex flex-col gap-4">
+            <div
+              className="relative overflow-hidden cursor-zoom-in group w-full"
+              style={{ aspectRatio: '21/8' }}
+              onClick={() => openLB(interiorImages, 0)}
+            >
+              <Image
+                src={interiorImages[0].src}
+                alt={interiorImages[0].label}
+                fill
+                quality={92}
+                sizes="100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ZoomIn size={16} className="text-white" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {interiorImages.slice(1).map((img, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.55, delay: i * 0.07 }}
+                  className="relative overflow-hidden cursor-zoom-in group"
+                  style={{ aspectRatio: '4/3' }}
+                  onClick={() => openLB(interiorImages, i + 1)}
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.label}
+                    fill
+                    quality={90}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <p className="text-white text-xs font-sans tracking-widest uppercase">{img.label}</p>
+                  </div>
+                  <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ZoomIn size={13} className="text-white" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── FLOOR PLANS ── */}
-      <section id="floor-plans" className="py-24 lg:py-32 bg-cream">
+      <section id="floor-plans" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">FLOOR PLANS</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Unit Layouts</h2>
-            <div className="w-12 h-[2px] bg-gold mt-5" />
+            <div className="w-12 h-[2px] bg-gold mt-5 mb-3" />
+            <p className="text-dark/40 text-[11px] font-sans tracking-wide flex items-center gap-1.5">
+              <ZoomIn size={12} className="text-gold" /> Click any plan to view fullscreen
+            </p>
           </motion.div>
 
           {/* Tab switcher */}
           <div className="flex border border-dark/15 w-fit mb-8">
-            {floorPlanTabs.map(tab => (
+            {([
+              { key: 'overview', label: 'Full Overview' },
+              { key: 'wing-a', label: 'Wing A (9 units)' },
+              { key: 'wing-b', label: 'Wing B (6 units)' },
+            ] as { key: FloorPlanTab; label: string }[]).map(tab => (
               <button
                 key={tab.key}
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase transition-colors ${
-                  activeTab === tab.key
-                    ? 'bg-dark text-white'
-                    : 'text-dark/50 hover:text-dark hover:bg-dark/5'
+                  activeTab === tab.key ? 'bg-dark text-white' : 'text-dark/40 hover:text-dark hover:bg-dark/5'
                 }`}
               >
                 {tab.label}
@@ -397,14 +668,29 @@ export default function IvyMystTemplate() {
 
           {/* Overview tab */}
           {activeTab === 'overview' && (
-            <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white border border-dark/8 p-4 lg:p-8">
-              <Image
-                src={p('/Ivy Myst Assets/Ivy Myst Floor-plans/IVY MYST FULL FLOOR PLAN.jpg')}
-                alt="Ivy Myst Full Floor Plan — Wing A & Wing B"
-                width={1400}
-                height={1200}
-                className="w-full h-auto object-contain"
-              />
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-white border border-dark/8 cursor-zoom-in group overflow-hidden"
+              onClick={() => openLB([{ src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/IVY MYST FULL FLOOR PLAN.jpg'), label: 'Full Floor Plan Overview — Wing A & B' }], 0)}
+            >
+              <div className="relative w-full" style={{ aspectRatio: '7/5' }}>
+                <Image
+                  src={p('/Ivy Myst Assets/Ivy Myst Floor-plans/IVY MYST FULL FLOOR PLAN.jpg')}
+                  alt="Ivy Myst Full Floor Plan"
+                  fill
+                  quality={95}
+                  sizes="100vw"
+                  className="object-contain p-4 lg:p-10 transition-transform duration-500 group-hover:scale-[1.01]"
+                />
+              </div>
+              <div className="border-t border-dark/8 px-6 py-4 flex items-center justify-between">
+                <p className="text-dark/35 text-[10px] font-sans tracking-wider uppercase">Wing A & B — All Unit Types</p>
+                <p className="text-gold text-[9px] font-sans font-semibold tracking-wider uppercase flex items-center gap-1">
+                  <ZoomIn size={11} /> Click to Expand
+                </p>
+              </div>
             </motion.div>
           )}
 
@@ -412,14 +698,31 @@ export default function IvyMystTemplate() {
           {activeTab === 'wing-a' && (
             <motion.div key="wing-a" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {wingAPlans.map((plan, i) => (
-                <div key={i} className="bg-white border border-dark/8 hover:border-gold/40 transition-colors overflow-hidden">
-                  <div className="relative aspect-[4/3] bg-cream">
-                    <Image src={plan.src} alt={`${plan.unit} — ${plan.label}`} fill className="object-contain p-4" sizes="(max-width: 768px) 100vw, 33vw" />
+                <div
+                  key={i}
+                  className="bg-white border border-dark/8 hover:border-gold/40 transition-colors overflow-hidden group cursor-zoom-in"
+                  onClick={() => openLB(wingAPlans, i)}
+                >
+                  <div className="relative bg-[#f7f6f3]" style={{ aspectRatio: '4/3' }}>
+                    <Image
+                      src={plan.src}
+                      alt={plan.label}
+                      fill
+                      quality={95}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                    <div className="absolute top-2.5 right-2.5 bg-dark/30 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn size={12} className="text-white" />
+                    </div>
                   </div>
                   <div className="p-4 border-t border-dark/8">
-                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">{plan.unit}</p>
-                    <p className="font-serif text-dark text-base font-light">{plan.label}</p>
-                    <p className="text-gold text-xs font-sans mt-1">{plan.size}</p>
+                    <p className="text-dark/35 text-[9px] font-sans tracking-widest uppercase mb-1">
+                      {plan.label.split('·')[0].trim()}
+                    </p>
+                    <p className="text-gold text-sm font-sans font-medium">
+                      {plan.label.split('·')[1]?.trim()}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -430,25 +733,42 @@ export default function IvyMystTemplate() {
           {activeTab === 'wing-b' && (
             <motion.div key="wing-b" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {wingBPlans.map((plan, i) => (
-                <div key={i} className="bg-white border border-dark/8 hover:border-gold/40 transition-colors overflow-hidden">
-                  <div className="relative aspect-[4/3] bg-cream">
-                    <Image src={plan.src} alt={`${plan.unit} — ${plan.label}`} fill className="object-contain p-4" sizes="(max-width: 768px) 100vw, 33vw" />
+                <div
+                  key={i}
+                  className="bg-white border border-dark/8 hover:border-gold/40 transition-colors overflow-hidden group cursor-zoom-in"
+                  onClick={() => openLB(wingBPlans, i)}
+                >
+                  <div className="relative bg-[#f7f6f3]" style={{ aspectRatio: '4/3' }}>
+                    <Image
+                      src={plan.src}
+                      alt={plan.label}
+                      fill
+                      quality={95}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                    <div className="absolute top-2.5 right-2.5 bg-dark/30 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn size={12} className="text-white" />
+                    </div>
                   </div>
                   <div className="p-4 border-t border-dark/8">
-                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">{plan.unit}</p>
-                    <p className="font-serif text-dark text-base font-light">{plan.label}</p>
-                    <p className="text-gold text-xs font-sans mt-1">{plan.size}</p>
+                    <p className="text-dark/35 text-[9px] font-sans tracking-widest uppercase mb-1">
+                      {plan.label.split('·')[0].trim()}
+                    </p>
+                    <p className="text-gold text-sm font-sans font-medium">
+                      {plan.label.split('·')[1]?.trim()}
+                    </p>
                   </div>
                 </div>
               ))}
             </motion.div>
           )}
 
-          <div className="mt-8 text-center">
+          <div className="mt-10 text-center">
             <button
               type="button"
               onClick={() => setBrochureOpen(true)}
-              className="inline-flex items-center gap-2 border border-dark text-dark px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-dark hover:text-white transition-all"
+              className="inline-flex items-center gap-2 border border-dark text-dark px-8 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-dark hover:text-white transition-all"
             >
               <Download size={12} /> DOWNLOAD BROCHURE WITH ALL FLOOR PLANS
             </button>
@@ -459,20 +779,20 @@ export default function IvyMystTemplate() {
       {/* ── WHY INVEST ── */}
       <section className="py-24 lg:py-32 bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">WHY INVEST</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-5">Why Secure Your Unit Now?</h2>
+              <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-5">Secure Your Unit Now</h2>
               <div className="w-12 h-[2px] bg-gold mb-8" />
               <ul className="space-y-4">
                 {[
                   'Groundbreaking completed — construction actively underway',
                   'Early-stage pricing for maximum capital appreciation',
-                  'Prime Kileleshwa address with proven strong rental demand',
-                  'Architecturally distinctive — a landmark on the Nairobi skyline',
-                  'Garden terrace units available — a rare offering in Nairobi',
-                  'Flexible payment plans: 20% deposit, balance through construction',
-                  'Developed by The Ivy Group — 10+ years of on-time delivery',
+                  'ROI up to 19.75% furnished (1 bedroom)',
+                  'Prime Kileleshwa address, proven rental demand',
+                  'Garden terraces — rare offering in Nairobi',
+                  'Flexible: 20% deposit, balance through construction',
+                  'The Ivy Group — 10+ years of on-time delivery',
                 ].map(point => (
                   <li key={point} className="flex items-start gap-3">
                     <Check size={13} className="text-gold mt-0.5 flex-shrink-0" strokeWidth={2.5} />
@@ -484,57 +804,46 @@ export default function IvyMystTemplate() {
 
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col gap-5">
               <div className="border border-white/10 p-7">
-                <p className="text-white/30 text-[10px] font-sans tracking-[0.2em] uppercase mb-3">LOCATION ADVANTAGES</p>
-                <ul className="space-y-2.5">
-                  {[
-                    'Prestigious Kileleshwa address',
-                    'Minutes from Westlands and Nairobi CBD',
-                    'Close to top international schools',
-                    'Near major hospitals and health facilities',
-                    'Shopping malls & supermarkets nearby',
-                    'Easy highway and expressway access',
-                  ].map(adv => (
-                    <li key={adv} className="flex items-center gap-3 text-white/60 text-sm font-sans font-light">
-                      <span className="w-1 h-1 rounded-full bg-gold flex-shrink-0" />{adv}
-                    </li>
+                <p className="text-white/30 text-[10px] font-sans tracking-[0.2em] uppercase mb-5">PROJECTED RETURNS</p>
+                <div className="space-y-0">
+                  {units.map((u, i) => (
+                    <div key={i} className={`flex items-center justify-between py-4 ${i < units.length - 1 ? 'border-b border-white/8' : ''}`}>
+                      <div>
+                        <p className="text-white text-xs font-sans font-medium">{u.type}</p>
+                        <p className="text-white/30 text-[10px] font-sans mt-0.5">{u.sizes}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-gold font-sans font-semibold text-sm">{u.roiF} <span className="text-[10px] font-normal text-white/35">furnished</span></p>
+                        <p className="text-white/45 text-xs mt-0.5">{u.roiU} <span className="text-[10px] text-white/25">unfurnished</span></p>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setBrochureOpen(true)}
                 className="flex items-center justify-center gap-2 border border-gold text-gold py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold hover:text-dark transition-all duration-300"
               >
-                <Download size={13} />
-                DOWNLOAD FULL BROCHURE
+                <Download size={13} /> DOWNLOAD FULL BROCHURE
               </button>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── ROOFTOP VIEWS ── */}
-      <section className="grid grid-cols-1 md:grid-cols-3">
-        {[
-          p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png'),
-          p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'),
-          p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Surrounding Views.png'),
-        ].map((src, i) => (
-          <div key={i} className="relative aspect-[4/3] overflow-hidden group">
-            <Image src={src} alt={`Ivy Myst Rooftop View ${i + 1}`} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="33vw" />
-          </div>
-        ))}
-      </section>
-
-      {/* ── LOCATION MAP ── */}
-      <section className="py-24 lg:py-32 bg-cream">
+      {/* ── LOCATION ── */}
+      <section id="location" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LOCATION</p>
             <h2 className="font-serif text-4xl font-light text-dark">Gatundu Road, Kileleshwa</h2>
-            <div className="w-12 h-[2px] bg-gold mt-4" />
+            <div className="w-12 h-[2px] bg-gold mt-4 mb-4" />
+            <p className="text-dark/45 text-sm font-sans font-light max-w-lg leading-relaxed">
+              Positioned in one of Nairobi's most prestigious residential addresses — minutes from Westlands, the CBD, top schools, and major amenities.
+            </p>
           </motion.div>
-          <div className="w-full h-[420px] overflow-hidden">
+          <div className="w-full overflow-hidden" style={{ height: '500px' }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.3640841920273!2d36.7854601!3d-1.2774497999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f171eb89deccd%3A0xe0d248c01f726963!2sIVY%20MYST%20RESIDENCE!5e1!3m2!1sen!2ske!4v1785406432997!5m2!1sen!2ske"
               width="100%"
@@ -556,24 +865,22 @@ export default function IvyMystTemplate() {
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">SECURE YOUR RESIDENCE</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-white mb-4">Own a Piece of Ivy Myst</h2>
             <div className="w-12 h-[2px] bg-gold mx-auto mb-7" />
-            <p className="text-white/55 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-8">
-              Units are selling. Contact our sales team today to discuss availability, pricing, and payment plans tailored to your needs.
+            <p className="text-white/50 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-8">
+              Units are selling. Contact our sales team today to discuss availability, pricing, and flexible payment plans.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 type="button"
                 onClick={() => setBrochureOpen(true)}
-                className="inline-flex items-center gap-2.5 bg-gold text-dark px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors duration-300"
+                className="inline-flex items-center gap-2.5 bg-gold text-dark px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors"
               >
-                <Download size={13} />
-                DOWNLOAD BROCHURE
+                <Download size={13} /> DOWNLOAD BROCHURE
               </button>
               <a
                 href="tel:+254118266666"
-                className="inline-flex items-center gap-2.5 border border-white/50 text-white px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center gap-2.5 border border-white/50 text-white px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-all"
               >
-                <Phone size={13} />
-                CALL US NOW
+                <Phone size={13} /> CALL US NOW
               </a>
             </div>
           </motion.div>
@@ -595,14 +902,14 @@ export default function IvyMystTemplate() {
               { name: 'Ivy Park Residence', location: 'KILIMANI', image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), href: '/ivy-park' },
             ].map((proj, i) => (
               <motion.div key={proj.href} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}>
-                <Link href={proj.href} className="group block relative overflow-hidden">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image src={proj.image} alt={proj.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="33vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/75 via-dark/20 to-transparent" />
+                <Link href={proj.href} className="group block overflow-hidden">
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                    <Image src={proj.image} alt={proj.name} fill quality={82} sizes="33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/15 to-transparent" />
                     <div className="absolute bottom-0 p-5">
                       <p className="text-gold text-[9px] font-sans font-semibold tracking-widest uppercase mb-1">{proj.location}</p>
                       <h3 className="font-serif text-white text-xl font-light">{proj.name}</h3>
-                      <p className="text-white/50 text-[10px] font-sans mt-1 flex items-center gap-1">VIEW PROJECT <ArrowRight size={10} /></p>
+                      <p className="text-white/45 text-[10px] font-sans mt-1 flex items-center gap-1">VIEW PROJECT <ArrowRight size={10} /></p>
                     </div>
                   </div>
                 </Link>

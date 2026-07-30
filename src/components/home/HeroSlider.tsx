@@ -32,12 +32,12 @@ const slides = [
     cta: 'EXPLORE PROJECT',
   },
   {
-    image: encodeURI('/Ivy Myst Assets/Entrance.jpg'),
-    location: 'KILELESHWA — LAUNCHING SOON',
+    image: encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
+    location: 'KILELESHWA — NOW SELLING',
     title: 'Ivy Myst',
-    subtitle: '0% Transaction Fees · Pre-Launch Sales Now Open',
+    subtitle: '1, 2 & 3 Bedroom Luxury Residences · Garden Terraces · Completion Aug 2029',
     href: '/ivy-myst',
-    cta: 'REGISTER INTEREST',
+    cta: 'EXPLORE IVY MYST',
   },
 ]
 

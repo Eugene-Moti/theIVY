@@ -41,13 +41,13 @@ const projects = [
   },
   {
     name: 'Ivy Myst',
-    location: 'Kileleshwa',
-    type: 'Luxury Residences · 1, 2 & 3 Bedrooms',
-    status: 'LAUNCHING SOON',
+    location: 'Gatundu Road, Kileleshwa',
+    type: 'Luxury Residences · 1, 2 & 3 Bedrooms · Garden Terraces',
+    status: 'NOW SELLING',
     statusDot: 'bg-gold',
     price: 'From KES 8.8M',
-    completion: 'Coming Soon',
-    image: encodeURI('/Ivy Myst Assets/Courtyard 01_Night.jpg'),
+    completion: 'Aug 2029',
+    image: encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
     href: '/ivy-myst',
   },
 ]
