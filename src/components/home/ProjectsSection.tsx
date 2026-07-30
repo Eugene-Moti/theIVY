@@ -68,7 +68,7 @@ const cardVariants = {
 
 export default function ProjectsSection() {
   return (
-    <section className="py-24 lg:py-36 bg-white">
+    <section className="py-24 lg:py-36 bg-dark">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
         {/* Section header */}
@@ -84,13 +84,13 @@ export default function ProjectsSection() {
           </p>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] max-w-lg">
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-[1.1] max-w-lg">
               Signature Developments<br />Across Nairobi
             </h2>
 
             <Link
               href="/developments"
-              className="inline-flex items-center gap-2 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase text-dark hover:text-gold transition-colors duration-300 group self-start lg:self-auto"
+              className="inline-flex items-center gap-2 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase text-white/50 hover:text-gold transition-colors duration-300 group self-start lg:self-auto"
             >
               VIEW ALL DEVELOPMENTS
               <ArrowRight

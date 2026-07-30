@@ -22,9 +22,19 @@ export default function BrochureModal({ isOpen, onClose, projectName, brochurePa
 
   /* Trap scroll */
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
   }, [isOpen])
+
+  /* Escape key to close */
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isOpen, onClose])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -70,11 +80,12 @@ export default function BrochureModal({ isOpen, onClose, projectName, brochurePa
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
+            onClick={onClose}
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
             aria-modal="true"
             role="dialog"
           >
-            <div className="bg-white w-full max-w-md relative shadow-2xl">
+            <div className="bg-white w-full max-w-md relative shadow-2xl" onClick={e => e.stopPropagation()}>
 
               {/* Close */}
               <button

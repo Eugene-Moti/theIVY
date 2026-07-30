@@ -90,17 +90,74 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
       {/* ── DESCRIPTION ── */}
       <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+          {data.descriptionBlocks ? (
+            /* Editorial article layout */
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
               <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">{data.name}</h2>
-              <div className="w-12 h-[2px] bg-gold mb-7" />
-              {data.descriptionParagraphs.map((para, i) => (
-                <p key={i} className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-4">{para}</p>
-              ))}
+              <div className="w-12 h-[2px] bg-gold mb-10" />
+
+              <div className="space-y-9 max-w-4xl">
+                {data.descriptionBlocks.map((block, i) => {
+                  if (block.type === 'text') {
+                    return (
+                      <p key={i} className="text-dark/60 text-sm font-sans font-light leading-[1.95] max-w-2xl">
+                        {block.content}
+                      </p>
+                    )
+                  }
+                  if (block.type === 'image') {
+                    return (
+                      <div key={i}>
+                        <div className="relative w-full aspect-[16/8] overflow-hidden">
+                          <Image
+                            src={block.src!}
+                            alt={block.caption || data.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 80vw"
+                            quality={88}
+                          />
+                        </div>
+                        {block.caption && (
+                          <p className="mt-2.5 text-[10px] font-sans text-dark/35 tracking-[0.15em] uppercase">{block.caption}</p>
+                        )}
+                      </div>
+                    )
+                  }
+                  if (block.type === 'image-pair') {
+                    return (
+                      <div key={i}>
+                        <div className="grid grid-cols-2 gap-3">
+                          {block.images?.map((img, j) => (
+                            <div key={j}>
+                              <div className="relative aspect-[4/3] overflow-hidden">
+                                <Image
+                                  src={img.src}
+                                  alt={img.caption || data.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 768px) 50vw, 40vw"
+                                  quality={88}
+                                />
+                              </div>
+                              {img.caption && (
+                                <p className="mt-2 text-[10px] font-sans text-dark/35 tracking-[0.15em] uppercase">{img.caption}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+
               {data.blocks && (
-                <div className="flex flex-wrap gap-3 mt-6">
-                  {[data.blocks, `${data.floors > 0 ? data.floors + ' Floors' : ''}`, data.parking]
+                <div className="flex flex-wrap gap-3 mt-10">
+                  {[data.blocks, data.floors > 0 ? `${data.floors} Floors` : '', data.parking]
                     .filter(Boolean)
                     .map(tag => (
                       <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
@@ -108,15 +165,36 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                 </div>
               )}
             </motion.div>
+          ) : (
+            /* Original two-column layout (fallback) */
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+                <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
+                <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">{data.name}</h2>
+                <div className="w-12 h-[2px] bg-gold mb-7" />
+                {data.descriptionParagraphs.map((para, i) => (
+                  <p key={i} className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-4">{para}</p>
+                ))}
+                {data.blocks && (
+                  <div className="flex flex-wrap gap-3 mt-6">
+                    {[data.blocks, `${data.floors > 0 ? data.floors + ' Floors' : ''}`, data.parking]
+                      .filter(Boolean)
+                      .map(tag => (
+                        <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
+                      ))}
+                  </div>
+                )}
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
+                {data.exteriorImages.slice(0, 4).map((img, i) => (
+                  <div key={i} className={`relative overflow-hidden ${i === 0 ? 'col-span-2 aspect-[16/7]' : 'aspect-square'}`}>
+                    <Image src={img} alt={`${data.name} ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 25vw" />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          )}
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-              {data.exteriorImages.slice(0, 4).map((img, i) => (
-                <div key={i} className={`relative overflow-hidden ${i === 0 ? 'col-span-2 aspect-[16/7]' : 'aspect-square'}`}>
-                  <Image src={img} alt={`${data.name} ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 25vw" />
-                </div>
-              ))}
-            </motion.div>
-          </div>
         </div>
       </section>
 

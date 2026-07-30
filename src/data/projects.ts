@@ -1,5 +1,13 @@
 const p = (path: string) => encodeURI(path)
 
+export interface DescriptionBlock {
+  type: 'text' | 'image' | 'image-pair'
+  content?: string
+  src?: string
+  caption?: string
+  images?: Array<{ src: string; caption?: string }>
+}
+
 export interface ProjectUnit {
   type: string
   size: string
@@ -38,6 +46,7 @@ export interface ProjectData {
   heroImage: string
   exteriorImages: string[]
   descriptionParagraphs: string[]
+  descriptionBlocks?: DescriptionBlock[]
   availableUnits: ProjectUnit[]
   soldOutUnits: ProjectUnit[]
   amenities: ProjectAmenity[]
@@ -73,6 +82,17 @@ export const projects: ProjectData[] = [
     descriptionParagraphs: [
       "Blossom Ivy Residence is an exclusive residential development located along Gatundu Road in Kileleshwa — one of Nairobi's most sought-after residential neighbourhoods. Rising 22 floors across two elegant residential blocks, the project combines refined architecture, generous layouts, premium finishes, and world-class amenities.",
       "Designed for discerning homeowners and savvy investors, Blossom Ivy Residence offers the perfect equilibrium between luxury, comfort, and long-term investment value. Every detail — from the heated indoor pool to the smart door lock systems — has been curated to elevate your everyday experience.",
+    ],
+    descriptionBlocks: [
+      { type: 'text', content: "Blossom Ivy Residence stands on Gatundu Road in Kileleshwa — one of Nairobi's most coveted residential addresses, known for its tree-lined streets, proximity to the CBD, and the calibre of residents it attracts. Rising 22 floors across two elegant residential blocks, the development was designed to deliver a standard of living that Nairobi's most discerning buyers have long sought in a locally built development." },
+      { type: 'image', src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), caption: 'Blossom Ivy Residence — Gatundu Road, Kileleshwa' },
+      { type: 'text', content: "The architecture is at once refined and welcoming. The façade's considered proportions and rich material palette set Blossom Ivy apart on the Kileleshwa skyline — a building that reads as significant from the street and reveals its finer details to those who live within. Every unit benefits from generous proportions, with ceiling heights and window ratios calibrated to maximise natural light throughout the day." },
+      { type: 'image-pair', images: [
+        { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'), caption: 'Grand Lobby Arrival' },
+        { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 03.jpg'), caption: 'Lobby Detail' },
+      ]},
+      { type: 'text', content: "Inside, the common areas have been designed to hotel-residences standards. The grand lobby is conceived as an arrival experience — not merely a corridor. Above, the heated indoor pool, fully equipped gym, yoga studio, coffee bar, and landscaped leisure garden are available exclusively to residents, ensuring the privacy and consistency of service that would be impossible in a conventional apartment block." },
+      { type: 'image', src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'), caption: 'The Lobby Reception — designed for arrival' },
     ],
     availableUnits: [
       { type: '3 Bedroom + Study + DSQ', size: '180 – 236 SQM', price: 'From KES 18,000,000', available: true },
@@ -136,6 +156,13 @@ export const projects: ProjectData[] = [
     descriptionParagraphs: [
       "Luckinn Ivy Residence is a prestigious residential development strategically located along Mogotio Road in the heart of Westlands. Designed for modern professionals, growing families, and discerning investors, the project offers luxurious apartments with premium finishes and exceptional lifestyle amenities.",
       "Westlands is Nairobi's most vibrant commercial and residential district, placing Luckinn Ivy residents at the centre of everything — world-class shopping, top international schools, gourmet dining, and dynamic business hubs all within minutes of your door.",
+    ],
+    descriptionBlocks: [
+      { type: 'text', content: "Westlands is Nairobi's most dynamic urban quarter — where international business headquarters, the city's best restaurants, and top-ranked schools converge in a single walkable district. Luckinn Ivy Residence is positioned at the heart of it all on Mogotio Road, placing residents at the precise intersection of professional convenience and cosmopolitan lifestyle." },
+      { type: 'image', src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), caption: 'Luckinn Ivy Residence — Mogotio Road, Westlands' },
+      { type: 'text', content: "The development's 20-floor tower was designed to meet the demands of Nairobi's modern professional: a resident who values both the sanctuary of a well-serviced home and the energy of urban life immediately outside. The building's interiors reflect this balance — premium finishes and smart home features create a private retreat, while co-working spaces and a business lounge on the amenity floor support those who move between home and office." },
+      { type: 'image', src: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'), caption: 'Heated Indoor Swimming Pool — Amenities Floor' },
+      { type: 'text', content: "With only 120 apartments across the tower, Luckinn Ivy Residence offers genuine exclusivity. The unit count is intentionally limited — a decision that sustains both the quality of resident experience and the building's long-term capital value. As Westlands continues its transformation into Nairobi's premier commercial address, demand for premium residences in the area continues to outpace supply. Only limited units remain." },
     ],
     availableUnits: [
       { type: '2 Bedroom + DSQ', size: '126 – 140 SQM', price: 'Limited Units — Enquire', available: true },
@@ -238,6 +265,16 @@ export const projects: ProjectData[] = [
     descriptionParagraphs: [
       "Ivy Park Residence is a landmark mixed-use residential development positioned near Yaya Centre along Kirichwa Road, Kilimani. With 660 apartments across three residential blocks on 1.06 acres, the project presents an exceptional opportunity for homeowners and investors seeking premium living in one of Nairobi's most desirable neighbourhoods.",
       "Currently under construction with foundation and structural works progressing on schedule, Ivy Park Residence is offering early-bird pricing to investors who act now. Pre-construction pricing, flexible payment plans, and a wider selection of unit options make this an unmissable opportunity.",
+    ],
+    descriptionBlocks: [
+      { type: 'text', content: "Kilimani has undergone a remarkable transformation over the past decade — evolving from a quiet, leafy neighbourhood into one of Nairobi's most sought-after mixed-use districts. Positioned along Kirichwa Road near Yaya Centre, Ivy Park Residence is sited at Kilimani's most active intersection, where established residential demand meets the district's growing commercial energy." },
+      { type: 'image', src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), caption: 'Ivy Park Residence — Kirichwa Road, Kilimani' },
+      { type: 'text', content: "The development's scale is deliberate: 660 apartments across three residential blocks set on 1.06 acres, designed to create an internal community rather than simply a building. Each block connects through landscaped courtyard gardens and shared lifestyle spaces — a rooftop garden and lounge, co-working areas, a spa, bar, and heated swimming pool — that collectively justify the term 'residences' rather than apartments." },
+      { type: 'image-pair', images: [
+        { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 1_IVY PARK.jpg'), caption: 'Block A Façade' },
+        { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 2_IVY PARK.jpg'), caption: 'Block B Façade' },
+      ]},
+      { type: 'text', content: "For investors, the timing of Ivy Park represents a rare alignment of conditions. Foundation and structural works are progressing on schedule, yet early-bird pricing remains available — meaning buyers entering now secure the maximum potential spread between their purchase price and the development's completion value. With units starting from KES 6.82M, Ivy Park opens the Ivy Group portfolio to a broader range of investors without compromising the quality standard that defines every Ivy Group development." },
     ],
     availableUnits: [
       { type: '1 Bedroom', size: '62 – 69 SQM', price: 'From KES 6,820,000', available: true },
