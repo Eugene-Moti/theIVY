@@ -3,29 +3,28 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Sparkles, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const units = [
-  { bed: '1 BED', size: '78 SQM', price: 'From KES 8.8M' },
-  { bed: '2 BED', size: '121 SQM', price: 'From KES 14.2M' },
-  { bed: '3 BED', size: '169 SQM', price: 'From KES 19.8M' },
+  { bed: '1 BED', size: '79–84 SQM', price: 'From KES 8.8M' },
+  { bed: '2 BED', size: '121–159 SQM', price: 'From KES 14.2M' },
+  { bed: '3 BED', size: '169–231 SQM', price: 'From KES 19.8M' },
 ]
 
 export default function LaunchSection() {
   return (
     <section className="relative overflow-hidden">
-      {/* Background image */}
+      {/* Background */}
       <div className="absolute inset-0">
         <Image
-          src={encodeURI('/Ivy Myst Assets/RoofDeck.jpg')}
-          alt="Ivy Myst Residence"
+          src={encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png')}
+          alt="Ivy Myst — Now Selling"
           fill
           className="object-cover object-center"
           sizes="100vw"
         />
-        {/* Layered dark overlay — left side darker for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/70 to-dark/40" />
-        <div className="absolute inset-0 bg-dark/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark/92 via-dark/72 to-dark/40" />
+        <div className="absolute inset-0 bg-dark/25" />
       </div>
 
       {/* Content */}
@@ -39,11 +38,11 @@ export default function LaunchSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.85, ease: 'easeOut' }}
           >
-            {/* "Now Launching" badge */}
+            {/* "Now Selling" badge */}
             <div className="inline-flex items-center gap-2 border border-gold/60 bg-gold/10 text-gold px-4 py-2 mb-8">
-              <Sparkles size={11} />
+              <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse flex-shrink-0" />
               <span className="text-[10px] font-sans font-semibold tracking-[0.25em] uppercase">
-                Now Launching
+                Now Selling
               </span>
             </div>
 
@@ -56,15 +55,14 @@ export default function LaunchSection() {
             </h2>
 
             <p className="text-white/65 text-sm font-sans font-light tracking-wide leading-relaxed max-w-sm mb-8">
-              1, 2 &amp; 3 bedroom luxury residences in the heart of Kileleshwa —
-              private pre-launch sales now open.
+              1, 2 &amp; 3 bedroom luxury residences with garden terraces in the heart
+              of Kileleshwa. Groundbreaking complete — sales are now open.
             </p>
 
-            {/* 0% offer highlight */}
             <div className="flex items-center gap-3 mb-10">
               <div className="h-px w-8 bg-gold flex-shrink-0" />
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.2em] uppercase">
-                0% Transaction Fees &middot; Valid 30 Days
+                Rooftop Celestial Pool &middot; Garden Terraces &middot; 2 Wings
               </p>
             </div>
 
@@ -72,7 +70,7 @@ export default function LaunchSection() {
               href="/ivy-myst"
               className="inline-flex items-center gap-3 bg-gold text-dark px-9 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors duration-300 group"
             >
-              SECURE YOUR UNIT
+              EXPLORE IVY MYST
               <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
@@ -105,10 +103,9 @@ export default function LaunchSection() {
               </motion.div>
             ))}
 
-            {/* Footnote */}
             <div className="col-span-3 text-center mt-2">
               <p className="text-white/30 text-[10px] font-sans tracking-wider">
-                Pre-launch pricing · Limited availability
+                Now selling · Flexible payment plans available
               </p>
             </div>
           </motion.div>
