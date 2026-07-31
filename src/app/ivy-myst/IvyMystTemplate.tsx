@@ -1,21 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { MapPin, Check, ArrowRight, Download, Phone, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import BrochureModal from '@/components/shared/BrochureModal'
 
 const p = (path: string) => encodeURI(path)
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: 'easeOut' } },
-}
+const vp = { once: false, margin: '-80px' }
 
 type FloorPlanTab = 'overview' | 'wing-a' | 'wing-b'
-
 type LightboxImage = { src: string; label: string }
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
@@ -71,6 +67,44 @@ const exteriorImages: LightboxImage[] = [
   { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Surrounding Views.png'), label: 'Rooftop Surrounds' },
 ]
 
+const amenityShowcases = [
+  {
+    label: 'Celestial Rooftop Pool',
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'),
+    lbIndex: 0,
+    description:
+      'An infinity pool with signature waterfall, positioned at the apex of Ivy Myst. Overlooking the Nairobi skyline, the Celestial Pool is a landmark in itself — a destination for morning laps and twilight gatherings high above the city.',
+  },
+  {
+    label: 'Rooftop Restaurant & Bar',
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'),
+    lbIndex: 1,
+    description:
+      "Nairobi's most elevated dining experience combines panoramic city views with an inspired menu. As evening falls, the rooftop bar takes centre stage — signature cocktails and a shimmering skyline backdrop unlike anywhere else in the city.",
+  },
+  {
+    label: 'Gym & Yoga Studio',
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'),
+    lbIndex: 4,
+    description:
+      'A state-of-the-art gymnasium paired with a dedicated yoga and meditation studio — designed for residents who prioritise wellness as a way of life. Every piece of equipment chosen with precision, every corner of the studio built for focus.',
+  },
+  {
+    label: 'Garden Stream',
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'),
+    lbIndex: 5,
+    description:
+      "A sculptural water feature flowing through Ivy Myst's lush landscaped gardens — a rare element of tranquillity in the heart of Kileleshwa. Nature integrated into architecture, creating a living, breathing centrepiece at the development's core.",
+  },
+  {
+    label: 'Grand Reception',
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'),
+    lbIndex: 7,
+    description:
+      "First impressions define a residence. Ivy Myst's grand reception lobby is a sculptural statement — soaring ceilings, premium marble finishes, and dedicated concierge service that sets the standard from the moment you arrive.",
+  },
+]
+
 const units = [
   { type: '1 Bedroom', sizes: '78–84 SQM', priceRange: 'KES 8.8M – 10.5M', roiU: '13.67%', roiF: '19.75%', note: 'Garden terrace on select units' },
   { type: '2 Bedroom', sizes: '121–159 SQM', priceRange: 'KES 14.2M – 20.4M', roiU: '10.95%', roiF: '15.17%', note: 'Garden terrace options available' },
@@ -106,7 +140,6 @@ function Lightbox({ images, initialIndex, onClose }: { images: LightboxImage[]; 
       className="fixed inset-0 z-[200] bg-black/97 flex flex-col items-center justify-center"
       onClick={onClose}
     >
-      {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4 z-10">
         <p className="text-white/40 text-[10px] font-sans tracking-[0.25em] uppercase">
           {String(current + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
@@ -117,23 +150,14 @@ function Lightbox({ images, initialIndex, onClose }: { images: LightboxImage[]; 
         </button>
       </div>
 
-      {/* Image */}
       <div
         className="relative w-full"
         style={{ height: 'calc(100vh - 120px)', maxWidth: '90vw' }}
         onClick={e => e.stopPropagation()}
       >
-        <Image
-          src={images[current].src}
-          alt={images[current].label}
-          fill
-          className="object-contain"
-          quality={95}
-          sizes="90vw"
-        />
+        <Image src={images[current].src} alt={images[current].label} fill className="object-contain" quality={95} sizes="90vw" />
       </div>
 
-      {/* Prev / Next */}
       <div className="absolute inset-y-0 left-0 flex items-center px-3 lg:px-5" onClick={e => e.stopPropagation()}>
         <button
           onClick={() => setCurrent(i => (i - 1 + images.length) % images.length)}
@@ -151,7 +175,6 @@ function Lightbox({ images, initialIndex, onClose }: { images: LightboxImage[]; 
         </button>
       </div>
 
-      {/* Thumbnail strip */}
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-2 px-4 py-4 overflow-x-auto" onClick={e => e.stopPropagation()}>
         {images.map((img, i) => (
           <button
@@ -174,6 +197,11 @@ export default function IvyMystTemplate() {
   const [activeTab, setActiveTab] = useState<FloorPlanTab>('overview')
   const [lightbox, setLightbox] = useState<{ images: LightboxImage[]; index: number } | null>(null)
 
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+
   const openLB = (images: LightboxImage[], index: number) => setLightbox({ images, index })
 
   return (
@@ -185,19 +213,24 @@ export default function IvyMystTemplate() {
       </AnimatePresence>
 
       {/* ── HERO ── */}
-      <section className="relative h-screen w-full overflow-hidden bg-dark">
-        <Image
-          src={p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png')}
-          alt="Ivy Myst Grand Reception"
-          fill
-          priority
-          quality={92}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/50 to-dark/15" />
+      <section ref={heroRef} className="relative h-screen w-full overflow-hidden bg-dark">
+        <motion.div className="absolute inset-0" style={{ y: heroY }}>
+          <Image
+            src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png')}
+            alt="Ivy Myst"
+            fill
+            priority
+            quality={92}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/45 to-dark/15" />
 
-        <div className="relative h-full flex flex-col justify-end pb-16 max-w-7xl mx-auto px-6 lg:px-10">
+        <motion.div
+          className="relative h-full flex flex-col justify-end pb-16 max-w-7xl mx-auto px-6 lg:px-10"
+          style={{ opacity: heroOpacity }}
+        >
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.95, delay: 0.3 }}>
             <div className="flex items-center gap-2 mb-5">
               <MapPin size={11} className="text-gold" />
@@ -229,7 +262,7 @@ export default function IvyMystTemplate() {
               </button>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ── OVERVIEW STRIP ── */}
@@ -288,8 +321,13 @@ export default function IvyMystTemplate() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20 items-start">
 
-            {/* Text */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-2">
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-2"
+            >
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
               <h2 className="font-serif text-4xl lg:text-5xl font-light text-dark leading-[1.1] mb-5">
                 A New Icon<br />for Nairobi
@@ -311,9 +349,13 @@ export default function IvyMystTemplate() {
               </div>
             </motion.div>
 
-            {/* Exterior image gallery */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-3 flex flex-col gap-3">
-              {/* Large primary */}
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+              className="lg:col-span-3 flex flex-col gap-3"
+            >
               <div
                 className="relative overflow-hidden cursor-zoom-in group"
                 style={{ aspectRatio: '16/8' }}
@@ -331,7 +373,6 @@ export default function IvyMystTemplate() {
                   <ZoomIn size={14} className="text-white" />
                 </div>
               </div>
-              {/* Two secondary */}
               <div className="grid grid-cols-2 gap-3">
                 {exteriorImages.slice(1, 3).map((img, i) => (
                   <div
@@ -359,34 +400,58 @@ export default function IvyMystTemplate() {
         </div>
       </section>
 
-      {/* ── ROOFTOP PANORAMA ── full-width clickable ── */}
-      <div
+      {/* ── ROOFTOP PANORAMA ── */}
+      <motion.div
         className="relative overflow-hidden cursor-zoom-in group"
         style={{ height: '60vh' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false, margin: '-40px' }}
+        transition={{ duration: 0.8 }}
         onClick={() => openLB(exteriorImages, 4)}
       >
-        <Image
-          src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png')}
-          alt="Ivy Myst Rooftop City View"
-          fill
-          quality={92}
-          sizes="100vw"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
-        />
+        <motion.div
+          className="absolute inset-0"
+          initial={{ scale: 1.06 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: false, margin: '-40px' }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Image
+            src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png')}
+            alt="Ivy Myst Rooftop City View"
+            fill
+            quality={92}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-dark/65 via-dark/20 to-transparent" />
-        <div className="absolute bottom-10 left-10 lg:left-16">
+        <motion.div
+          className="absolute bottom-10 left-10 lg:left-16"
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, margin: '-40px' }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+        >
           <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-2">NAIROBI SKYLINE</p>
           <p className="font-serif text-white text-3xl lg:text-5xl font-light">Above the City</p>
-        </div>
+        </motion.div>
         <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <ZoomIn size={16} className="text-white" />
         </div>
-      </div>
+      </motion.div>
 
       {/* ── UNITS & PRICING ── */}
       <section id="units" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="mb-14"
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">UNITS & PRICING</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Available Residences</h2>
             <div className="w-12 h-[2px] bg-gold mt-5" />
@@ -401,7 +466,7 @@ export default function IvyMystTemplate() {
                 key={i}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={vp}
                 transition={{ duration: 0.6, delay: i * 0.12 }}
                 className="bg-white border border-dark/8 hover:border-gold/30 transition-colors overflow-hidden"
               >
@@ -442,128 +507,105 @@ export default function IvyMystTemplate() {
         </div>
       </section>
 
-      {/* ── CELESTIAL POOL showcase ── */}
-      <div
-        className="relative overflow-hidden cursor-zoom-in group"
-        style={{ height: '70vh' }}
-        onClick={() => openLB(amenityImages, 0)}
-      >
-        <Image
-          src={p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png')}
-          alt="Ivy Myst Celestial Rooftop Pool"
-          fill
-          quality={92}
-          sizes="100vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        <div className="absolute inset-0 bg-dark/45" />
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-6">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">CROWNING JEWEL</p>
-            <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-light mb-5">The Celestial Pool</h2>
-            <div className="w-12 h-[2px] bg-gold mx-auto mb-5" />
-            <p className="text-white/55 text-sm font-sans font-light max-w-sm mx-auto leading-relaxed">
-              An infinity pool with signature waterfall, perched at the pinnacle of Ivy Myst — overlooking the Nairobi skyline.
-            </p>
-          </motion.div>
-        </div>
-        <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <ZoomIn size={16} className="text-white" />
-        </div>
-      </div>
+      {/* ── AMENITIES — Full-width editorial showcases ── */}
+      <section id="amenities" className="scroll-mt-32">
 
-      {/* ── AMENITIES ── */}
-      <section id="amenities" className="py-24 lg:py-32 bg-dark scroll-mt-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LIFESTYLE</p>
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight">World-Class Amenities</h2>
-            <div className="w-12 h-[2px] bg-gold mt-5" />
-          </motion.div>
-
-          {/* 2×2 large grid — items 1-4 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            {amenityImages.slice(1, 5).map((img, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.07 }}
-                className="group relative overflow-hidden cursor-zoom-in"
-                style={{ aspectRatio: '16/9' }}
-                onClick={() => openLB(amenityImages, i + 1)}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.label}
-                  fill
-                  quality={90}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/10 to-transparent" />
-                <div className="absolute bottom-4 left-5 flex items-center gap-2">
-                  <p className="text-white text-xs font-sans font-semibold tracking-widest uppercase">{img.label}</p>
-                </div>
-                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ZoomIn size={13} className="text-white" />
-                </div>
-              </motion.div>
-            ))}
+        {/* Section header on dark */}
+        <div className="bg-dark py-20 lg:py-28 px-6 lg:px-10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.75, ease: 'easeOut' }}
+            >
+              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LIFESTYLE</p>
+              <h2 className="font-serif text-4xl md:text-6xl font-light text-white leading-[1.05] mb-6">World-Class Amenities</h2>
+              <div className="w-12 h-[2px] bg-gold" />
+            </motion.div>
           </div>
+        </div>
 
-          {/* 3-col row — items 5-7 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
-            {amenityImages.slice(5).map((img, i) => (
+        {/* Stacked full-width showcases — alternating white / cream */}
+        {amenityShowcases.map((amenity, i) => (
+          <div key={amenity.label} className={i % 2 === 0 ? 'bg-white' : 'bg-cream'}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, margin: '-40px' }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full overflow-hidden cursor-zoom-in group"
+              style={{ height: '70vh' }}
+              onClick={() => openLB(amenityImages, amenity.lbIndex)}
+            >
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative overflow-hidden cursor-zoom-in"
-                style={{ aspectRatio: '4/3' }}
-                onClick={() => openLB(amenityImages, i + 5)}
+                initial={{ scale: 1.06 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: false, margin: '-40px' }}
+                transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
               >
-                <Image
-                  src={img.src}
-                  alt={img.label}
-                  fill
-                  quality={88}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent" />
-                <p className="absolute bottom-4 left-4 text-white text-xs font-sans font-semibold tracking-wider uppercase">{img.label}</p>
-                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ZoomIn size={13} className="text-white" />
-                </div>
+                <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="100vw" quality={88} />
               </motion.div>
-            ))}
-          </div>
-
-          {/* Checklist */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {[
-              'Celestial Rooftop Pool with Waterfall',
-              'Rooftop Bar & Lounge',
-              'Rooftop & Indoor Restaurant',
-              'Gymnasium & Yoga Studio',
-              'Sculptural Garden Stream',
-              'Grand Lobby Reception',
-              'Private Garden Terraces (select units)',
-              'Smart Home Features',
-              'High-Speed Elevators',
-              '24-Hour Security & CCTV',
-              'Borehole Water Supply',
-              'Backup Generator',
-            ].map(item => (
-              <div key={item} className="flex items-start gap-3">
-                <Check size={13} className="text-gold mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                <span className="text-white/60 text-sm font-sans font-light">{item}</span>
+              <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ZoomIn size={16} className="text-white" />
               </div>
-            ))}
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto px-8 lg:px-16 py-14 lg:py-20">
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.75, ease: 'easeOut' }}
+              >
+                <p className="text-gold/60 font-sans text-[11px] tracking-[0.3em] mb-4 uppercase">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <h3 className="font-serif text-3xl lg:text-4xl font-light text-dark mb-5 leading-[1.15]">
+                  {amenity.label}
+                </h3>
+                <div className="w-8 h-[1.5px] bg-gold mb-6" />
+                <p className="text-dark/55 text-[14px] font-sans font-light leading-[1.9] max-w-2xl">
+                  {amenity.description}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        ))}
+
+        {/* Amenity checklist on dark */}
+        <div className="bg-dark py-16 lg:py-20 px-6 lg:px-10">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.7 }}
+            >
+              <p className="text-white/30 text-[10px] font-sans tracking-[0.3em] uppercase mb-8">ALL AMENITIES</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  'Celestial Rooftop Pool with Waterfall',
+                  'Rooftop Bar & Lounge',
+                  'Rooftop & Indoor Restaurant',
+                  'Gymnasium & Yoga Studio',
+                  'Sculptural Garden Stream',
+                  'Grand Lobby Reception',
+                  'Private Garden Terraces (select units)',
+                  'Smart Home Features',
+                  'High-Speed Elevators',
+                  '24-Hour Security & CCTV',
+                  'Borehole Water Supply',
+                  'Backup Generator',
+                ].map(item => (
+                  <div key={item} className="flex items-start gap-3">
+                    <Check size={13} className="text-gold mt-0.5 flex-shrink-0" strokeWidth={2.5} />
+                    <span className="text-white/60 text-sm font-sans font-light">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -571,7 +613,13 @@ export default function IvyMystTemplate() {
       {/* ── INTERIORS ── */}
       <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="mb-14"
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">INTERIORS</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Crafted to Perfection</h2>
             <div className="w-12 h-[2px] bg-gold mt-5" />
@@ -580,33 +628,45 @@ export default function IvyMystTemplate() {
             </p>
           </motion.div>
 
-          {/* First image full-width, rest 2-col */}
           <div className="flex flex-col gap-4">
-            <div
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={vp}
+              transition={{ duration: 0.8 }}
               className="relative overflow-hidden cursor-zoom-in group w-full"
               style={{ aspectRatio: '21/8' }}
               onClick={() => openLB(interiorImages, 0)}
             >
-              <Image
-                src={interiorImages[0].src}
-                alt={interiorImages[0].label}
-                fill
-                quality={92}
-                sizes="100vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-              />
+              <motion.div
+                className="absolute inset-0"
+                initial={{ scale: 1.04 }}
+                whileInView={{ scale: 1 }}
+                viewport={vp}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Image
+                  src={interiorImages[0].src}
+                  alt={interiorImages[0].label}
+                  fill
+                  quality={92}
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </motion.div>
               <div className="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ZoomIn size={16} className="text-white" />
               </div>
-            </div>
+            </motion.div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {interiorImages.slice(1).map((img, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={vp}
                   transition={{ duration: 0.55, delay: i * 0.07 }}
                   className="relative overflow-hidden cursor-zoom-in group"
                   style={{ aspectRatio: '4/3' }}
@@ -637,7 +697,13 @@ export default function IvyMystTemplate() {
       {/* ── FLOOR PLANS ── */}
       <section id="floor-plans" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="mb-10"
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">FLOOR PLANS</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Unit Layouts</h2>
             <div className="w-12 h-[2px] bg-gold mt-5 mb-3" />
@@ -646,7 +712,6 @@ export default function IvyMystTemplate() {
             </p>
           </motion.div>
 
-          {/* Tab switcher */}
           <div className="flex border border-dark/15 w-fit mb-8">
             {([
               { key: 'overview', label: 'Full Overview' },
@@ -666,7 +731,6 @@ export default function IvyMystTemplate() {
             ))}
           </div>
 
-          {/* Overview tab */}
           {activeTab === 'overview' && (
             <motion.div
               key="overview"
@@ -694,7 +758,6 @@ export default function IvyMystTemplate() {
             </motion.div>
           )}
 
-          {/* Wing A tab */}
           {activeTab === 'wing-a' && (
             <motion.div key="wing-a" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {wingAPlans.map((plan, i) => (
@@ -729,7 +792,6 @@ export default function IvyMystTemplate() {
             </motion.div>
           )}
 
-          {/* Wing B tab */}
           {activeTab === 'wing-b' && (
             <motion.div key="wing-b" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {wingBPlans.map((plan, i) => (
@@ -780,7 +842,12 @@ export default function IvyMystTemplate() {
       <section className="py-24 lg:py-32 bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">WHY INVEST</p>
               <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-5">Secure Your Unit Now</h2>
               <div className="w-12 h-[2px] bg-gold mb-8" />
@@ -802,7 +869,13 @@ export default function IvyMystTemplate() {
               </ul>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col gap-5">
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+              className="flex flex-col gap-5"
+            >
               <div className="border border-white/10 p-7">
                 <p className="text-white/30 text-[10px] font-sans tracking-[0.2em] uppercase mb-5">PROJECTED RETURNS</p>
                 <div className="space-y-0">
@@ -835,7 +908,13 @@ export default function IvyMystTemplate() {
       {/* ── LOCATION ── */}
       <section id="location" className="py-24 lg:py-32 bg-cream scroll-mt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="mb-10"
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LOCATION</p>
             <h2 className="font-serif text-4xl font-light text-dark">Gatundu Road, Kileleshwa</h2>
             <div className="w-12 h-[2px] bg-gold mt-4 mb-4" />
@@ -861,7 +940,12 @@ export default function IvyMystTemplate() {
       {/* ── CTA ── */}
       <section className="py-20 lg:py-28 bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">SECURE YOUR RESIDENCE</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-white mb-4">Own a Piece of Ivy Myst</h2>
             <div className="w-12 h-[2px] bg-gold mx-auto mb-7" />
@@ -890,7 +974,13 @@ export default function IvyMystTemplate() {
       {/* ── OTHER DEVELOPMENTS ── */}
       <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.75, ease: 'easeOut' }}
+            className="mb-12"
+          >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">EXPLORE MORE</p>
             <h2 className="font-serif text-4xl font-light text-dark">Other Developments</h2>
             <div className="w-12 h-[2px] bg-gold mt-4" />
@@ -901,7 +991,13 @@ export default function IvyMystTemplate() {
               { name: 'Luckinn Ivy Residence', location: 'WESTLANDS', image: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'), href: '/luckinn-ivy' },
               { name: 'Ivy Park Residence', location: 'KILIMANI', image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), href: '/ivy-park' },
             ].map((proj, i) => (
-              <motion.div key={proj.href} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}>
+              <motion.div
+                key={proj.href}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+              >
                 <Link href={proj.href} className="group block overflow-hidden">
                   <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
                     <Image src={proj.image} alt={proj.name} fill quality={82} sizes="33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
