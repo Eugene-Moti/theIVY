@@ -8,7 +8,7 @@ import { ArrowRight } from 'lucide-react'
 
 const slides = [
   {
-    image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'),
+    image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'),
     location: 'KILELESHWA, NAIROBI',
     title: 'Blossom Ivy\nResidence',
     subtitle: 'Luxury Living in One of Nairobi\'s Most Prestigious Addresses',

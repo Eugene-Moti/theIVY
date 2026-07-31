@@ -56,19 +56,6 @@ const projects = [
   },
 ]
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.2 } },
-}
-
-const cardVariants = {
-  hidden: { opacity: 0, x: -80 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-  },
-}
 
 export default function ProjectsSection() {
   return (
@@ -79,7 +66,7 @@ export default function ProjectsSection() {
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.7 }}
           className="flex items-center gap-5 mb-20"
         >
@@ -97,17 +84,14 @@ export default function ProjectsSection() {
         </motion.div>
 
         {/* 2-column wide card grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-14 lg:gap-20"
-        >
-          {projects.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 lg:gap-20">
+          {projects.map((project, i) => (
             <motion.article
               key={project.boldPart}
-              variants={cardVariants}
+              initial={{ opacity: 0, x: -80 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, margin: '-60px' }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: i % 2 === 0 ? 0 : 0.15 }}
               className="group flex flex-col"
             >
               {/* Image — wider aspect ratio so images are prominent */}
@@ -168,7 +152,7 @@ export default function ProjectsSection() {
               </div>
             </motion.article>
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>
