@@ -1,5 +1,4 @@
 import HeroSlider from '@/components/home/HeroSlider'
-import ManifestoStrip from '@/components/home/ManifestoStrip'
 import ProjectsSection from '@/components/home/ProjectsSection'
 import LaunchSection from '@/components/home/LaunchSection'
 import AboutSection from '@/components/home/AboutSection'
@@ -53,7 +52,6 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSlider />
-      <ManifestoStrip />
       <ProjectsSection />
       <LaunchSection />
       <AboutSection />
