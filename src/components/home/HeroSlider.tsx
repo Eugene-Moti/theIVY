@@ -65,10 +65,10 @@ export default function HeroSlider() {
   }, [next])
 
   return (
-    <section className="relative h-screen flex flex-col overflow-hidden bg-dark">
+    <section className="relative h-screen flex flex-col overflow-hidden bg-white">
 
       {/* ── Image area ── */}
-      <div className="relative flex-1 min-h-0 overflow-hidden">
+      <div className="relative flex-1 min-h-0 overflow-hidden bg-dark">
         <AnimatePresence mode="sync">
           <motion.div
             key={`slide-${current}`}
@@ -90,21 +90,21 @@ export default function HeroSlider() {
                 />
               </div>
             </div>
-            {/* Subtle gradient only at bottom edge to blend into panel */}
-            <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-dark/60 to-transparent" />
+            {/* Gradient fades image into the white panel below */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/70 to-transparent" />
           </motion.div>
         </AnimatePresence>
 
         {/* Slide counter — stays in image area */}
-        <div className="absolute top-1/2 right-6 lg:right-10 -translate-y-1/2 hidden lg:flex flex-col items-center gap-2 text-white/35">
+        <div className="absolute top-1/2 right-6 lg:right-10 -translate-y-1/2 hidden lg:flex flex-col items-center gap-2 text-white/40">
           <span className="font-sans text-xs tracking-widest">{String(current + 1).padStart(2, '0')}</span>
-          <div className="w-px h-12 bg-white/18" />
+          <div className="w-px h-12 bg-white/20" />
           <span className="font-sans text-xs tracking-widest">{String(slides.length).padStart(2, '0')}</span>
         </div>
       </div>
 
-      {/* ── Content panel — below image ── */}
-      <div className="shrink-0 bg-dark border-t border-white/8 px-7 lg:px-14 pt-6 pb-7 lg:pt-7 lg:pb-8">
+      {/* ── Content panel — below image, inherits white bg ── */}
+      <div className="shrink-0 border-t border-dark/8 px-7 lg:px-14 pt-6 pb-7 lg:pt-7 lg:pb-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${current}`}
@@ -122,7 +122,7 @@ export default function HeroSlider() {
                   {slides[current].location}
                 </p>
                 <h1
-                  className="font-serif text-white font-light leading-[1.06] whitespace-pre-line"
+                  className="font-serif text-dark font-light leading-[1.06] whitespace-pre-line"
                   style={{ fontSize: 'clamp(1.7rem, 3.2vw, 2.8rem)' }}
                 >
                   {slides[current].title}
@@ -130,24 +130,24 @@ export default function HeroSlider() {
               </div>
 
               {/* Vertical divider — desktop only */}
-              <div className="hidden lg:block w-px self-stretch bg-white/10 shrink-0" />
+              <div className="hidden lg:block w-px self-stretch bg-dark/10 shrink-0" />
 
               {/* Right: subtitle + CTAs */}
               <div className="lg:w-[360px] shrink-0">
-                <p className="text-white/50 text-[12.5px] font-sans font-light leading-[1.7] mb-5">
+                <p className="text-dark/50 text-[12.5px] font-sans font-light leading-[1.7] mb-5">
                   {slides[current].subtitle}
                 </p>
                 <div className="flex items-center gap-4 flex-wrap">
                   <Link
                     href={slides[current].href}
-                    className="inline-flex items-center gap-2.5 bg-gold text-dark px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors duration-300 group"
+                    className="inline-flex items-center gap-2.5 bg-dark text-white px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold hover:text-dark transition-colors duration-300 group"
                   >
                     {slides[current].cta}
                     <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                   <a
                     href="tel:+254118266666"
-                    className="inline-block border border-white/40 text-white px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:border-white/80 hover:bg-white/8 transition-all duration-300"
+                    className="inline-block border border-dark/30 text-dark px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:border-dark hover:bg-dark/5 transition-all duration-300"
                   >
                     CALL US
                   </a>
@@ -156,7 +156,7 @@ export default function HeroSlider() {
             </div>
 
             {/* Slide indicators — bottom of panel */}
-            <div className="flex items-center gap-3 mt-5 pt-5 border-t border-white/8">
+            <div className="flex items-center gap-3 mt-5 pt-5 border-t border-dark/8">
               {slides.map((_, i) => (
                 <button
                   key={i}
@@ -165,11 +165,11 @@ export default function HeroSlider() {
                   className={`block transition-all duration-500 ${
                     i === current
                       ? 'w-10 h-[2px] bg-gold'
-                      : 'w-4 h-[2px] bg-white/30 hover:bg-white/60'
+                      : 'w-4 h-[2px] bg-dark/20 hover:bg-dark/50'
                   }`}
                 />
               ))}
-              <span className="ml-auto text-white/22 text-[9px] font-sans tracking-widest">
+              <span className="ml-auto text-dark/25 text-[9px] font-sans tracking-widest">
                 {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
               </span>
             </div>
