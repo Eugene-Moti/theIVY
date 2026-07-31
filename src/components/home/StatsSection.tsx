@@ -13,7 +13,7 @@ const stats = [
 function Counter({ end, suffix }: { end: number; suffix: string }) {
   const [count, setCount] = useState(0)
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const inView = useInView(ref, { once: false, margin: '-80px' })
 
   useEffect(() => {
     if (!inView) return
@@ -53,7 +53,7 @@ export default function StatsSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.7 }}
           className="text-center mb-16 lg:mb-20"
         >
@@ -72,7 +72,7 @@ export default function StatsSection() {
               key={stat.label}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.65, delay: i * 0.1 }}
               className="text-center relative"
             >
@@ -94,7 +94,7 @@ export default function StatsSection() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="text-center mt-20 border-t border-white/10 pt-10"
         >

@@ -27,7 +27,7 @@ export default function CTASection() {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.75 }}
           >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">

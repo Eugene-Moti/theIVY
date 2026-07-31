@@ -22,7 +22,7 @@ export default function AboutSection() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
             className="relative"
           >
@@ -41,7 +41,7 @@ export default function AboutSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="absolute -bottom-6 -right-4 lg:-right-8 bg-dark px-8 py-6 hidden sm:block"
             >
@@ -59,7 +59,7 @@ export default function AboutSection() {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.9, delay: 0.15, ease: 'easeOut' }}
           >
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">

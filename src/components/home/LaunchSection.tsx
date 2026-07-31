@@ -35,7 +35,7 @@ export default function LaunchSection() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.85, ease: 'easeOut' }}
           >
             {/* "Now Selling" badge */}
@@ -79,7 +79,7 @@ export default function LaunchSection() {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.85, delay: 0.2, ease: 'easeOut' }}
             className="grid grid-cols-3 gap-4"
           >
@@ -88,7 +88,7 @@ export default function LaunchSection() {
                 key={unit.bed}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
                 className="border border-white/15 bg-white/5 backdrop-blur-sm p-5 text-center hover:border-gold/50 transition-colors duration-300"
               >
