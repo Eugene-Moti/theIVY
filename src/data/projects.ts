@@ -18,6 +18,7 @@ export interface ProjectUnit {
 export interface ProjectAmenity {
   label: string
   image: string
+  description: string
 }
 
 export interface VrTour {
@@ -45,6 +46,7 @@ export interface ProjectData {
   specialOffer?: string
   heroImage: string
   exteriorImages: string[]
+  interiorImages?: string[]
   descriptionParagraphs: string[]
   descriptionBlocks?: DescriptionBlock[]
   availableUnits: ProjectUnit[]
@@ -73,7 +75,7 @@ export const projects: ProjectData[] = [
     parking: 'Ground Floor + 4 Basement Levels',
     completion: 'December 2026',
     statusLabel: 'AVAILABLE',
-    heroImage: p('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'),
+    heroImage: p('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
     exteriorImages: [
       p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'),
       p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'),
@@ -103,12 +105,36 @@ export const projects: ProjectData[] = [
       { type: '4 Bedroom + Study + DSQ', size: '251 – 260 SQM', price: 'SOLD OUT', available: false },
     ],
     amenities: [
-      { label: 'Heated Indoor Pool', image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/13_KCGV_Blossom Ivy_R1 Pool 2.jpg') },
-      { label: 'Fully Equipped Gym', image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Gym 2.jpg') },
-      { label: 'Spa & Wellness', image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Spa 1.jpg') },
-      { label: 'Grand Lobby', image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg') },
-      { label: 'Coffee Bar & Restaurant', image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Restaurant 2.png') },
-      { label: "Children's Play Area", image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/16_KCGV_Blossom Ivy_Play_Area1.png') },
+      {
+        label: 'Heated Indoor Pool',
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/13_KCGV_Blossom Ivy_R1 Pool 2.jpg'),
+        description: 'A temperature-controlled indoor swimming pool offering a resort-like experience year-round. Designed for both meditative lap swimming and leisurely relaxation, the pool deck creates a private sanctuary within the building — available exclusively to residents and their guests.',
+      },
+      {
+        label: 'Fully Equipped Gym',
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Gym 2.jpg'),
+        description: 'A state-of-the-art fitness centre equipped with premium cardio, strength, and functional training machinery. Whether you are training for performance or maintaining a daily wellness routine, the gym delivers the tools and space of a boutique fitness club — steps from your front door.',
+      },
+      {
+        label: 'Spa & Wellness',
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Spa 1.jpg'),
+        description: 'A tranquil spa retreat conceived as a personal sanctuary. Therapeutic treatments, steam rooms, and dedicated relaxation areas combine to offer a truly restorative experience — the kind typically reserved for five-star hotels, now a permanent feature of your home.',
+      },
+      {
+        label: 'Grand Lobby',
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'),
+        description: 'A hotel-grade arrival experience designed to signal that you have arrived somewhere truly significant. Soaring ceilings, premium stone finishes, bespoke lighting, and 24-hour concierge service ensure that every return home feels intentional — a deliberate transition from the city into your private world.',
+      },
+      {
+        label: 'Coffee Bar & Restaurant',
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Restaurant 2.png'),
+        description: 'An in-house café and dining destination serving artisanal coffee, fresh pastries, and curated gourmet cuisine. Whether you are beginning your morning or closing out a long day, the restaurant offers the convenience of a world-class dining experience without leaving the building.',
+      },
+      {
+        label: "Children's Play Area",
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/16_KCGV_Blossom Ivy_Play_Area1.png'),
+        description: 'A fully dedicated indoor children\'s play zone engineered for creativity, active play, and social development in a safe, supervised environment. Thoughtfully designed with age-appropriate equipment, it gives young residents a vibrant space of their own within the building community.',
+      },
     ],
     amenityList: [
       'Heated Indoor Swimming Pool', 'Fully Equipped Gym', 'Yoga Studio',
@@ -172,12 +198,36 @@ export const projects: ProjectData[] = [
       { type: '1 Bedroom', size: '78 SQM', price: 'SOLD OUT', available: false },
     ],
     amenities: [
-      { label: 'Heated Indoor Pool', image: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png') },
-      { label: 'Fully Equipped Gym', image: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg') },
-      { label: 'Yoga Studio', image: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg') },
-      { label: 'Lounge & Co-working', image: p('/Luckinn Ivy Assets/Amenities/Lounge Area.jpeg') },
-      { label: 'Business Lounge', image: p('/Luckinn Ivy Assets/Amenities/Lounge Area close up.jpeg') },
-      { label: "Children's Play Area", image: p('/Luckinn Ivy Assets/Amenities/Kids Play Area.jpeg') },
+      {
+        label: 'Heated Indoor Pool',
+        image: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'),
+        description: 'An elegantly designed indoor heated swimming pool, available year-round regardless of Nairobi\'s weather. The pool deck is conceived as a private resort — a place to decompress, socialise, or simply float in silence, high above the city\'s energy below.',
+      },
+      {
+        label: 'Fully Equipped Gym',
+        image: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'),
+        description: 'A fully kitted-out fitness suite with premium cardio, strength and functional training equipment. Designed for the serious athlete and the casual exerciser alike, the gym delivers the performance of a boutique fitness club without requiring residents to leave the building.',
+      },
+      {
+        label: 'Yoga Studio',
+        image: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'),
+        description: 'A dedicated yoga and meditation studio bathed in considered light, designed for mindful movement and breath-work. Whether you practice at dawn or after a long evening, the studio offers a quiet counterpoint to the energy of Westlands just outside.',
+      },
+      {
+        label: 'Lounge & Co-working',
+        image: p('/Luckinn Ivy Assets/Amenities/Lounge Area.jpeg'),
+        description: 'Sophisticated communal lounges and co-working spaces designed for residents who move fluidly between home and professional life. High-speed connectivity, thoughtful acoustic design, and premium furniture create an environment that genuinely supports focused work.',
+      },
+      {
+        label: 'Business Lounge',
+        image: p('/Luckinn Ivy Assets/Amenities/Lounge Area close up.jpeg'),
+        description: 'A dedicated business lounge with private meeting areas and a professional atmosphere — the right environment for client meetings, video calls, or focused deep work. A rare amenity in Nairobi residential buildings, and a permanent advantage for professional residents.',
+      },
+      {
+        label: "Children's Play Area",
+        image: p('/Luckinn Ivy Assets/Amenities/Kids Play Area.jpeg'),
+        description: 'A vibrant, thoughtfully designed children\'s play zone giving young residents their own dedicated space within the community. Safe, stimulating, and always supervised, it offers parents peace of mind and children the room to explore and grow freely.',
+      },
     ],
     amenityList: [
       'Heated Indoor Swimming Pool', 'Fully Equipped Gym', 'Yoga Room',
@@ -262,6 +312,12 @@ export const projects: ProjectData[] = [
       p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 2_IVY PARK.jpg'),
       p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Drone 1_IVY PARK.jpg'),
     ],
+    interiorImages: [
+      p('/IVY PARK RESIDENCE Assests/INTERIOR/enhanced_Living_.png'),
+      p('/IVY PARK RESIDENCE Assests/INTERIOR/enhanced_Dining_Wide.png'),
+      p('/IVY PARK RESIDENCE Assests/INTERIOR/enhanced_Kitchen.png'),
+      p('/IVY PARK RESIDENCE Assests/INTERIOR/Bedroom_1.png'),
+    ],
     descriptionParagraphs: [
       "Ivy Park Residence is a landmark mixed-use residential development positioned near Yaya Centre along Kirichwa Road, Kilimani. With 660 apartments across three residential blocks on 1.06 acres, the project presents an exceptional opportunity for homeowners and investors seeking premium living in one of Nairobi's most desirable neighbourhoods.",
       "Currently under construction with foundation and structural works progressing on schedule, Ivy Park Residence is offering early-bird pricing to investors who act now. Pre-construction pricing, flexible payment plans, and a wider selection of unit options make this an unmissable opportunity.",
@@ -283,12 +339,36 @@ export const projects: ProjectData[] = [
     ],
     soldOutUnits: [],
     amenities: [
-      { label: 'Heated Swimming Pool', image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png') },
-      { label: 'Bar & Lounge', image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Bar_001.png') },
-      { label: 'Spa & Wellness', image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Spa_001 Night.png') },
-      { label: 'Fully Equipped Gym', image: p('/IVY PARK RESIDENCE Assests/AMENITIES/GYM/GYM_V1_B.png') },
-      { label: 'Rooftop Garden', image: p('/IVY PARK RESIDENCE Assests/AMENITIES/ROOFTOP/251027_FINAL_Creative(18).jpg') },
-      { label: "Children's Play Area", image: p('/IVY PARK RESIDENCE Assests/AMENITIES/CHILDREN_S AREA/enhanced_Cam_Kids_001.png') },
+      {
+        label: 'Heated Swimming Pool',
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png'),
+        description: 'A resort-calibre heated swimming pool set within a sun-drenched deck, designed for both active swimming and leisurely lounging. The pool environment at Ivy Park is conceived as a destination in itself — a place that rivals the best hotel pools in Nairobi, reserved exclusively for residents.',
+      },
+      {
+        label: 'Bar & Lounge',
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Bar_001.png'),
+        description: 'An elevated bar and lounge environment combining sophisticated design with curated cocktails and a carefully selected wine list. Whether you are entertaining guests or unwinding alone at the end of a long day, the bar delivers the quality and atmosphere of Nairobi\'s finest establishments — inside your own building.',
+      },
+      {
+        label: 'Spa & Wellness',
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Spa_001 Night.png'),
+        description: 'A full-service spa and wellness centre offering holistic treatments, steam rooms, and beauty services. Designed as an immersive retreat from the pace of urban life, the spa at Ivy Park brings the standard of a luxury wellness destination into daily reach — without the journey.',
+      },
+      {
+        label: 'Fully Equipped Gym',
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/GYM/GYM_V1_B.png'),
+        description: 'A premium fitness centre spanning a dedicated floor, equipped with the latest cardio, strength, and functional training machinery. With natural light, generous floor area, and top-specification equipment, the gym delivers an environment that makes consistent training genuinely enjoyable.',
+      },
+      {
+        label: 'Rooftop Garden & Lounge',
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/ROOFTOP/251027_FINAL_Creative(18).jpg'),
+        description: 'A spectacular rooftop garden and BBQ terrace offering panoramic views across Kilimani and beyond — an open-air living room positioned at the summit of the development. Designed for social gatherings, private dining, and quiet contemplation alike, the rooftop is one of Nairobi\'s most compelling residential amenity spaces.',
+      },
+      {
+        label: "Children's Play Area",
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/CHILDREN_S AREA/enhanced_Cam_Kids_001.png'),
+        description: 'A thoughtfully engineered children\'s play zone with safe equipment, creative exploration spaces, and areas that genuinely support childhood development and social growth. Designed so that children have a community of their own within Ivy Park — and parents have peace of mind.',
+      },
     ],
     amenityList: [
       'Heated Swimming Pool', 'Rooftop Garden & Lounge', 'Fully Equipped Gym',
@@ -348,14 +428,14 @@ export const projects: ProjectData[] = [
     ],
     soldOutUnits: [],
     amenities: [
-      { label: 'Celestial Rooftop Pool', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png') },
-      { label: 'Rooftop Restaurant', image: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png') },
-      { label: 'Rooftop Bar & Lounge', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop bar area.png') },
-      { label: 'Rooftop Lounge', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop lounge area night view.png') },
-      { label: 'Gym & Yoga Studio', image: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg') },
-      { label: 'Garden Stream', image: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png') },
-      { label: 'Indoor Restaurant', image: p('/Ivy Myst Assets/New Renders/Myst amenities/indoor restaurant.png') },
-      { label: 'Grand Reception', image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png') },
+      { label: 'Celestial Rooftop Pool', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'), description: 'The crown jewel of Ivy Myst — a rooftop pool unlike anything else in Nairobi. Designed to evoke a celestial landscape, it sits at the summit of the building with unobstructed views over the Kileleshwa skyline. This is where day and night blurs into something extraordinary.' },
+      { label: 'Rooftop Restaurant', image: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'), description: 'A full rooftop dining destination with panoramic city views — an al-fresco restaurant experience above the Nairobi skyline. Curated menus, premium service, and an address that transforms every meal into a memorable occasion.' },
+      { label: 'Rooftop Bar & Lounge', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop bar area.png'), description: 'An elevated bar experience at the apex of the building, combining crafted cocktails with one of Nairobi\'s most commanding views. Whether entertaining clients or simply watching the sun set over the city, the rooftop bar is your most compelling address.' },
+      { label: 'Rooftop Lounge', image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop lounge area night view.png'), description: 'A sophisticated night-time lounge designed for the hours after dinner — ambient lighting, plush seating, and the city spread below. A space that rewards those who stay a little longer.' },
+      { label: 'Gym & Yoga Studio', image: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'), description: 'A premium fitness and wellness floor combining a fully equipped gym with a dedicated yoga and meditation studio. Designed for residents who take their wellbeing as seriously as their address.' },
+      { label: 'Garden Stream', image: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'), description: 'A living landscape element — a sculptural garden stream that runs through the development\'s common areas, bringing the sound and presence of water into daily life. A rare amenity that sets Ivy Myst apart from every other residential building in Nairobi.' },
+      { label: 'Indoor Restaurant', image: p('/Ivy Myst Assets/New Renders/Myst amenities/indoor restaurant.png'), description: 'An in-house fine dining restaurant designed to hotel-residences standards. Available to residents and their guests, it delivers the intimacy of a private members\' dining club with the quality of Nairobi\'s finest restaurants.' },
+      { label: 'Grand Reception', image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'), description: 'A sculptural arrival experience conceived at architectural scale. The grand reception sets the tone for everything that follows — a statement of intent that communicates unmistakably that Ivy Myst operates at a different level.' },
     ],
     amenityList: [
       'Celestial Rooftop Pool with Waterfall Feature',

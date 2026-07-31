@@ -1,499 +1,742 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { MapPin, Check, ArrowRight, Download, Sparkles, Phone } from 'lucide-react'
-import { type ProjectData, projects } from '@/data/projects'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import {
+  ArrowRight, MapPin, Download, ChevronDown,
+  Phone, Check, ExternalLink,
+} from 'lucide-react'
+import { ProjectData, getOtherProjects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
-import VirtualTourSection from '@/components/project/VirtualTourSection'
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: 'easeOut' } },
+const vp = { once: false, margin: '-80px' }
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.p
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={vp}
+      transition={{ duration: 0.6 }}
+      className="text-gold text-[9px] font-sans font-semibold tracking-[0.35em] uppercase mb-3"
+    >
+      {children}
+    </motion.p>
+  )
+}
+
+function SectionHeading({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+  return (
+    <motion.h2
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={vp}
+      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+      className={`font-serif font-light leading-[1.12] ${light ? 'text-white' : 'text-dark'}`}
+      style={{ fontSize: 'clamp(2rem, 4vw, 3.4rem)' }}
+    >
+      {children}
+    </motion.h2>
+  )
 }
 
 export default function ProjectTemplate({ data }: { data: ProjectData }) {
   const [brochureOpen, setBrochureOpen] = useState(false)
+  const heroRef = useRef<HTMLDivElement>(null)
 
-  const related = projects.filter(p => p.slug !== data.slug).slice(0, 3)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+
+  const others = getOtherProjects(data.slug)
+  const allUnits = [...data.availableUnits, ...data.soldOutUnits]
 
   return (
     <>
-      {/* ── HERO ── */}
-      <section className="relative h-screen w-full overflow-hidden bg-dark">
-        <Image
-          src={data.heroImage}
-          alt={data.name}
-          fill
-          className="object-cover object-center ken-burns"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/30 to-dark/20" />
+      {/* ══════════════════════════════════════════════
+          HERO
+      ══════════════════════════════════════════════ */}
+      <section ref={heroRef} className="relative h-screen overflow-hidden bg-dark">
+        <motion.div className="absolute inset-0" style={{ y: heroY }}>
+          <Image
+            src={data.heroImage}
+            alt={data.name}
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+            quality={90}
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
 
-        {/* Special offer banner */}
-        {data.specialOffer && (
-          <div className="absolute top-24 left-0 right-0 flex justify-center z-10">
-            <div className="flex items-center gap-2 bg-gold/20 border border-gold text-gold px-5 py-2 backdrop-blur-sm">
-              <Sparkles size={11} />
-              <span className="text-[10px] font-sans font-semibold tracking-[0.25em] uppercase">{data.specialOffer}</span>
-            </div>
-          </div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="absolute top-6 right-7 z-20 flex items-center gap-2 border border-white/25 bg-black/35 backdrop-blur-md px-4 py-2"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+          <span className="text-white text-[9px] font-sans font-semibold tracking-[0.22em]">{data.statusLabel}</span>
+        </motion.div>
 
-        <div className="relative h-full flex flex-col justify-end pb-16 max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.3 }}>
-            <div className="flex items-center gap-2 mb-4">
-              <MapPin size={11} className="text-gold" />
-              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.28em] uppercase">{data.locationLabel}</p>
-            </div>
-            <h1 className="font-serif text-5xl md:text-7xl text-white font-light leading-[1.04] mb-3">{data.name}</h1>
-            <p className="text-white/65 text-sm font-sans font-light max-w-lg leading-relaxed mb-8">{data.tagline}</p>
-            <div className="flex flex-wrap gap-4">
-              <a href="#units" className="bg-gold text-dark px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors">
-                VIEW UNITS & PRICING
-              </a>
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 px-8 pb-16 lg:px-16 lg:pb-20 z-10"
+          style={{ opacity: heroOpacity }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 48 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.38em] uppercase mb-5">
+              {data.locationLabel}
+            </p>
+            <h1
+              className="font-serif text-white font-light leading-[1.04] mb-6"
+              style={{ fontSize: 'clamp(3rem, 7.5vw, 6.5rem)' }}
+            >
+              {data.name}
+            </h1>
+            <p className="text-white/60 font-sans font-light text-sm max-w-md mb-10 leading-[1.8]">
+              {data.tagline}
+            </p>
+            <div className="flex gap-4 flex-wrap">
               <button
-                type="button"
-                onClick={() => setBrochureOpen(true)}
-                className="flex items-center gap-2 border border-white/60 text-white px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-white/10 transition-colors"
+                onClick={() => document.getElementById('units')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2.5 bg-gold text-dark px-7 py-3.5 text-[10px] font-sans font-semibold tracking-[0.22em] uppercase hover:bg-gold-light transition-colors duration-300 group"
               >
-                <Download size={12} /> DOWNLOAD BROCHURE
+                VIEW UNITS
+                <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
+              </button>
+              <button
+                onClick={() => setBrochureOpen(true)}
+                className="inline-flex items-center gap-2.5 border border-white/40 text-white px-7 py-3.5 text-[10px] font-sans font-semibold tracking-[0.22em] uppercase hover:bg-white/10 hover:border-white/70 transition-all duration-300"
+              >
+                <Download size={11} />
+                BROCHURE
               </button>
             </div>
           </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
+        >
+          <span className="text-white/35 text-[8px] font-sans tracking-[0.25em] uppercase">Scroll</span>
+          <ChevronDown size={13} className="text-white/35" strokeWidth={1.5} />
+        </motion.div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          KEY STATS STRIP
+      ══════════════════════════════════════════════ */}
+      <section className="bg-dark border-t border-white/8 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-8 lg:px-14 py-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+          {[
+            { label: 'Location', value: data.locationFull },
+            { label: 'Type', value: data.type },
+            ...(data.floors > 0 ? [{ label: 'Floors', value: `${data.floors} Floors` }] : []),
+            ...(data.totalUnits > 0 ? [{ label: 'Total Units', value: `${data.totalUnits} Units` }] : []),
+            { label: 'Completion', value: data.completion },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={vp}
+              transition={{ duration: 0.6, delay: i * 0.08 }}
+            >
+              <p className="text-white/30 text-[8px] font-sans tracking-[0.28em] uppercase mb-2">{stat.label}</p>
+              <p className="text-white font-sans text-sm font-light leading-snug">{stat.value}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* ── OVERVIEW STRIP ── */}
-      <div className="bg-dark">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 divide-x divide-white/10 border-t border-b border-white/10">
-            {[
-              { label: 'Location', value: data.locationFull.split(',')[0] },
-              { label: 'Type', value: data.type },
-              ...(data.floors > 0 ? [{ label: 'Floors', value: `${data.floors} Floors` }] : []),
-              ...(data.totalUnits > 0 ? [{ label: 'Total Units', value: `${data.totalUnits.toLocaleString()} Apartments` }] : []),
-              { label: 'Completion', value: data.completion },
-            ].map(item => (
-              <div key={item.label} className="py-5 px-6 text-center">
-                <p className="text-white/30 text-[9px] font-sans tracking-[0.2em] uppercase mb-1">{item.label}</p>
-                <p className="text-white text-xs font-sans font-medium">{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── DESCRIPTION ── */}
-      <section className="py-24 lg:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+      {/* ══════════════════════════════════════════════
+          STORY / DESCRIPTION
+      ══════════════════════════════════════════════ */}
+      <section className="bg-white py-24 lg:py-32">
+        <div className="max-w-3xl mx-auto px-8 lg:px-6">
+          <SectionLabel>The Story</SectionLabel>
+          <SectionHeading>
+            {data.name.split(' ').slice(0, 2).join(' ')}{' '}
+            <span style={{ fontStyle: 'italic', fontWeight: 300 }}>
+              {data.name.split(' ').slice(2).join(' ') || 'Residence'}
+            </span>
+          </SectionHeading>
 
           {data.descriptionBlocks ? (
-            /* Editorial article layout */
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">{data.name}</h2>
-              <div className="w-12 h-[2px] bg-gold mb-10" />
-
-              <div className="space-y-9 max-w-4xl">
-                {data.descriptionBlocks.map((block, i) => {
-                  if (block.type === 'text') {
-                    return (
-                      <p key={i} className="text-dark/60 text-sm font-sans font-light leading-[1.95] max-w-2xl">
-                        {block.content}
-                      </p>
-                    )
-                  }
-                  if (block.type === 'image') {
-                    return (
-                      <div key={i}>
-                        <div className="relative w-full aspect-[16/8] overflow-hidden">
-                          <Image
-                            src={block.src!}
-                            alt={block.caption || data.name}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 80vw"
-                            quality={88}
-                          />
-                        </div>
-                        {block.caption && (
-                          <p className="mt-2.5 text-[10px] font-sans text-dark/35 tracking-[0.15em] uppercase">{block.caption}</p>
-                        )}
-                      </div>
-                    )
-                  }
-                  if (block.type === 'image-pair') {
-                    return (
-                      <div key={i}>
-                        <div className="grid grid-cols-2 gap-3">
-                          {block.images?.map((img, j) => (
-                            <div key={j}>
-                              <div className="relative aspect-[4/3] overflow-hidden">
-                                <Image
-                                  src={img.src}
-                                  alt={img.caption || data.name}
-                                  fill
-                                  className="object-cover"
-                                  sizes="(max-width: 768px) 50vw, 40vw"
-                                  quality={88}
-                                />
-                              </div>
-                              {img.caption && (
-                                <p className="mt-2 text-[10px] font-sans text-dark/35 tracking-[0.15em] uppercase">{img.caption}</p>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )
-                  }
-                  return null
-                })}
-              </div>
-
-              {data.blocks && (
-                <div className="flex flex-wrap gap-3 mt-10">
-                  {[data.blocks, data.floors > 0 ? `${data.floors} Floors` : '', data.parking]
-                    .filter(Boolean)
-                    .map(tag => (
-                      <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
-                    ))}
-                </div>
-              )}
-            </motion.div>
-          ) : (
-            /* Original two-column layout (fallback) */
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">THE DEVELOPMENT</p>
-                <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">{data.name}</h2>
-                <div className="w-12 h-[2px] bg-gold mb-7" />
-                {data.descriptionParagraphs.map((para, i) => (
-                  <p key={i} className="text-dark/60 text-sm font-sans font-light leading-[1.9] mb-4">{para}</p>
-                ))}
-                {data.blocks && (
-                  <div className="flex flex-wrap gap-3 mt-6">
-                    {[data.blocks, `${data.floors > 0 ? data.floors + ' Floors' : ''}`, data.parking]
-                      .filter(Boolean)
-                      .map(tag => (
-                        <span key={tag} className="border border-dark/15 text-dark/60 text-[10px] font-sans tracking-wider px-3 py-1.5">{tag}</span>
-                      ))}
-                  </div>
-                )}
-              </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-                {data.exteriorImages.slice(0, 4).map((img, i) => (
-                  <div key={i} className={`relative overflow-hidden ${i === 0 ? 'col-span-2 aspect-[16/7]' : 'aspect-square'}`}>
-                    <Image src={img} alt={`${data.name} ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 25vw" />
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          )}
-
-        </div>
-      </section>
-
-      {/* ── UNITS & PRICING ── */}
-      <section id="units" className="py-24 lg:py-32 bg-cream">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">UNITS & PRICING</p>
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">Available Residences</h2>
-            <div className="w-12 h-[2px] bg-gold mt-5" />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-            {data.availableUnits.map((unit, i) => (
-              <motion.div
-                key={i}
-                initial="hidden" whileInView="visible" viewport={{ once: true }}
-                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1 } } }}
-                className="bg-white p-7 border border-dark/8 hover:border-gold/40 transition-colors group"
-              >
-                <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.2em] uppercase mb-3">AVAILABLE</p>
-                <h3 className="font-serif text-xl text-dark font-light mb-2">{unit.type}</h3>
-                <p className="text-dark/50 text-xs font-sans mb-5">{unit.size}</p>
-                <div className="border-t border-dark/8 pt-4 flex items-end justify-between">
-                  <div>
-                    <p className="text-dark/40 text-[9px] font-sans tracking-widest uppercase mb-1">From</p>
-                    <p className="font-serif text-lg text-dark">{unit.price}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setBrochureOpen(true)}
-                    className="text-[10px] font-sans font-semibold tracking-wider uppercase text-gold hover:underline flex items-center gap-1"
+            <div className="mt-14 space-y-14">
+              {data.descriptionBlocks.map((block, i) => {
+                if (block.type === 'text') return (
+                  <motion.p
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={vp}
+                    transition={{ duration: 0.7 }}
+                    className="text-dark/60 font-sans font-light text-[14.5px] leading-[2]"
                   >
-                    ENQUIRE <ArrowRight size={10} />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {data.soldOutUnits.length > 0 && (
-            <div>
-              <p className="text-dark/40 text-[10px] font-sans tracking-[0.2em] uppercase mb-4">Sold Out Units</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data.soldOutUnits.map((unit, i) => (
-                  <div key={i} className="bg-white/50 p-6 border border-dark/8 opacity-60">
-                    <p className="text-dark/40 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase mb-2">SOLD OUT</p>
-                    <h3 className="font-serif text-lg text-dark font-light mb-1">{unit.type}</h3>
-                    <p className="text-dark/40 text-xs font-sans">{unit.size}</p>
-                  </div>
-                ))}
-              </div>
+                    {block.content}
+                  </motion.p>
+                )
+                if (block.type === 'image') return (
+                  <motion.figure
+                    key={i}
+                    initial={{ opacity: 0, y: 32 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={vp}
+                    transition={{ duration: 0.85 }}
+                    className="-mx-8 lg:-mx-20"
+                  >
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image src={block.src!} alt={block.caption || ''} fill className="object-cover" sizes="90vw" quality={88} />
+                    </div>
+                    {block.caption && (
+                      <figcaption className="mt-3 px-8 lg:px-20 text-dark/35 text-[10px] font-sans tracking-[0.18em] uppercase">
+                        {block.caption}
+                      </figcaption>
+                    )}
+                  </motion.figure>
+                )
+                if (block.type === 'image-pair') return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 32 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={vp}
+                    transition={{ duration: 0.85 }}
+                    className="-mx-8 lg:-mx-20 grid grid-cols-2 gap-2"
+                  >
+                    {block.images?.map((img, j) => (
+                      <figure key={j}>
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <Image src={img.src} alt={img.caption || ''} fill className="object-cover" sizes="45vw" quality={85} />
+                        </div>
+                        {img.caption && (
+                          <figcaption className="mt-2 px-2 text-dark/35 text-[9px] font-sans tracking-[0.15em] uppercase">
+                            {img.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    ))}
+                  </motion.div>
+                )
+                return null
+              })}
+            </div>
+          ) : (
+            <div className="mt-10 space-y-6">
+              {data.descriptionParagraphs.map((para, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={vp}
+                  transition={{ duration: 0.65, delay: i * 0.1 }}
+                  className="text-dark/60 font-sans font-light text-[14.5px] leading-[2]"
+                >
+                  {para}
+                </motion.p>
+              ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* ── AMENITIES ── */}
-      <section className="py-24 lg:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LIFESTYLE</p>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-tight">World-Class Amenities</h2>
-            </div>
-            <div className="w-12 h-[2px] bg-gold mt-5" />
+      {/* ══════════════════════════════════════════════
+          AMENITIES — full-width stacked editorial
+      ══════════════════════════════════════════════ */}
+      <section>
+        <div className="bg-dark py-20 lg:py-28 px-8 lg:px-16 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.38em] uppercase mb-4">
+              Amenities & Lifestyle
+            </p>
+            <h2
+              className="font-serif text-white font-light leading-[1.1] max-w-2xl mx-auto"
+              style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)' }}
+            >
+              A Life of{' '}
+              <span style={{ fontStyle: 'italic', fontWeight: 300 }}>Privilege</span>
+            </h2>
           </motion.div>
+        </div>
 
-          {/* Image gallery grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
-            {data.amenities.map((amenity, i) => (
+        {data.amenities.map((amenity, i) => (
+          <div key={amenity.label} className={i % 2 === 0 ? 'bg-white' : 'bg-cream'}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, margin: '-40px' }}
+              transition={{ duration: 0.9 }}
+              className="relative w-full overflow-hidden"
+              style={{ height: '70vh' }}
+            >
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
-                className="group relative overflow-hidden aspect-[4/3]"
+                initial={{ scale: 1.06 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: false, margin: '-40px' }}
+                transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
               >
-                <Image src={amenity.image} alt={amenity.label} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent" />
-                <p className="absolute bottom-4 left-4 text-white text-xs font-sans font-semibold tracking-wider">{amenity.label}</p>
+                <Image
+                  src={amenity.image}
+                  alt={amenity.label}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                  quality={85}
+                />
               </motion.div>
-            ))}
-          </div>
+            </motion.div>
 
-          {/* Amenity list */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {data.amenityList.map((item) => (
-              <div key={item} className="flex items-start gap-3">
-                <Check size={13} className="text-gold mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                <span className="text-dark/65 text-sm font-sans font-light">{item}</span>
-              </div>
-            ))}
+            <div className="max-w-4xl mx-auto px-8 lg:px-16 py-14 lg:py-20">
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.75 }}
+              >
+                <div className="flex items-center gap-5 mb-6">
+                  <span className="text-gold font-sans text-[9px] font-semibold tracking-[0.3em] tabular-nums">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex-1 h-px bg-dark/10" />
+                </div>
+                <h3
+                  className="font-serif text-dark font-light leading-[1.15] mb-5"
+                  style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)' }}
+                >
+                  {amenity.label}
+                </h3>
+                <p className="text-dark/55 font-sans font-light text-[14px] leading-[1.95] max-w-2xl">
+                  {amenity.description}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        ))}
+
+        <div className="bg-dark py-20 lg:py-24 px-8 lg:px-16">
+          <div className="max-w-5xl mx-auto">
+            <SectionLabel>All Features</SectionLabel>
+            <SectionHeading light>Everything Included</SectionHeading>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={vp}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-0"
+            >
+              {data.amenityList.map((item, i) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={vp}
+                  transition={{ duration: 0.5, delay: i * 0.04 }}
+                  className="flex items-start gap-3 py-3.5 border-b border-white/6"
+                >
+                  <Check size={12} className="text-gold shrink-0 mt-[3px]" strokeWidth={2.5} />
+                  <span className="text-white/60 font-sans font-light text-[13px] leading-snug">{item}</span>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── VIRTUAL TOURS ── */}
-      {data.vrTours && data.vrTours.length > 0 && (
-        <VirtualTourSection tours={data.vrTours} />
+      {/* ══════════════════════════════════════════════
+          INTERIOR GALLERY (Ivy Park — interiorImages)
+      ══════════════════════════════════════════════ */}
+      {data.interiorImages && data.interiorImages.length > 0 && (
+        <section className="bg-cream py-24 lg:py-32">
+          <div className="max-w-6xl mx-auto px-8 lg:px-14">
+            <SectionLabel>Interiors</SectionLabel>
+            <SectionHeading>
+              Inside Your{' '}
+              <span style={{ fontStyle: 'italic', fontWeight: 300 }}>Residence</span>
+            </SectionHeading>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={vp}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-3"
+            >
+              {data.interiorImages.map((src, i) => (
+                <motion.div
+                  key={src}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={vp}
+                  transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  className={`relative overflow-hidden ${i === 0 ? 'md:col-span-2 aspect-[16/7]' : 'aspect-[4/3]'}`}
+                >
+                  <Image
+                    src={src}
+                    alt={`Interior ${i + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                    sizes={i === 0 ? '100vw' : '50vw'}
+                    quality={85}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
       )}
 
-      {/* ── WHY INVEST ── */}
-      <section className="py-24 lg:py-32 bg-dark">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">WHY INVEST</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-white leading-tight mb-5">
-                {data.isLaunchingSoon ? 'Why Secure Early?' : `Why Invest in ${data.name.split(' ')[0]} ${data.name.split(' ')[1]}?`}
-              </h2>
-              <div className="w-12 h-[2px] bg-gold mb-8" />
-              <ul className="space-y-4">
-                {data.investmentPoints.map((point) => (
-                  <li key={point} className="flex items-start gap-3">
-                    <Check size={13} className="text-gold mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <span className="text-white/65 text-sm font-sans font-light leading-snug">{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+      {/* ══════════════════════════════════════════════
+          FLOOR PLANS & UNIT TYPES
+      ══════════════════════════════════════════════ */}
+      <section id="units" className="bg-dark py-24 lg:py-32">
+        <div className="max-w-5xl mx-auto px-8 lg:px-14">
+          <SectionLabel>Floor Plans & Pricing</SectionLabel>
+          <SectionHeading light>
+            Choose Your{' '}
+            <span style={{ fontStyle: 'italic', fontWeight: 300 }}>Residence</span>
+          </SectionHeading>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col gap-5">
-              <div className="border border-white/10 p-7">
-                <p className="text-white/30 text-[10px] font-sans tracking-[0.2em] uppercase mb-3">LOCATION ADVANTAGES</p>
-                <ul className="space-y-2.5">
-                  {data.locationAdvantages.map((adv) => (
-                    <li key={adv} className="flex items-center gap-3 text-white/60 text-sm font-sans font-light">
-                      <span className="w-1 h-1 rounded-full bg-gold flex-shrink-0" />{adv}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <button
-                type="button"
-                onClick={() => setBrochureOpen(true)}
-                className="flex items-center justify-center gap-2 border border-gold text-gold py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold hover:text-dark transition-all duration-300"
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={vp}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/8"
+          >
+            {allUnits.map((unit, i) => (
+              <motion.div
+                key={unit.type}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.65, delay: i * 0.1 }}
+                className={`relative p-8 flex flex-col ${unit.available ? 'bg-dark' : 'bg-[#0f0f0f]'}`}
               >
-                <Download size={13} />
-                DOWNLOAD FULL BROCHURE
-              </button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+                <div
+                  className="relative border border-white/10 mb-7 flex items-center justify-center overflow-hidden"
+                  style={{ aspectRatio: '1 / 1' }}
+                >
+                  {(['top-2 left-2 border-t border-l', 'top-2 right-2 border-t border-r',
+                    'bottom-2 left-2 border-b border-l', 'bottom-2 right-2 border-b border-r'] as const
+                  ).map((cls) => (
+                    <div key={cls} className={`absolute w-4 h-4 ${cls} ${unit.available ? 'border-gold/40' : 'border-white/10'}`} />
+                  ))}
+                  <div className="text-center select-none">
+                    <p
+                      className="font-serif font-light leading-none mb-1"
+                      style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', color: unit.available ? 'rgba(201,168,76,0.12)' : 'rgba(255,255,255,0.04)' }}
+                    >
+                      {unit.type.match(/\d/)?.[0] ?? '—'}
+                    </p>
+                    <p className="text-[9px] font-sans tracking-[0.22em] uppercase" style={{ color: 'rgba(255,255,255,0.08)' }}>
+                      {unit.type.toLowerCase().includes('bedroom') ? 'Bedroom' : 'Unit'}
+                    </p>
+                    <div className="mt-3 mx-auto" style={{ width: 32, height: 1, background: unit.available ? 'rgba(201,168,76,0.3)' : 'rgba(255,255,255,0.08)' }} />
+                    <p
+                      className="mt-3 font-sans font-light tabular-nums"
+                      style={{ fontSize: '0.7rem', color: unit.available ? 'rgba(201,168,76,0.5)' : 'rgba(255,255,255,0.12)', letterSpacing: '0.12em' }}
+                    >
+                      {unit.size}
+                    </p>
+                  </div>
+                </div>
 
-      {/* ── LOCATION MAP ── */}
-      <section className="py-24 lg:py-32 bg-cream">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-10">
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LOCATION</p>
-            <h2 className="font-serif text-4xl font-light text-dark">{data.locationFull}</h2>
-            <div className="w-12 h-[2px] bg-gold mt-4" />
+                {!unit.available && (
+                  <div className="mb-3 self-start bg-white/6 border border-white/10 px-2.5 py-1">
+                    <span className="text-white/30 text-[7.5px] font-sans tracking-[0.2em] uppercase">Sold Out</span>
+                  </div>
+                )}
+
+                <h3 className="text-white/80 font-sans text-[13px] font-semibold mb-1 leading-snug">{unit.type}</h3>
+                <p className="text-white/35 font-sans text-xs mb-5">{unit.size}</p>
+                <p
+                  className={`font-serif mt-auto ${unit.available ? 'text-gold' : 'text-white/18'}`}
+                  style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', fontWeight: 300 }}
+                >
+                  {unit.price}
+                </p>
+
+                {unit.available && (
+                  <button
+                    onClick={() => setBrochureOpen(true)}
+                    className="mt-5 self-start inline-flex items-center gap-1.5 text-[8.5px] font-sans font-semibold text-gold/60 hover:text-gold uppercase tracking-[0.22em] transition-colors group"
+                  >
+                    Enquire Now
+                    <ArrowRight size={9} className="group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                )}
+              </motion.div>
+            ))}
           </motion.div>
-          <div className="w-full h-[420px] overflow-hidden">
-            <iframe
-              src={data.mapSrc}
-              width="100%"
-              height="100%"
-              className="border-0"
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={`${data.name} location map`}
-            />
-          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={vp}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-8 text-white/25 text-[11px] font-sans font-light text-center"
+          >
+            Detailed floor plan drawings available in the brochure.{' '}
+            <button onClick={() => setBrochureOpen(true)} className="text-gold/60 hover:text-gold underline underline-offset-2 transition-colors">
+              Download brochure
+            </button>{' '}
+            to view all layouts.
+          </motion.p>
         </div>
       </section>
 
-      {/* ── PAYMENT PLANS ── */}
-      {!data.isLaunchingSoon && (
-        <section className="py-24 lg:py-32 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14 text-center">
-              <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">FLEXIBLE OPTIONS</p>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-dark">Payment Plans</h2>
-              <div className="w-12 h-[2px] bg-gold mx-auto mt-5" />
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  plan: 'Instalment Plan',
-                  icon: '⬤',
-                  steps: ['20% Deposit within 7 Days', 'Balance spread throughout construction period'],
-                  highlight: false,
-                },
-                {
-                  plan: 'Cash Purchase',
-                  icon: '◆',
-                  steps: ['Balance within 30 Days of signing', 'Attractive cash discount available'],
-                  highlight: true,
-                },
-                {
-                  plan: 'Mortgage Purchase',
-                  icon: '▲',
-                  steps: ['20% Deposit to secure unit', 'Balance financed by partner bank upon completion'],
-                  highlight: false,
-                },
-              ].map((p, i) => (
-                <motion.div
-                  key={p.plan}
+      {/* ══════════════════════════════════════════════
+          VIRTUAL TOURS (Luckinn Ivy)
+      ══════════════════════════════════════════════ */}
+      {data.vrTours && data.vrTours.length > 0 && (
+        <section className="bg-white py-24 lg:py-32">
+          <div className="max-w-5xl mx-auto px-8 lg:px-14">
+            <SectionLabel>Virtual Tours</SectionLabel>
+            <SectionHeading>
+              Explore in{' '}
+              <span style={{ fontStyle: 'italic', fontWeight: 300 }}>360°</span>
+            </SectionHeading>
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {data.vrTours.map((tour, i) => (
+                <motion.a
+                  key={tour.title}
+                  href={tour.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                  className={`p-8 border ${p.highlight ? 'bg-dark border-dark' : 'bg-white border-dark/10'}`}
+                  viewport={vp}
+                  transition={{ duration: 0.65, delay: i * 0.1 }}
+                  className="group block"
                 >
-                  <p className={`text-xs font-sans mb-6 ${p.highlight ? 'text-gold' : 'text-dark/30'}`}>{p.icon}</p>
-                  <h3 className={`font-serif text-2xl font-light mb-6 ${p.highlight ? 'text-white' : 'text-dark'}`}>{p.plan}</h3>
-                  <ul className="space-y-3">
-                    {p.steps.map(step => (
-                      <li key={step} className={`flex items-start gap-2.5 text-sm font-sans font-light ${p.highlight ? 'text-white/65' : 'text-dark/60'}`}>
-                        <Check size={12} className="text-gold mt-0.5 flex-shrink-0" />
-                        {step}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
+                  <div className="relative aspect-[4/3] overflow-hidden mb-4">
+                    <Image src={tour.thumbnail} alt={tour.title} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" sizes="33vw" quality={80} />
+                    <div className="absolute inset-0 bg-dark/40 group-hover:bg-dark/20 transition-colors duration-300 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-full border-2 border-white/60 flex items-center justify-center group-hover:border-gold group-hover:scale-110 transition-all duration-300">
+                        <div className="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-l-[14px] border-l-white ml-1 group-hover:border-l-gold transition-colors" />
+                      </div>
+                    </div>
+                    <div className="absolute top-3 left-3 bg-dark/60 backdrop-blur-sm px-2.5 py-1">
+                      <span className="text-white text-[8px] font-sans tracking-[0.18em]">{tour.category}</span>
+                    </div>
+                  </div>
+                  <h4 className="font-serif text-dark text-xl font-light mb-1.5 group-hover:text-gold transition-colors">{tour.title}</h4>
+                  <p className="text-dark/45 text-[12px] font-sans font-light leading-[1.7]">{tour.description}</p>
+                  <div className="mt-3 flex items-center gap-1.5 text-[9px] font-sans font-semibold tracking-[0.18em] uppercase text-gold/70 group-hover:text-gold transition-colors">
+                    Launch Tour <ExternalLink size={9} />
+                  </div>
+                </motion.a>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ── BROCHURE / REGISTER INTEREST ── */}
-      <section className="py-20 lg:py-28 bg-cream border-t border-dark/8">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            {data.isLaunchingSoon ? (
-              <>
-                <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">REGISTER YOUR INTEREST</p>
-                <h2 className="font-serif text-4xl md:text-5xl font-light text-dark mb-4">Be First. Get Priority Access.</h2>
-                <div className="w-12 h-[2px] bg-gold mx-auto mb-7" />
-                <p className="text-dark/55 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-8">
-                  Register today for priority unit selection, exclusive pre-launch pricing, and the 0% transaction fee offer.
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">LEARN MORE</p>
-                <h2 className="font-serif text-4xl md:text-5xl font-light text-dark mb-4">Download the Full Brochure</h2>
-                <div className="w-12 h-[2px] bg-gold mx-auto mb-7" />
-                <p className="text-dark/55 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-8">
-                  Get the complete project overview including floor plans, specifications, and pricing in our detailed brochure.
-                </p>
-              </>
-            )}
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                type="button"
+      {/* ══════════════════════════════════════════════
+          WHY INVEST + LOCATION
+      ══════════════════════════════════════════════ */}
+      <section className="bg-cream py-24 lg:py-32">
+        <div className="max-w-5xl mx-auto px-8 lg:px-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
+            <div>
+              <SectionLabel>Investment Case</SectionLabel>
+              <SectionHeading>Why Invest Here</SectionHeading>
+              <ul className="mt-10 space-y-6">
+                {data.investmentPoints.map((point, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -22 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={vp}
+                    transition={{ duration: 0.6, delay: i * 0.08 }}
+                    className="flex items-start gap-4"
+                  >
+                    <span className="text-gold font-sans text-[9px] font-semibold tracking-widest mt-0.5 shrink-0 tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="text-dark/62 font-sans font-light text-[13.5px] leading-[1.85]">{point}</p>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.button
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.6, delay: 0.5 }}
                 onClick={() => setBrochureOpen(true)}
-                className="inline-flex items-center gap-2.5 bg-dark text-white px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold transition-colors duration-300"
+                className="mt-12 inline-flex items-center gap-2.5 bg-dark text-white px-7 py-3.5 text-[9px] font-sans font-semibold tracking-[0.22em] uppercase hover:bg-gold hover:text-dark transition-colors duration-300 group"
               >
-                <Download size={13} />
-                {data.isLaunchingSoon ? 'REGISTER & DOWNLOAD BROCHURE' : 'DOWNLOAD BROCHURE'}
+                <Download size={11} />
+                DOWNLOAD BROCHURE
+                <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
+              </motion.button>
+            </div>
+
+            <div>
+              <SectionLabel>Location</SectionLabel>
+              <SectionHeading>Prime Positioning</SectionHeading>
+              <ul className="mt-10 space-y-5">
+                {data.locationAdvantages.map((adv, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: 22 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={vp}
+                    transition={{ duration: 0.6, delay: i * 0.08 }}
+                    className="flex items-start gap-3.5 pb-5 border-b border-dark/8 last:border-0"
+                  >
+                    <MapPin size={11} className="text-gold shrink-0 mt-0.5" />
+                    <p className="text-dark/62 font-sans font-light text-[13.5px] leading-snug">{adv}</p>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.a
+                href="tel:+254118266666"
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="mt-12 inline-flex items-center gap-2.5 border border-dark/25 text-dark px-7 py-3.5 text-[9px] font-sans font-semibold tracking-[0.22em] uppercase hover:border-dark hover:bg-dark hover:text-white transition-all duration-300"
+              >
+                <Phone size={11} />
+                CALL US NOW
+              </motion.a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          MAP
+      ══════════════════════════════════════════════ */}
+      <section className="bg-white">
+        <div className="max-w-5xl mx-auto px-8 lg:px-14 pt-24 lg:pt-32 pb-0">
+          <SectionLabel>Find Us</SectionLabel>
+          <SectionHeading>
+            <span style={{ fontStyle: 'italic', fontWeight: 300 }}>{data.locationFull}</span>
+          </SectionHeading>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={vp}
+          transition={{ duration: 0.85 }}
+          className="mt-12 w-full"
+          style={{ height: '480px' }}
+        >
+          <iframe
+            src={data.mapSrc}
+            width="100%"
+            height="100%"
+            style={{ border: 0, display: 'block' }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </motion.div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          CTA BANNER
+      ══════════════════════════════════════════════ */}
+      <section className="bg-dark py-24 lg:py-28">
+        <div className="max-w-4xl mx-auto px-8 lg:px-14 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
+            transition={{ duration: 0.85 }}
+          >
+            <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.38em] uppercase mb-5">
+              {data.statusLabel}
+            </p>
+            <h2
+              className="font-serif text-white font-light leading-[1.1] mb-7"
+              style={{ fontSize: 'clamp(2rem, 4.5vw, 3.6rem)' }}
+            >
+              Secure Your Place at{' '}
+              <span style={{ fontStyle: 'italic' }}>{data.name}</span>
+            </h2>
+            <p className="text-white/45 font-sans font-light text-sm max-w-md mx-auto mb-10 leading-[1.85]">
+              Download the full brochure for detailed floor plans, pricing, payment schedules, and developer information.
+            </p>
+            <div className="flex items-center justify-center gap-5 flex-wrap">
+              <button
+                onClick={() => setBrochureOpen(true)}
+                className="inline-flex items-center gap-2.5 bg-gold text-dark px-8 py-4 text-[10px] font-sans font-semibold tracking-[0.22em] uppercase hover:bg-gold-light transition-colors duration-300 group"
+              >
+                <Download size={11} />
+                DOWNLOAD BROCHURE
+                <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
               <a
                 href="tel:+254118266666"
-                className="inline-flex items-center gap-2.5 border border-dark text-dark px-10 py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-dark hover:text-white transition-all duration-300"
+                className="inline-flex items-center gap-2.5 border border-white/35 text-white px-8 py-4 text-[10px] font-sans font-semibold tracking-[0.22em] uppercase hover:border-white/70 hover:bg-white/8 transition-all duration-300"
               >
-                <Phone size={13} />
-                CALL US NOW
+                <Phone size={11} />
+                +254 118 266 666
               </a>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── RELATED PROJECTS ── */}
-      <section className="py-24 lg:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-12">
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">EXPLORE MORE</p>
-            <h2 className="font-serif text-4xl font-light text-dark">Other Developments</h2>
-            <div className="w-12 h-[2px] bg-gold mt-4" />
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {related.map((proj, i) => (
+      {/* ══════════════════════════════════════════════
+          RELATED PROJECTS
+      ══════════════════════════════════════════════ */}
+      <section className="bg-white py-24 lg:py-32">
+        <div className="max-w-6xl mx-auto px-8 lg:px-14">
+          <SectionLabel>Explore More</SectionLabel>
+          <SectionHeading>
+            Other{' '}
+            <span style={{ fontStyle: 'italic', fontWeight: 300 }}>Developments</span>
+          </SectionHeading>
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-7">
+            {others.map((proj, i) => (
               <motion.div
                 key={proj.slug}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
+                viewport={vp}
+                transition={{ duration: 0.7, delay: i * 0.12 }}
               >
-                <Link href={`/${proj.slug}`} className="group block relative overflow-hidden">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image src={proj.heroImage} alt={proj.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="33vw" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/75 via-dark/20 to-transparent" />
-                    <div className="absolute bottom-0 p-5">
-                      <p className="text-gold text-[9px] font-sans font-semibold tracking-widest uppercase mb-1">{proj.locationLabel}</p>
-                      <h3 className="font-serif text-white text-xl font-light">{proj.name}</h3>
-                      <p className="text-white/50 text-[10px] font-sans mt-1 flex items-center gap-1">
-                        VIEW PROJECT <ArrowRight size={10} />
-                      </p>
+                <Link href={`/${proj.slug}`} className="group block">
+                  <div className="relative aspect-[4/3] overflow-hidden mb-5">
+                    <Image
+                      src={proj.heroImage}
+                      alt={proj.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                      sizes="33vw"
+                      quality={82}
+                    />
+                    <div className="absolute inset-0 bg-dark/20 group-hover:bg-dark/10 transition-colors duration-300" />
+                    <div className="absolute top-3 left-3 bg-dark/65 backdrop-blur-sm px-2.5 py-1">
+                      <span className="text-white text-[8px] font-sans font-semibold tracking-[0.18em]">{proj.statusLabel}</span>
                     </div>
+                  </div>
+                  <p className="text-gold text-[8.5px] font-sans font-semibold tracking-[0.22em] uppercase mb-2">{proj.locationLabel}</p>
+                  <h3 className="font-serif text-dark text-xl font-light leading-tight mb-3 group-hover:text-gold transition-colors duration-300">
+                    {proj.name}
+                  </h3>
+                  <div className="inline-flex items-center gap-1.5 text-[9px] font-sans font-semibold tracking-[0.2em] uppercase text-dark/40 group-hover:text-gold transition-colors duration-300">
+                    EXPLORE <ArrowRight size={9} className="group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </Link>
               </motion.div>
