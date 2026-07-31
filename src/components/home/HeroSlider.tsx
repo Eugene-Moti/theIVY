@@ -16,7 +16,7 @@ const slides = [
     cta: 'EXPLORE PROJECT',
   },
   {
-    image: encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'),
+    image: encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Night new_Ivy Park.jpg'),
     location: 'KILIMANI, NAIROBI',
     title: 'Ivy Park\nResidence',
     subtitle: 'The Future of Modern Living and Investment in Kilimani',
@@ -24,7 +24,7 @@ const slides = [
     cta: 'EXPLORE PROJECT',
   },
   {
-    image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'),
+    image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
     location: 'WESTLANDS, NAIROBI',
     title: 'Luckinn Ivy\nResidence',
     subtitle: 'Premium Urban Living in the Heart of Westlands',
@@ -32,7 +32,7 @@ const slides = [
     cta: 'EXPLORE PROJECT',
   },
   {
-    image: encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
+    image: encodeURI('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'),
     location: 'KILELESHWA — NOW SELLING',
     title: 'Ivy Myst',
     subtitle: '1, 2 & 3 Bedroom Luxury Residences · Garden Terraces · Completion Aug 2029',
