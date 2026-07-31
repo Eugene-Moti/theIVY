@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const slides = [
   {
@@ -59,126 +59,124 @@ export default function HeroSlider() {
     goTo((current + 1) % slides.length)
   }, [current, goTo])
 
-  /* Auto-advance every 6 seconds */
   useEffect(() => {
     const timer = setInterval(next, 6000)
     return () => clearInterval(timer)
   }, [next])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-dark">
+    <section className="relative h-screen flex flex-col overflow-hidden bg-dark">
 
-      {/* ── Slides ── */}
-      <AnimatePresence mode="sync">
-        <motion.div
-          key={`slide-${current}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.6, ease: 'easeInOut' }}
-          className="absolute inset-0"
-        >
-          {/* Ken Burns zoom on the image itself */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute inset-0 ken-burns">
-              <Image
-                src={slides[current].image}
-                alt={slides[current].title.replace('\n', ' ')}
-                fill
-                className="object-cover"
-                priority={current === 0}
-                sizes="100vw"
-              />
+      {/* ── Image area ── */}
+      <div className="relative flex-1 min-h-0 overflow-hidden">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={`slide-${current}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.6, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute inset-0 ken-burns">
+                <Image
+                  src={slides[current].image}
+                  alt={slides[current].title.replace('\n', ' ')}
+                  fill
+                  className="object-cover"
+                  priority={current === 0}
+                  sizes="100vw"
+                />
+              </div>
             </div>
-          </div>
+            {/* Subtle gradient only at bottom edge to blend into panel */}
+            <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-dark/60 to-transparent" />
+          </motion.div>
+        </AnimatePresence>
 
-          {/* Gradient overlay — stronger at bottom for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/15" />
-        </motion.div>
-      </AnimatePresence>
+        {/* Slide counter — stays in image area */}
+        <div className="absolute top-1/2 right-6 lg:right-10 -translate-y-1/2 hidden lg:flex flex-col items-center gap-2 text-white/35">
+          <span className="font-sans text-xs tracking-widest">{String(current + 1).padStart(2, '0')}</span>
+          <div className="w-px h-12 bg-white/18" />
+          <span className="font-sans text-xs tracking-widest">{String(slides.length).padStart(2, '0')}</span>
+        </div>
+      </div>
 
-      {/* ── Slide content ── */}
-      <div className="relative h-full flex flex-col items-center justify-center text-center text-white px-6">
+      {/* ── Content panel — below image ── */}
+      <div className="shrink-0 bg-dark border-t border-white/8 px-7 lg:px-14 pt-6 pb-7 lg:pt-7 lg:pb-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${current}`}
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.85, delay: 0.25, ease: 'easeOut' }}
-            className="max-w-4xl w-full"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
           >
-            {/* Location label */}
-            <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-6">
-              {slides[current].location}
-            </p>
+            {/* Main row: left info | divider | right actions */}
+            <div className="flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-12">
 
-            {/* Main heading — large serif */}
-            <h1 className="font-serif text-[clamp(3rem,8vw,6.5rem)] font-light leading-[1.04] mb-7 whitespace-pre-line">
-              {slides[current].title}
-            </h1>
+              {/* Left: location + title */}
+              <div className="lg:flex-1 min-w-0">
+                <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.32em] uppercase mb-2.5">
+                  {slides[current].location}
+                </p>
+                <h1
+                  className="font-serif text-white font-light leading-[1.06] whitespace-pre-line"
+                  style={{ fontSize: 'clamp(1.7rem, 3.2vw, 2.8rem)' }}
+                >
+                  {slides[current].title}
+                </h1>
+              </div>
 
-            {/* Divider */}
-            <div className="flex items-center justify-center gap-4 mb-7">
-              <div className="h-px w-12 bg-gold/60" />
-              <p className="text-white/75 text-xs font-sans font-light tracking-[0.12em] max-w-sm">
-                {slides[current].subtitle}
-              </p>
-              <div className="h-px w-12 bg-gold/60" />
+              {/* Vertical divider — desktop only */}
+              <div className="hidden lg:block w-px self-stretch bg-white/10 shrink-0" />
+
+              {/* Right: subtitle + CTAs */}
+              <div className="lg:w-[360px] shrink-0">
+                <p className="text-white/50 text-[12.5px] font-sans font-light leading-[1.7] mb-5">
+                  {slides[current].subtitle}
+                </p>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <Link
+                    href={slides[current].href}
+                    className="inline-flex items-center gap-2.5 bg-gold text-dark px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors duration-300 group"
+                  >
+                    {slides[current].cta}
+                    <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                  <a
+                    href="tel:+254118266666"
+                    className="inline-block border border-white/40 text-white px-6 py-3 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase hover:border-white/80 hover:bg-white/8 transition-all duration-300"
+                  >
+                    CALL US
+                  </a>
+                </div>
+              </div>
             </div>
 
-            {/* CTAs */}
-            <div className="flex items-center justify-center gap-5 flex-wrap">
-              <Link
-                href={slides[current].href}
-                className="inline-flex items-center gap-2.5 bg-gold text-dark px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors duration-300 group"
-              >
-                {slides[current].cta}
-                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <a
-                href="tel:+254118266666"
-                className="inline-block border border-white/60 text-white px-8 py-3.5 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:border-white hover:bg-white/10 transition-all duration-300"
-              >
-                CALL US
-              </a>
+            {/* Slide indicators — bottom of panel */}
+            <div className="flex items-center gap-3 mt-5 pt-5 border-t border-white/8">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  className={`block transition-all duration-500 ${
+                    i === current
+                      ? 'w-10 h-[2px] bg-gold'
+                      : 'w-4 h-[2px] bg-white/30 hover:bg-white/60'
+                  }`}
+                />
+              ))}
+              <span className="ml-auto text-white/22 text-[9px] font-sans tracking-widest">
+                {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+              </span>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* ── Slide progress indicators ── */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-3 z-10">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            aria-label={`Slide ${i + 1}`}
-            className={`block transition-all duration-500 ${
-              i === current
-                ? 'w-10 h-[2px] bg-gold'
-                : 'w-4 h-[2px] bg-white/40 hover:bg-white/70'
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* ── Slide counter (top-right) ── */}
-      <div className="absolute top-1/2 right-6 lg:right-10 -translate-y-1/2 flex flex-col items-center gap-2 text-white/40 hidden lg:flex">
-        <span className="font-sans text-xs tracking-widest">{String(current + 1).padStart(2, '0')}</span>
-        <div className="w-px h-12 bg-white/20" />
-        <span className="font-sans text-xs tracking-widest">{String(slides.length).padStart(2, '0')}</span>
-      </div>
-
-      {/* ── Scroll cue ── */}
-      <motion.div
-        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/50 z-10"
-        animate={{ y: [0, 7, 0] }}
-        transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-      >
-        <span className="font-sans text-[9px] tracking-[0.25em] uppercase">Scroll</span>
-        <ChevronDown size={14} strokeWidth={1.5} />
-      </motion.div>
     </section>
   )
 }

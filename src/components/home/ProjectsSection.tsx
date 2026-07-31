@@ -58,30 +58,30 @@ const projects = [
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.13 } },
+  visible: { transition: { staggerChildren: 0.2 } },
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, x: -52 },
+  hidden: { opacity: 0, x: -80 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.82, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
   },
 }
 
 export default function ProjectsSection() {
   return (
-    <section className="bg-white py-20 lg:py-28">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <section className="bg-white py-24 lg:py-32">
+      <div className="max-w-[1360px] mx-auto px-8 lg:px-14">
 
-        {/* Eyebrow — HassConsult style: label · rule · link */}
+        {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, x: -24 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="flex items-center gap-5 mb-16"
+          className="flex items-center gap-5 mb-20"
         >
           <span className="text-[10px] font-sans font-semibold tracking-[0.32em] uppercase text-dark/35 whitespace-nowrap">
             Our Portfolio
@@ -96,13 +96,13 @@ export default function ProjectsSection() {
           </Link>
         </motion.div>
 
-        {/* Card grid */}
+        {/* 2-column wide card grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-64px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6"
+          viewport={{ once: true, margin: '-80px' }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-14 lg:gap-20"
         >
           {projects.map((project) => (
             <motion.article
@@ -110,66 +110,58 @@ export default function ProjectsSection() {
               variants={cardVariants}
               className="group flex flex-col"
             >
-              {/* Image */}
+              {/* Image — wider aspect ratio so images are prominent */}
               <Link
                 href={project.href}
-                className="block relative overflow-hidden mb-5"
-                style={{ aspectRatio: '4 / 3' }}
+                className="block relative overflow-hidden mb-7"
+                style={{ aspectRatio: '3 / 2' }}
               >
                 <Image
                   src={project.image}
                   alt={`${project.boldPart} ${project.lightPart}`}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   quality={88}
                 />
                 {/* Status badge */}
-                <div className="absolute top-3 left-3 bg-dark/72 backdrop-blur-sm px-2.5 py-[5px]">
-                  <span className="text-white text-[8px] font-sans font-semibold tracking-[0.18em]">
+                <div className="absolute top-4 left-4 bg-dark/72 backdrop-blur-sm px-3 py-[6px]">
+                  <span className="text-white text-[8px] font-sans font-semibold tracking-[0.2em]">
                     {project.status}
                   </span>
                 </div>
               </Link>
 
-              {/* Text content */}
+              {/* Text */}
               <div className="flex flex-col flex-1">
-                {/* Location */}
-                <div className="flex items-center gap-1.5 mb-3">
+                <div className="flex items-center gap-1.5 mb-3.5">
                   <MapPin size={10} className="text-gold flex-shrink-0" />
-                  <p className="text-[9px] font-sans font-semibold tracking-[0.22em] uppercase text-gold">
+                  <p className="text-[9px] font-sans font-semibold tracking-[0.25em] uppercase text-gold">
                     {project.location}
                   </p>
                 </div>
 
-                {/* Mixed-case title — HassConsult style */}
-                <Link href={project.href} className="block mb-3">
+                <Link href={project.href} className="block mb-4">
                   <h3
-                    className="font-serif leading-[1.18] text-dark hover:text-gold transition-colors duration-300"
-                    style={{ fontSize: 'clamp(1.12rem, 1.55vw, 1.42rem)' }}
+                    className="font-serif leading-[1.15] text-dark hover:text-gold transition-colors duration-300"
+                    style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2.2rem)' }}
                   >
-                    <span className="font-normal uppercase tracking-tight">
-                      {project.boldPart}
-                    </span>{' '}
-                    <span style={{ fontStyle: 'italic', fontWeight: 300 }}>
-                      {project.lightPart}
-                    </span>
+                    <span className="font-normal uppercase tracking-tight">{project.boldPart}</span>{' '}
+                    <span style={{ fontStyle: 'italic', fontWeight: 300 }}>{project.lightPart}</span>
                   </h3>
                 </Link>
 
-                {/* Description */}
-                <p className="text-dark/48 text-[12.5px] font-sans font-light leading-[1.8] mb-6 flex-1">
+                <p className="text-dark/48 text-[13px] font-sans font-light leading-[1.85] mb-7 flex-1">
                   {project.description}
                 </p>
 
-                {/* CTA — dark pill button */}
                 <Link
                   href={project.href}
-                  className="self-start inline-flex items-center gap-2 bg-dark text-white text-[9px] font-sans font-semibold tracking-[0.22em] uppercase px-5 py-3 hover:bg-gold hover:text-dark transition-colors duration-300 group/btn"
+                  className="self-start inline-flex items-center gap-2.5 bg-dark text-white text-[9px] font-sans font-semibold tracking-[0.22em] uppercase px-6 py-3.5 hover:bg-gold hover:text-dark transition-colors duration-300 group/btn"
                 >
                   {project.cta}
                   <ArrowRight
-                    size={9}
+                    size={10}
                     className="group-hover/btn:translate-x-0.5 transition-transform"
                   />
                 </Link>
