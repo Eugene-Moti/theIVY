@@ -282,18 +282,11 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               key={amenity.label}
               className={`flex flex-col lg:flex-row lg:h-[90vh] ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
             >
-              {/* ── Image panel — clip-path curtain reveal ── */}
-              <motion.div
-                className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full"
-                initial={{ clipPath: imgLeft ? 'inset(0% 100% 0% 0%)' : 'inset(0% 0% 0% 100%)' }}
-                whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-                viewport={{ once: false, margin: '-20px' }}
-                transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
-              >
-                {/* Inner image counter-scales so it fills the gap as the curtain opens */}
+              {/* ── Image panel — curtain wipe reveal ── */}
+              <div className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full">
                 <motion.div
                   className="absolute inset-0"
-                  initial={{ scale: 1.14 }}
+                  initial={{ scale: 1.08 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: false, margin: '-20px' }}
                   transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
@@ -307,7 +300,15 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     quality={87}
                   />
                 </motion.div>
-              </motion.div>
+                <motion.div
+                  className="absolute inset-0 bg-dark"
+                  style={{ originX: imgLeft ? 0 : 1 }}
+                  initial={{ scaleX: 1 }}
+                  whileInView={{ scaleX: 0 }}
+                  viewport={{ once: false, margin: '-20px' }}
+                  transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
+                />
+              </div>
 
               {/* ── Text panel — slides in from opposite side ── */}
               <div

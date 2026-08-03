@@ -810,27 +810,32 @@ export default function IvyMystTemplate() {
               className={`flex flex-col lg:flex-row lg:h-[90vh] ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
             >
               {/* ── Image panel — clip-path curtain reveal ── */}
-              <motion.div
+              {/* ── Image panel — curtain wipe reveal ── */}
+              <div
                 className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full cursor-zoom-in group"
-                initial={{ clipPath: imgLeft ? 'inset(0% 100% 0% 0%)' : 'inset(0% 0% 0% 100%)' }}
-                whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-                viewport={{ once: false, margin: '-20px' }}
-                transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
                 onClick={() => openLB(amenityImages, amenity.lbIndex)}
               >
                 <motion.div
                   className="absolute inset-0"
-                  initial={{ scale: 1.14 }}
+                  initial={{ scale: 1.08 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: false, margin: '-20px' }}
                   transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 55vw" quality={88} />
                 </motion.div>
-                <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <motion.div
+                  className="absolute inset-0 bg-dark"
+                  style={{ originX: imgLeft ? 0 : 1 }}
+                  initial={{ scaleX: 1 }}
+                  whileInView={{ scaleX: 0 }}
+                  viewport={{ once: false, margin: '-20px' }}
+                  transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
+                />
+                <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                   <ZoomIn size={15} className="text-white" />
                 </div>
-              </motion.div>
+              </div>
 
               {/* ── Text panel — slides in from opposite side ── */}
               <div className={`relative overflow-hidden lg:w-[45%] flex items-center ${i % 2 === 0 ? 'bg-white' : 'bg-cream'}`}>
