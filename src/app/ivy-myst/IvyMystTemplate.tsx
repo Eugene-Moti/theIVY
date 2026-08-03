@@ -37,16 +37,6 @@ const wingBPlans: LightboxImage[] = [
   { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 07&08 -1BR 79SQM.jpg'), label: 'Units 7 & 8 — 1 Bedroom · 79 SQM' },
 ]
 
-const amenityImages: LightboxImage[] = [
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'), label: 'Celestial Rooftop Pool' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'), label: 'Rooftop Restaurant' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop bar area.png'), label: 'Rooftop Bar & Lounge' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop lounge area night view.png'), label: 'Rooftop Night Lounge' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'), label: 'Gym & Yoga Studio' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'), label: 'Garden Stream' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/indoor restaurant.png'), label: 'Indoor Restaurant' },
-  { src: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'), label: 'Grand Reception' },
-]
 
 const interiorImages: LightboxImage[] = [
   { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'), label: 'Living & Dining' },
@@ -122,31 +112,26 @@ const amenityShowcases = [
   {
     label: 'Celestial Rooftop Pool',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'),
-    lbIndex: 0,
     description: 'An infinity pool with signature waterfall, positioned at the apex of Ivy Myst. Overlooking the Nairobi skyline, the Celestial Pool is a landmark in itself — a destination for morning laps and twilight gatherings high above the city.',
   },
   {
     label: 'Rooftop Restaurant & Bar',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'),
-    lbIndex: 1,
     description: "Nairobi's most elevated dining experience combines panoramic city views with an inspired menu. As evening falls, the rooftop bar takes centre stage — signature cocktails and a shimmering skyline backdrop unlike anywhere else in the city.",
   },
   {
     label: 'Gym & Yoga Studio',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'),
-    lbIndex: 4,
     description: 'A state-of-the-art gymnasium paired with a dedicated yoga and meditation studio — designed for residents who prioritise wellness as a way of life. Every piece of equipment chosen with precision, every corner of the studio built for focus.',
   },
   {
     label: 'Garden Stream',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'),
-    lbIndex: 5,
     description: "A sculptural water feature flowing through Ivy Myst's lush landscaped gardens — a rare element of tranquillity in the heart of Kileleshwa. Nature integrated into architecture, creating a living centrepiece at the development's core.",
   },
   {
     label: 'Grand Reception',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'),
-    lbIndex: 7,
     description: "First impressions define a residence. Ivy Myst's grand reception lobby is a sculptural statement — soaring ceilings, premium marble finishes, and dedicated concierge service that sets the standard from the moment you arrive.",
   },
 ]
@@ -809,17 +794,11 @@ export default function IvyMystTemplate() {
               key={amenity.label}
               className={`flex flex-col lg:flex-row lg:h-[90vh] ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
             >
-              {/* ── Image panel — clip-path curtain reveal ── */}
               {/* ── Image panel — curtain wipe reveal ── */}
-              <div
-                className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full cursor-zoom-in group"
-                onClick={() => openLB(amenityImages, amenity.lbIndex)}
-              >
-                <motion.div
-                  className="absolute inset-0"
-                >
+              <div className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full">
+                <div className="absolute inset-0">
                   <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 80vw" quality={92} />
-                </motion.div>
+                </div>
                 <motion.div
                   className="absolute inset-0 bg-dark"
                   style={{ originX: imgLeft ? 0 : 1 }}
@@ -828,9 +807,6 @@ export default function IvyMystTemplate() {
                   viewport={{ once: false, margin: '-20px' }}
                   transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
                 />
-                <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                  <ZoomIn size={15} className="text-white" />
-                </div>
               </div>
 
               {/* ── Text panel — slides in from opposite side ── */}
