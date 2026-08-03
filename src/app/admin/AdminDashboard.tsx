@@ -1,164 +1,122 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Users, Home, FileText, CreditCard, Wrench, Database } from 'lucide-react'
+import { BedDouble, CheckCircle, Clock, XCircle, Plus, ImagePlay } from 'lucide-react'
 
-type Counts = {
-  tenants: number | null
-  units: number | null
-  leases: number | null
-  payments: number | null
-  maintenance: number | null
-}
-
-const STAT_CONFIG = [
-  { key: 'tenants',     label: 'Tenants',      icon: Users,      table: 'tenants',              color: 'text-blue-400' },
-  { key: 'units',       label: 'Units',         icon: Home,       table: 'units',                color: 'text-emerald-400' },
-  { key: 'leases',      label: 'Leases',        icon: FileText,   table: 'leases',               color: 'text-violet-400' },
-  { key: 'payments',    label: 'Payments',      icon: CreditCard, table: 'payments',             color: 'text-[#C9A84C]' },
-  { key: 'maintenance', label: 'Maintenance',   icon: Wrench,     table: 'maintenance_requests', color: 'text-rose-400' },
-] as const
+type Stats = { available: number; coming_soon: number; occupied: number; total: number }
 
 export default function AdminDashboard() {
-  const [counts, setCounts] = useState<Counts>({ tenants: null, units: null, leases: null, payments: null, maintenance: null })
+  const router = useRouter()
+  const [stats, setStats] = useState<Stats | null>(null)
   const [dbReady, setDbReady] = useState<boolean | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function load() {
       const supabase = createClient()
-      const results: Counts = { tenants: null, units: null, leases: null, payments: null, maintenance: null }
-      let anyTable = false
+      const { data, error } = await supabase
+        .from('rental_listings')
+        .select('status')
 
-      for (const cfg of STAT_CONFIG) {
-        const { count, error } = await supabase
-          .from(cfg.table)
-          .select('*', { count: 'exact', head: true })
-        if (!error) {
-          anyTable = true
-          results[cfg.key] = count ?? 0
-        }
-      }
+      if (error) { setDbReady(false); return }
+      setDbReady(true)
 
-      setDbReady(anyTable)
-      setCounts(results)
-      setLoading(false)
+      const rows = data ?? []
+      setStats({
+        total:       rows.length,
+        available:   rows.filter(r => r.status === 'available').length,
+        coming_soon: rows.filter(r => r.status === 'coming_soon').length,
+        occupied:    rows.filter(r => r.status === 'occupied').length,
+      })
     }
     load()
   }, [])
 
   return (
-    <div className="max-w-5xl">
-      {/* Header */}
-      <div className="mb-8">
+    <div className="max-w-4xl">
+      <div className="mb-10">
         <h1 className="text-2xl font-serif font-light text-white mb-1">Dashboard</h1>
-        <p className="text-[11px] tracking-[0.2em] uppercase text-white/30">Rental Operations Overview</p>
+        <p className="text-[11px] tracking-[0.2em] uppercase text-white/25">Rental Operations</p>
       </div>
 
-      {/* DB status */}
-      <div className={`flex items-center gap-3 px-5 py-3.5 mb-8 border ${
-        dbReady === null
-          ? 'border-white/10 bg-white/3'
-          : dbReady
-          ? 'border-emerald-500/25 bg-emerald-500/8'
-          : 'border-amber-500/25 bg-amber-500/8'
-      }`}>
-        <Database size={14} className={dbReady ? 'text-emerald-400' : 'text-amber-400'} />
-        <span className="text-[11px] tracking-wide text-white/60">
-          {dbReady === null
-            ? 'Connecting to database…'
-            : dbReady
-            ? 'Connected to Supabase — database ready'
-            : 'Connected · Tables not yet created — see setup below'}
-        </span>
-        {dbReady !== null && (
-          <span className={`ml-auto w-2 h-2 rounded-full ${dbReady ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-        )}
-      </div>
+      {/* DB not ready */}
+      {dbReady === false && (
+        <div className="border border-amber-500/25 bg-amber-500/6 px-5 py-4 mb-8">
+          <p className="text-[11px] text-amber-300/80 mb-3">
+            The <code className="text-amber-200">rental_listings</code> table doesn't exist yet. Run this SQL in your Supabase SQL editor:
+          </p>
+          <pre className="bg-black/40 text-[10px] text-emerald-300/80 p-4 overflow-x-auto leading-relaxed whitespace-pre-wrap">{SQL_SETUP}</pre>
+        </div>
+      )}
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
-        {STAT_CONFIG.map(({ key, label, icon: Icon, color }) => (
-          <div key={key} className="bg-white/3 border border-white/7 p-5">
-            <Icon size={16} className={`${color} mb-3`} />
-            <p className="text-[28px] font-light text-white leading-none mb-1">
-              {loading ? '—' : (counts[key] ?? '—')}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        {[
+          { label: 'Total Listings', value: stats?.total,       icon: BedDouble,     color: 'text-white' },
+          { label: 'Available',      value: stats?.available,   icon: CheckCircle,   color: 'text-emerald-400' },
+          { label: 'Coming Soon',    value: stats?.coming_soon, icon: Clock,         color: 'text-[#C9A84C]' },
+          { label: 'Occupied',       value: stats?.occupied,    icon: XCircle,       color: 'text-white/30' },
+        ].map(({ label, value, icon: Icon, color }) => (
+          <div key={label} className="bg-white/3 border border-white/7 p-5">
+            <Icon size={15} className={`${color} mb-3`} />
+            <p className="text-3xl font-light text-white leading-none mb-1">
+              {value ?? '—'}
             </p>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-white/35">{label}</p>
+            <p className="text-[10px] tracking-[0.18em] uppercase text-white/30">{label}</p>
           </div>
         ))}
       </div>
 
-      {/* Setup guide (shown when tables missing) */}
-      {dbReady === false && (
-        <div className="border border-white/8 bg-white/2 p-6">
-          <h2 className="text-[13px] font-semibold tracking-wide text-white/80 mb-4">Database Setup Required</h2>
-          <p className="text-[12px] text-white/50 mb-4 leading-relaxed">
-            Run the following SQL in your Supabase SQL editor to create the rental management tables:
-          </p>
-          <pre className="bg-black/40 text-[11px] text-emerald-300/80 p-4 overflow-x-auto leading-relaxed">
-{`-- Tenants
-create table if not exists tenants (
-  id uuid primary key default gen_random_uuid(),
-  full_name text not null,
-  email text,
-  phone text,
-  national_id text,
-  created_at timestamptz default now()
-);
-
--- Units
-create table if not exists units (
-  id uuid primary key default gen_random_uuid(),
-  property text not null,
-  unit_number text not null,
-  type text,
-  floor int,
-  status text default 'vacant',
-  monthly_rent numeric,
-  created_at timestamptz default now()
-);
-
--- Leases
-create table if not exists leases (
-  id uuid primary key default gen_random_uuid(),
-  tenant_id uuid references tenants(id),
-  unit_id uuid references units(id),
-  start_date date not null,
-  end_date date,
-  monthly_rent numeric not null,
-  status text default 'active',
-  created_at timestamptz default now()
-);
-
--- Payments
-create table if not exists payments (
-  id uuid primary key default gen_random_uuid(),
-  lease_id uuid references leases(id),
-  tenant_id uuid references tenants(id),
-  amount numeric not null,
-  paid_on date,
-  for_month date,
-  method text,
-  notes text,
-  created_at timestamptz default now()
-);
-
--- Maintenance requests
-create table if not exists maintenance_requests (
-  id uuid primary key default gen_random_uuid(),
-  unit_id uuid references units(id),
-  tenant_id uuid references tenants(id),
-  title text not null,
-  description text,
-  priority text default 'normal',
-  status text default 'open',
-  created_at timestamptz default now()
-);`}
-          </pre>
-        </div>
-      )}
+      {/* Quick actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <button
+          onClick={() => router.push('/admin/listings')}
+          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/5 p-5 transition-colors text-left group"
+        >
+          <Plus size={18} className="text-[#C9A84C]" />
+          <div>
+            <p className="text-[12px] font-medium text-white/80 mb-0.5">Manage Listings</p>
+            <p className="text-[10px] text-white/30">Add or edit rental units</p>
+          </div>
+        </button>
+        <button
+          onClick={() => router.push('/admin/media')}
+          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/5 p-5 transition-colors text-left group"
+        >
+          <ImagePlay size={18} className="text-[#C9A84C]" />
+          <div>
+            <p className="text-[12px] font-medium text-white/80 mb-0.5">Media Manager</p>
+            <p className="text-[10px] text-white/30">Update website images & videos</p>
+          </div>
+        </button>
+      </div>
     </div>
   )
 }
+
+const SQL_SETUP = `create table if not exists rental_listings (
+  id               uuid primary key default gen_random_uuid(),
+  property         text not null,
+  unit_type        text not null,
+  floor            text,
+  size_sqm         numeric,
+  price_per_month  numeric,
+  status           text default 'coming_soon',
+  description      text,
+  amenities        text[] default '{}',
+  images           text[] default '{}',
+  featured_image   text,
+  available_from   date,
+  created_at       timestamptz default now(),
+  updated_at       timestamptz default now()
+);
+
+create table if not exists site_media (
+  id          uuid primary key default gen_random_uuid(),
+  slot        text unique not null,
+  label       text,
+  url         text,
+  media_type  text default 'image',
+  updated_at  timestamptz default now()
+);`
