@@ -802,32 +802,104 @@ export default function IvyMystTemplate() {
           </div>
         </div>
 
-        {amenityShowcases.map((amenity, i) => (
-          <div key={amenity.label} className={i % 2 === 0 ? 'bg-white' : 'bg-cream'}>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: false, margin: '-40px' }}
-              transition={{ duration: 0.8 }}
-              className="relative w-full overflow-hidden cursor-zoom-in group"
-              style={{ height: '70vh' }}
-              onClick={() => openLB(amenityImages, amenity.lbIndex)}
+        {amenityShowcases.map((amenity, i) => {
+          const imgLeft = i % 2 === 0
+          return (
+            <div
+              key={amenity.label}
+              className={`flex flex-col lg:flex-row ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
+              style={{ minHeight: '88vh' }}
             >
-              <motion.div initial={{ scale: 1.06 }} whileInView={{ scale: 1 }} viewport={{ once: false, margin: '-40px' }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }} className="absolute inset-0">
-                <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="100vw" quality={88} />
+              {/* ── Image panel — clip-path curtain reveal ── */}
+              <motion.div
+                className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-auto cursor-zoom-in group"
+                initial={{ clipPath: imgLeft ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)' }}
+                whileInView={{ clipPath: 'inset(0 0% 0 0%)' }}
+                viewport={{ once: false, margin: '-60px' }}
+                transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
+                onClick={() => openLB(amenityImages, amenity.lbIndex)}
+              >
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{ scale: 1.14 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: false, margin: '-60px' }}
+                  transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 55vw" quality={88} />
+                </motion.div>
+                <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ZoomIn size={15} className="text-white" />
+                </div>
               </motion.div>
-              <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={16} className="text-white" /></div>
-            </motion.div>
-            <div className="max-w-4xl mx-auto px-8 lg:px-16 py-14 lg:py-20">
-              <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={vp} transition={{ duration: 0.75, ease: 'easeOut' }}>
-                <p className="text-gold/60 font-sans text-[11px] tracking-[0.3em] mb-4 uppercase">{String(i + 1).padStart(2, '0')}</p>
-                <h3 className="font-serif text-3xl lg:text-4xl font-light text-dark mb-5 leading-[1.15]">{amenity.label}</h3>
-                <div className="w-8 h-[1.5px] bg-gold mb-6" />
-                <p className="text-dark/55 text-[14px] font-sans font-light leading-[1.9] max-w-2xl">{amenity.description}</p>
-              </motion.div>
+
+              {/* ── Text panel — slides in from opposite side ── */}
+              <div className={`relative overflow-hidden lg:w-[45%] flex items-center ${i % 2 === 0 ? 'bg-white' : 'bg-cream'}`}>
+                {/* Ghost number watermark */}
+                <span
+                  className="absolute font-serif font-light select-none pointer-events-none leading-none"
+                  style={{
+                    fontSize: 'clamp(10rem, 22vw, 16rem)',
+                    color: 'rgba(0,0,0,0.035)',
+                    bottom: '-1.5rem',
+                    [imgLeft ? 'right' : 'left']: '-0.5rem',
+                  }}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                <div className="relative px-10 lg:px-14 xl:px-18 py-16 lg:py-24 w-full">
+                  {/* Number + rule */}
+                  <motion.div
+                    className="flex items-center gap-4 mb-7"
+                    initial={{ opacity: 0, x: imgLeft ? 48 : -48 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: false, margin: '-60px' }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                  >
+                    <span className="text-gold font-sans text-[9px] font-semibold tracking-[0.35em] tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="h-px bg-gold/30" style={{ width: '3rem' }} />
+                  </motion.div>
+
+                  {/* Heading */}
+                  <motion.h3
+                    className="font-serif font-light text-dark leading-[1.1] mb-6"
+                    style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)' }}
+                    initial={{ opacity: 0, x: imgLeft ? 60 : -60 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: false, margin: '-60px' }}
+                    transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.42 }}
+                  >
+                    {amenity.label}
+                  </motion.h3>
+
+                  {/* Expanding underline */}
+                  <motion.div
+                    className="bg-gold mb-7"
+                    style={{ height: '1.5px' }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '2.5rem' }}
+                    viewport={{ once: false, margin: '-60px' }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+                  />
+
+                  {/* Description */}
+                  <motion.p
+                    className="text-dark/55 font-sans font-light text-[13.5px] leading-[2] max-w-sm"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: '-60px' }}
+                    transition={{ duration: 0.7, ease: 'easeOut', delay: 0.7 }}
+                  >
+                    {amenity.description}
+                  </motion.p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
 
         <div className="bg-dark py-16 lg:py-20 px-6 lg:px-10">
           <div className="max-w-7xl mx-auto">
