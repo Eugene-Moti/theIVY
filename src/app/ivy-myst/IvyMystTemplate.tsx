@@ -9,7 +9,7 @@ import BrochureModal from '@/components/shared/BrochureModal'
 
 const p = (path: string) => encodeURI(path)
 
-const vp = { once: false, margin: '-80px' }
+const vp = { once: true, margin: '-80px' }
 
 type FloorPlanTab = 'overview' | 'wing-a' | 'wing-b'
 type LightboxImage = { src: string; label: string }
@@ -37,25 +37,6 @@ const wingBPlans: LightboxImage[] = [
   { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 07&08 -1BR 79SQM.jpg'), label: 'Units 7 & 8 — 1 Bedroom · 79 SQM' },
 ]
 
-
-const interiorImages: LightboxImage[] = [
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'), label: 'Living & Dining' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'), label: 'Master Bedroom' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (6).png'), label: 'Kitchen' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png'), label: 'Living Room' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (8).png'), label: 'Master Suite' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (10).png'), label: 'Dining Space' },
-  { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'), label: 'Bedroom' },
-]
-
-const exteriorImages: LightboxImage[] = [
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), label: 'Day View' },
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), label: 'Night View' },
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'), label: 'Gate' },
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png'), label: 'Rooftop Deck' },
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), label: 'Rooftop City View' },
-  { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Surrounding Views.png'), label: 'Rooftop Surrounds' },
-]
 
 const gallerySlides = [
   {
@@ -244,7 +225,7 @@ function Lightbox({ images, initialIndex, onClose }: { images: LightboxImage[]; 
 
 // ─── GALLERY CAROUSEL ────────────────────────────────────────────────────────
 
-function GalleryCarousel({ onOpen }: { onOpen: (i: number) => void }) {
+function GalleryCarousel() {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -294,8 +275,7 @@ function GalleryCarousel({ onOpen }: { onOpen: (i: number) => void }) {
             initial="enter"
             animate="center"
             exit="exit"
-            className="absolute inset-0 cursor-zoom-in"
-            onClick={() => onOpen(current)}
+            className="absolute inset-0"
           >
             <Image
               src={gallerySlides[current].src}
@@ -530,8 +510,6 @@ export default function IvyMystTemplate() {
 
   const openLB = (images: LightboxImage[], index: number) => setLightbox({ images, index })
 
-  // Gallery lightbox opens into all gallery slides
-  const galleryLbImages: LightboxImage[] = gallerySlides.map(s => ({ src: s.src, label: s.label }))
 
   return (
     <>
@@ -687,18 +665,18 @@ export default function IvyMystTemplate() {
               className="lg:col-span-3 flex flex-col gap-3"
             >
               <div
-                className="relative overflow-hidden cursor-zoom-in group"
+                className="relative overflow-hidden"
                 style={{ aspectRatio: '16/8' }}
-                onClick={() => openLB(exteriorImages, 0)}
               >
-                <Image src={exteriorImages[0].src} alt="Ivy Myst Day Exterior" fill quality={92} sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={14} className="text-white" /></div>
+                <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png')} alt="Ivy Myst Day Exterior" fill quality={92} sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {exteriorImages.slice(1, 3).map((img, i) => (
-                  <div key={i} className="relative overflow-hidden cursor-zoom-in group" style={{ aspectRatio: '4/3' }} onClick={() => openLB(exteriorImages, i + 1)}>
-                    <Image src={img.src} alt={img.label} fill quality={90} sizes="(max-width: 768px) 50vw, 30vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
-                    <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={13} className="text-white" /></div>
+                {[
+                  { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), alt: 'Night View' },
+                  { src: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'), alt: 'Gate' },
+                ].map((img, i) => (
+                  <div key={i} className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                    <Image src={img.src} alt={img.alt} fill quality={90} sizes="(max-width: 768px) 50vw, 30vw" className="object-cover" />
                   </div>
                 ))}
               </div>
@@ -709,23 +687,21 @@ export default function IvyMystTemplate() {
 
       {/* ── ROOFTOP PANORAMA ── */}
       <motion.div
-        className="relative overflow-hidden cursor-zoom-in group"
+        className="relative overflow-hidden"
         style={{ height: '60vh' }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: false, margin: '-40px' }}
+        viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.8 }}
-        onClick={() => openLB(exteriorImages, 4)}
       >
-        <motion.div className="absolute inset-0" initial={{ scale: 1.06 }} whileInView={{ scale: 1 }} viewport={{ once: false, margin: '-40px' }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}>
+        <motion.div className="absolute inset-0" initial={{ scale: 1.06 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}>
           <Image src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png')} alt="Ivy Myst Rooftop City View" fill quality={92} sizes="100vw" className="object-cover object-center" />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-dark/65 via-dark/20 to-transparent" />
-        <motion.div className="absolute bottom-10 left-10 lg:left-16" initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, margin: '-40px' }} transition={{ duration: 0.7, delay: 0.3 }}>
+        <motion.div className="absolute bottom-10 left-10 lg:left-16" initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.7, delay: 0.3 }}>
           <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-2">NAIROBI SKYLINE</p>
           <p className="font-serif text-white text-3xl lg:text-5xl font-light">Above the City</p>
         </motion.div>
-        <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={16} className="text-white" /></div>
       </motion.div>
 
       {/* ── UNITS & PRICING ── */}
@@ -804,7 +780,7 @@ export default function IvyMystTemplate() {
                   style={{ originX: imgLeft ? 0 : 1 }}
                   initial={{ scaleX: 1 }}
                   whileInView={{ scaleX: 0 }}
-                  viewport={{ once: false, margin: '-20px' }}
+                  viewport={{ once: true, margin: '-20px' }}
                   transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
                 />
               </div>
@@ -830,7 +806,7 @@ export default function IvyMystTemplate() {
                     className="flex items-center gap-4 mb-7"
                     initial={{ opacity: 0, x: imgLeft ? 48 : -48 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
                   >
                     <span className="text-gold font-sans text-[9px] font-semibold tracking-[0.35em] tabular-nums">
@@ -845,7 +821,7 @@ export default function IvyMystTemplate() {
                     style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)' }}
                     initial={{ opacity: 0, x: imgLeft ? 60 : -60 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.42 }}
                   >
                     {amenity.label}
@@ -857,7 +833,7 @@ export default function IvyMystTemplate() {
                     style={{ height: '1.5px' }}
                     initial={{ width: 0 }}
                     whileInView={{ width: '2.5rem' }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
                   />
 
@@ -866,7 +842,7 @@ export default function IvyMystTemplate() {
                     className="text-dark/55 font-sans font-light text-[13.5px] leading-[2] max-w-sm"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.7, ease: 'easeOut', delay: 0.7 }}
                   >
                     {amenity.description}
@@ -906,20 +882,20 @@ export default function IvyMystTemplate() {
             </p>
           </motion.div>
           <div className="flex flex-col gap-4">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={vp} transition={{ duration: 0.8 }} className="relative overflow-hidden cursor-zoom-in group w-full" style={{ aspectRatio: '21/8' }} onClick={() => openLB(interiorImages, 0)}>
-              <motion.div className="absolute inset-0" initial={{ scale: 1.04 }} whileInView={{ scale: 1 }} viewport={vp} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-                <Image src={interiorImages[0].src} alt={interiorImages[0].label} fill quality={92} sizes="100vw" className="object-cover" />
-              </motion.div>
-              <div className="absolute inset-0 bg-dark/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute top-4 right-4 bg-dark/50 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={16} className="text-white" /></div>
+            <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={vp} transition={{ duration: 0.8 }} className="relative overflow-hidden w-full" style={{ aspectRatio: '21/8' }}>
+              <Image src={p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png')} alt="Living & Dining" fill quality={92} sizes="100vw" className="object-cover" />
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {interiorImages.slice(1).map((img, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={vp} transition={{ duration: 0.55, delay: i * 0.07 }} className="relative overflow-hidden cursor-zoom-in group" style={{ aspectRatio: '4/3' }} onClick={() => openLB(interiorImages, i + 1)}>
-                  <Image src={img.src} alt={img.label} fill quality={90} sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity"><p className="text-white text-xs font-sans tracking-widest uppercase">{img.label}</p></div>
-                  <div className="absolute top-3 right-3 bg-dark/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><ZoomIn size={13} className="text-white" /></div>
+              {([
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'), alt: 'Master Bedroom' },
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (6).png'), alt: 'Kitchen' },
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png'), alt: 'Living Room' },
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (8).png'), alt: 'Master Suite' },
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (10).png'), alt: 'Dining Space' },
+                { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'), alt: 'Bedroom' },
+              ]).map((img, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={vp} transition={{ duration: 0.55, delay: i * 0.07 }} className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                  <Image src={img.src} alt={img.alt} fill quality={90} sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                 </motion.div>
               ))}
             </div>
@@ -938,7 +914,7 @@ export default function IvyMystTemplate() {
             </motion.div>
           </div>
         </div>
-        <GalleryCarousel onOpen={i => openLB(galleryLbImages, i)} />
+        <GalleryCarousel />
       </div>
 
       {/* ── FLOOR PLANS ── */}

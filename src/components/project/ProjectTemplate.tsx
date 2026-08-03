@@ -11,7 +11,7 @@ import {
 import { ProjectData, getOtherProjects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
 
-const vp = { once: false, margin: '-80px' }
+const vp = { once: true, margin: '-80px' }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -299,7 +299,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   style={{ originX: imgLeft ? 0 : 1 }}
                   initial={{ scaleX: 1 }}
                   whileInView={{ scaleX: 0 }}
-                  viewport={{ once: false, margin: '-20px' }}
+                  viewport={{ once: true, margin: '-20px' }}
                   transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
                 />
               </div>
@@ -327,7 +327,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     className="flex items-center gap-4 mb-7"
                     initial={{ opacity: 0, x: imgLeft ? 48 : -48 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
                   >
                     <span className="text-gold font-sans text-[9px] font-semibold tracking-[0.35em] tabular-nums">
@@ -342,7 +342,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     style={{ fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)' }}
                     initial={{ opacity: 0, x: imgLeft ? 60 : -60 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.42 }}
                   >
                     {amenity.label}
@@ -354,7 +354,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     style={{ height: '1.5px' }}
                     initial={{ width: 0 }}
                     whileInView={{ width: '2.5rem' }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
                   />
 
@@ -363,7 +363,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     className="text-dark/55 font-sans font-light text-[13.5px] leading-[2] max-w-sm"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, margin: '-60px' }}
+                    viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.7, ease: 'easeOut', delay: 0.7 }}
                   >
                     {amenity.description}
