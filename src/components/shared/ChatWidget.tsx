@@ -64,7 +64,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0,  scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.95 }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-28 left-4 z-50 flex flex-col"
+            className="fixed bottom-32 right-7 z-50 flex flex-col"
             style={{
               width: 356,
               height: 548,
@@ -272,42 +272,48 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* ── Trigger button ── */}
-      <div className="fixed bottom-6 left-4 z-50">
-        {/* Pulse rings when closed */}
-        {!open && (
-          <>
+      {/* ── Trigger button — circular, above WhatsApp ── */}
+      <div className="fixed bottom-28 right-7 z-50">
+        {/* Gold glow rings when closed */}
+        <AnimatePresence>
+          {!open && (
             <motion.div
-              className="absolute inset-0 pointer-events-none"
-              style={{ border: '1px solid rgba(201,168,76,0.28)' }}
-              animate={{ scale: [1, 1.55], opacity: [0.6, 0] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
-            />
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              style={{ border: '1px solid rgba(201,168,76,0.15)' }}
-              animate={{ scale: [1, 1.9], opacity: [0.4, 0] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut', delay: 0.5 }}
-            />
-          </>
-        )}
+              key="rings"
+              className="absolute inset-0 rounded-full pointer-events-none"
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+            >
+              <motion.span
+                className="absolute inset-0 rounded-full"
+                style={{ background: 'rgba(201,168,76,0.25)' }}
+                animate={{ scale: [1, 1.9], opacity: [0.6, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.9 }}
+              />
+              <motion.span
+                className="absolute inset-0 rounded-full"
+                style={{ background: 'rgba(201,168,76,0.15)' }}
+                animate={{ scale: [1, 2.4], opacity: [0.4, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', delay: 0.55, repeatDelay: 0.9 }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <motion.button
           onClick={() => setOpen(o => !o)}
           whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.92 }}
-          className="relative w-14 h-14 flex flex-col items-center justify-center"
+          whileTap={{ scale: 0.93 }}
+          className="relative w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-2xl"
           style={{
-            background: 'linear-gradient(145deg, #111 0%, #080808 100%)',
-            border: '1px solid rgba(201,168,76,0.38)',
-            boxShadow: '0 10px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.03) inset',
+            background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)',
+            border: '1px solid rgba(201,168,76,0.4)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(201,168,76,0.08)',
           }}
           aria-label="Chat with Ivy"
         >
           <AnimatePresence mode="wait" initial={false}>
             {open
               ? <motion.div key="close" initial={{ opacity: 0, rotate: -80 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X size={16} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  <X size={17} style={{ color: 'rgba(255,255,255,0.45)' }} />
                 </motion.div>
               : <motion.div key="ivy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="flex flex-col items-center gap-0.5">
                   <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '1.45rem', fontWeight: 300, lineHeight: 1 }}>I</span>
