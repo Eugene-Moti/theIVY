@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:www.hassconsult.com)"
+      "WebFetch(domain:www.hassconsult.com)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'chore: update OG image with CTA text *)",
+      "Bash(git push *)"
     ]
   }
 }
