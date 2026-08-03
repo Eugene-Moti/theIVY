@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Plus, Pencil, Trash2, X, Loader2, CheckCircle, Clock, XCircle, Image as ImgIcon } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Loader2, CheckCircle, Clock, XCircle, Image as ImgIcon, Upload, Film } from 'lucide-react'
 
 type Listing = {
   id: string
@@ -49,6 +49,7 @@ export default function ListingsManager() {
   const [editing, setEditing]   = useState<Partial<Listing>>(EMPTY)
   const [isNew, setIsNew]       = useState(true)
   const [saving, setSaving]     = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [amenityInput, setAmenityInput] = useState('')
   const [imageInput, setImageInput]     = useState('')
@@ -140,6 +141,24 @@ export default function ListingsManager() {
       const imgs = (e.images ?? []).filter((_, idx) => idx !== i)
       return { ...e, images: imgs, featured_image: imgs[0] ?? '' }
     })
+  }
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    e.target.value = ''
+    const ext  = file.name.split('.').pop()
+    const path = `listings/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    const { data, error } = await supabase.storage.from('site-media').upload(path, file, { upsert: false })
+    if (error) { alert('Upload failed: ' + error.message); setUploading(false); return }
+    const { data: { publicUrl } } = supabase.storage.from('site-media').getPublicUrl(data.path)
+    setEditing(e => ({
+      ...e,
+      images: [...(e.images ?? []), publicUrl],
+      featured_image: e.featured_image || publicUrl,
+    }))
+    setUploading(false)
   }
 
   const statusFor = (s: string) => STATUS_OPTS.find(o => o.value === s) ?? STATUS_OPTS[1]
@@ -308,29 +327,51 @@ export default function ListingsManager() {
                 </div>
               </Field>
 
-              {/* Images */}
-              <Field label="Images (URLs)">
+              {/* Images / Videos */}
+              <Field label="Images & Videos">
+                {/* URL paste row */}
                 <div className="flex gap-2 mb-2">
                   <input
                     value={imageInput}
                     onChange={e => setImageInput(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addImage() } }}
-                    placeholder="https://… or Supabase Storage URL"
+                    placeholder="Paste a URL…"
                     className={`${inputCls} flex-1`}
                   />
                   <button onClick={addImage} className="px-3 bg-white/8 text-white/60 hover:bg-white/12 text-xs transition-colors">
                     Add
                   </button>
                 </div>
+                {/* Upload button */}
+                <label className={`flex items-center gap-2 border border-dashed border-white/15 px-4 py-2.5 mb-3 cursor-pointer hover:border-[#C9A84C]/40 transition-colors ${uploading ? 'opacity-60 pointer-events-none' : ''}`}>
+                  {uploading
+                    ? <Loader2 size={13} className="animate-spin text-white/40" />
+                    : <Upload size={13} className="text-white/30" />}
+                  <span className="text-[11px] text-white/35">
+                    {uploading ? 'Uploading…' : 'Upload image or video'}
+                  </span>
+                  <input type="file" accept="image/*,video/*" onChange={handleUpload} className="hidden" />
+                </label>
+                {/* Media list */}
                 <div className="space-y-1.5">
-                  {(editing.images ?? []).map((url, i) => (
-                    <div key={i} className="flex items-center gap-2 bg-white/5 px-3 py-2">
-                      <ImgIcon size={11} className="text-white/25 flex-shrink-0" />
-                      <span className="text-[10px] text-white/40 truncate flex-1">{url}</span>
-                      {i === 0 && <span className="text-[9px] text-[#C9A84C] tracking-wider">Featured</span>}
-                      <button onClick={() => removeImage(i)} className="text-white/20 hover:text-red-400"><X size={10} /></button>
-                    </div>
-                  ))}
+                  {(editing.images ?? []).map((url, i) => {
+                    const isVideo = /\.(mp4|webm|mov|avi)(\?|$)/i.test(url)
+                    return (
+                      <div key={i} className="flex items-center gap-2 bg-white/5 px-2 py-1.5">
+                        {/* Thumbnail */}
+                        <div className="w-10 h-7 flex-shrink-0 overflow-hidden bg-white/5 flex items-center justify-center">
+                          {isVideo
+                            ? <Film size={12} className="text-white/30" />
+                            // eslint-disable-next-line @next/next/no-img-element
+                            : <img src={url} alt="" className="w-full h-full object-cover" />
+                          }
+                        </div>
+                        <span className="text-[10px] text-white/40 truncate flex-1">{url.split('/').pop()}</span>
+                        {i === 0 && <span className="text-[9px] text-[#C9A84C] tracking-wider flex-shrink-0">Featured</span>}
+                        <button onClick={() => removeImage(i)} className="text-white/20 hover:text-red-400 flex-shrink-0"><X size={10} /></button>
+                      </div>
+                    )
+                  })}
                 </div>
               </Field>
             </div>
