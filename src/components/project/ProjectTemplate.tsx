@@ -280,15 +280,14 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
           return (
             <div
               key={amenity.label}
-              className={`flex flex-col lg:flex-row ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
-              style={{ minHeight: '88vh' }}
+              className={`flex flex-col lg:flex-row lg:h-[90vh] ${imgLeft ? '' : 'lg:flex-row-reverse'}`}
             >
               {/* ── Image panel — clip-path curtain reveal ── */}
               <motion.div
-                className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-auto"
-                initial={{ clipPath: imgLeft ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)' }}
-                whileInView={{ clipPath: 'inset(0 0% 0 0%)' }}
-                viewport={{ once: false, margin: '-60px' }}
+                className="relative overflow-hidden lg:w-[55%] h-[52vh] lg:h-full"
+                initial={{ clipPath: imgLeft ? 'inset(0% 100% 0% 0%)' : 'inset(0% 0% 0% 100%)' }}
+                whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+                viewport={{ once: false, margin: '-20px' }}
                 transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
               >
                 {/* Inner image counter-scales so it fills the gap as the curtain opens */}
@@ -296,7 +295,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   className="absolute inset-0"
                   initial={{ scale: 1.14 }}
                   whileInView={{ scale: 1 }}
-                  viewport={{ once: false, margin: '-60px' }}
+                  viewport={{ once: false, margin: '-20px' }}
                   transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Image
