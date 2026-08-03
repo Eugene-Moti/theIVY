@@ -817,12 +817,8 @@ export default function IvyMystTemplate() {
               >
                 <motion.div
                   className="absolute inset-0"
-                  initial={{ scale: 1.08 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: false, margin: '-20px' }}
-                  transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 55vw" quality={88} />
+                  <Image src={amenity.image} alt={amenity.label} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 80vw" quality={92} />
                 </motion.div>
                 <motion.div
                   className="absolute inset-0 bg-dark"
