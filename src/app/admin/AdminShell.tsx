@@ -3,12 +3,11 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { LayoutDashboard, BedDouble, ImagePlay, LogOut, Menu, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, BedDouble, LogOut, Menu, ChevronRight } from 'lucide-react'
 
 const NAV = [
   { href: '/admin',          label: 'Dashboard',        icon: LayoutDashboard },
   { href: '/admin/listings', label: 'Rental Listings',  icon: BedDouble },
-  { href: '/admin/media',    label: 'Media Manager',    icon: ImagePlay },
 ]
 
 export default function AdminShell({
