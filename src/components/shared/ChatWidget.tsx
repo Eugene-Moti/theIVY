@@ -15,11 +15,129 @@ const QUICK_REPLIES = [
   'Book a site visit',
 ]
 
+// ── Knowledge base ─────────────────────────────────────────────────────────
+// Each entry: { keys: string[], reply: string }
+// First match wins — put more specific entries first.
+const KB: { keys: string[]; reply: string }[] = [
+  {
+    keys: ['ivy park', 'kilimani', 'kirichwa', 'ivy park residence'],
+    reply:
+      'Ivy Park Residence is on Kirichwa Road, Kilimani — 3 towers, 22 floors, 660 apartments. Prices start at KSh 6.82M (1BR), KSh 10.78M (2BR), and KSh 15.62M (3BR+DSQ). Completion is December 2028 with structural works already on the 4th floor. Amenities include a heated pool, rooftop garden, gym, yoga studio, co-working spaces, and 24-hour security.',
+  },
+  {
+    keys: ['ivy myst', 'kileleshwa', 'gatundu', 'ivy myst residence'],
+    reply:
+      'Ivy Myst Residence is on Gatundu Road, Kileleshwa — 22 floors, 448 apartments. Prices start at KSh 8.8M (1BR), KSh 14.2M (2BR), and KSh 19.8M (3BR+DSQ). Completion: August 2029. The building features a rooftop pool, restaurant, bar, fireplace, sauna, massage room, yoga studio, and a heated indoor pool on the first floor.',
+  },
+  {
+    keys: ['blossom', 'blossom ivy'],
+    reply:
+      'Blossom Ivy Residence is on Gatundu Road, Kileleshwa — 2 towers, 22 floors, 220 apartments. Only 3BR+DSQ units (180–236 sqm) remain from KSh 18.5M. 1BR, 2BR, and 4BR units are sold out. Completion is December 2026. Amenities include a heated indoor pool, gym, yoga studio, dual backup generators, and smart door locks.',
+  },
+  {
+    keys: ['luckinn', 'luckinn ivy', 'westlands'],
+    reply:
+      'Luckinn Ivy Residence is in Westlands — 1 tower, 20 floors, 120 apartments. Only 3BR+DSQ units (170–172 sqm) are still available; contact our team for pricing. 1BR and 2BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga room, co-working space, and 24-hour security.',
+  },
+  {
+    keys: ['price', 'prices', 'cost', 'how much', 'pricing', 'ksh', 'million'],
+    reply:
+      'Here is a summary of our current starting prices:\n\n• Ivy Park (Kilimani) — 1BR from KSh 6.82M · 2BR from KSh 10.78M · 3BR+DSQ from KSh 15.62M\n• Ivy Myst (Kileleshwa) — 1BR from KSh 8.8M · 2BR from KSh 14.2M · 3BR+DSQ from KSh 19.8M\n• Blossom Ivy (Kileleshwa) — 3BR+DSQ from KSh 18.5M (only remaining)\n• Luckinn Ivy (Westlands) — 3BR+DSQ available, contact us for pricing\n\nAll prices are subject to availability. Would you like details on a specific project?',
+  },
+  {
+    keys: ['payment', 'installment', 'instalment', 'deposit', 'plan', 'pay'],
+    reply:
+      'We offer three flexible payment options:\n\n1. Installment Plan — 20% deposit, balance spread over the construction period. Great for investors and salaried professionals.\n\n2. Cash Purchase — full balance within 30 days, with a discounted price. Best for maximum savings.\n\n3. Mortgage — 20% deposit, remaining balance financed by a bank at project completion. Ideal for first-time homeowners.\n\nWould you like to discuss which plan suits you best?',
+  },
+  {
+    keys: ['mortgage', 'bank', 'loan', 'finance', 'financing'],
+    reply:
+      'Yes, mortgage financing is available through our approved banking partners. You pay a 20% deposit upfront, and the remaining balance is financed by a bank upon project completion. Our sales team can introduce you to our partner banks. Would you like us to reach out to you?',
+  },
+  {
+    keys: ['buy', 'buying', 'purchase', 'how does', 'process', 'steps', 'how do i'],
+    reply:
+      'The buying process is straightforward:\n\n1. Select your preferred apartment\n2. Confirm availability with our team\n3. Reserve the unit\n4. Pay the required deposit\n5. Sign the Sale Agreement\n6. Continue payments per your chosen plan\n7. Receive regular construction updates\n8. Complete final payment\n9. Handover and possession\n10. Registration and ownership documents issued\n\nOur team guides you every step of the way. Shall I connect you with a consultant?',
+  },
+  {
+    keys: ['site visit', 'visit', 'view', 'see', 'show', 'tour', 'book', 'appointment', 'schedule'],
+    reply:
+      'We would love to arrange a site visit for you! Visits are available by appointment throughout the week. To book, please call or WhatsApp us on +254 118 266 666 and our team will confirm your preferred date and time. If you are based abroad, we also offer virtual presentations via video call.',
+  },
+  {
+    keys: ['diaspora', 'abroad', 'outside kenya', 'uk', 'usa', 'canada', 'australia', 'overseas', 'remote'],
+    reply:
+      'Absolutely — we actively assist diaspora clients. The process is fully remote: virtual property presentations, video call walkthroughs, electronic documentation, and secure international payment options. Many of our buyers complete their purchase entirely from abroad. Contact us on +254 118 266 666 or WhatsApp and we will guide you through every step.',
+  },
+  {
+    keys: ['amenit', 'gym', 'pool', 'swimming', 'rooftop', 'parking', 'security', 'playground', 'children', 'cowork', 'co-work', 'yoga', 'sauna', 'massage', 'garden', 'lounge', 'restaurant', 'bar'],
+    reply:
+      'All Ivy Group developments feature premium lifestyle amenities. Highlights include:\n\n• Heated swimming pools (indoor on lower floors, rooftop at Ivy Myst)\n• Fully equipped gyms and yoga studios\n• Co-working spaces and coffee bars\n• Children\'s play areas\n• 24-hour security, CCTV, smart access control\n• Backup generators and borehole water supply\n• Ivy Myst also has a rooftop restaurant, bar, sauna, and massage room\n\nWould you like amenity details for a specific development?',
+  },
+  {
+    keys: ['available', 'availability', 'units', 'left', 'remaining', 'stock', 'sold out'],
+    reply:
+      'Here is the current availability snapshot:\n\n• Ivy Park (Dec 2028) — 1BR, 2BR & 3BR+DSQ all available\n• Ivy Myst (Aug 2029) — 1BR, 2BR & 3BR+DSQ all available\n• Blossom Ivy (Dec 2026) — only 3BR+DSQ units remaining\n• Luckinn Ivy (Dec 2026) — only 3BR+DSQ units remaining\n\nAvailability changes regularly. For the latest unit selection, please contact our sales team on +254 118 266 666.',
+  },
+  {
+    keys: ['completion', 'ready', 'when', 'handover', 'finish', 'complete', 'date'],
+    reply:
+      'Estimated completion dates:\n\n• Luckinn Ivy (Westlands) — December 2026\n• Blossom Ivy (Kileleshwa) — December 2026\n• Ivy Park (Kilimani) — December 2028 (structural works currently on 4th floor)\n• Ivy Myst (Kileleshwa) — August 2029\n\nAll timelines are subject to construction progress. Our team provides buyers with regular construction updates.',
+  },
+  {
+    keys: ['service charge', 'maintenance', 'monthly', 'fee', 'charges'],
+    reply:
+      'Yes, service charges apply in all our developments. These cover maintenance of common areas, security, cleaning, lifts, landscaping, and shared amenities. The exact rates are communicated to buyers before handover. Our sales team can give you an estimate for your chosen development.',
+  },
+  {
+    keys: ['airbnb', 'short term', 'short-term', 'rent out', 'rental', 'invest', 'investment', 'returns', 'yield'],
+    reply:
+      'All Ivy Group apartments are excellent for both owner-occupation and rental investment. Short-term rentals like Airbnb may be available subject to each development\'s management policies. Our Kileleshwa and Kilimani locations see strong demand from expatriates and professionals, typically yielding solid rental returns. Speak with our sales team for investment projections.',
+  },
+  {
+    keys: ['pet', 'dog', 'cat', 'animal'],
+    reply:
+      'Pet policies are governed by each development\'s management rules. Please consult our sales team for specific guidance on your chosen development — they will give you the most accurate and up-to-date information.',
+  },
+  {
+    keys: ['contact', 'phone', 'call', 'whatsapp', 'email', 'reach', 'number', 'speak', 'talk'],
+    reply:
+      'You can reach The Ivy Group on:\n\n📞 Phone / WhatsApp: +254 118 266 666\n🌐 Website: www.ivygroup.ke\n\nOur consultants assist with unit availability, pricing, payment plans, site visits, mortgage guidance, diaspora purchases, and general investment advice. We are here to help!',
+  },
+  {
+    keys: ['about', 'ivy group', 'who are you', 'developer', 'company', 'background', 'experience', 'track record'],
+    reply:
+      'The Ivy Group Kenya is a premium real estate developer delivering modern luxury residential developments in Nairobi\'s most sought-after neighbourhoods. We are known for exceptional architecture, premium finishes, strategic locations, and flexible payment plans. Our portfolio includes Ivy Park, Ivy Myst, Blossom Ivy, and Luckinn Ivy — all in prime Nairobi areas. We guide clients throughout their entire journey, from first enquiry to title ownership.',
+  },
+  {
+    keys: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'greet'],
+    reply:
+      'Hello! Welcome to The Ivy Group. I\'m Ivy, your personal property consultant. How can I assist you today? Feel free to ask about our developments, prices, payment plans, or to book a site visit.',
+  },
+  {
+    keys: ['thank', 'thanks', 'appreciate', 'helpful'],
+    reply:
+      'You\'re most welcome! It\'s a pleasure assisting you. If you have any more questions or would like to speak with one of our consultants, don\'t hesitate to reach out on +254 118 266 666. Have a wonderful day!',
+  },
+]
+
+const FALLBACK =
+  "Thank you for your enquiry. For the most accurate and up-to-date information, I'd recommend speaking directly with our sales team — they're available on +254 118 266 666 (call or WhatsApp) and will be happy to assist you."
+
+function getReply(text: string): string {
+  const q = text.toLowerCase()
+  for (const entry of KB) {
+    if (entry.keys.some(k => q.includes(k))) return entry.reply
+  }
+  return FALLBACK
+}
+// ──────────────────────────────────────────────────────────────────────────
+
 export default function ChatWidget() {
-  const [open, setOpen]         = useState(false)
-  const [messages, setMessages] = useState<Message[]>([{ role: 'model', text: GREETING }])
-  const [input, setInput]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [open, setOpen]           = useState(false)
+  const [messages, setMessages]   = useState<Message[]>([{ role: 'model', text: GREETING }])
+  const [input, setInput]         = useState('')
+  const [loading, setLoading]     = useState(false)
   const [showQuick, setShowQuick] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
@@ -37,22 +155,14 @@ export default function ChatWidget() {
     if (!msg || loading) return
     setInput('')
     setShowQuick(false)
-    const updated: Message[] = [...messages, { role: 'user', text: msg }]
-    setMessages(updated)
+    setMessages(prev => [...prev, { role: 'user', text: msg }])
     setLoading(true)
-    try {
-      const res  = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updated }),
-      })
-      const data = await res.json()
-      setMessages(m => [...m, { role: 'model', text: data.text ?? 'Sorry, something went wrong.' }])
-    } catch {
-      setMessages(m => [...m, { role: 'model', text: "I'm having trouble connecting. Please call us on +254 118 266 666." }])
-    }
+    // Simulate a short typing delay for natural feel
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 400))
+    const reply = getReply(msg)
+    setMessages(prev => [...prev, { role: 'model', text: reply }])
     setLoading(false)
-  }, [input, loading, messages])
+  }, [input, loading])
 
   return (
     <>
@@ -83,7 +193,6 @@ export default function ChatWidget() {
               style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
             >
               <div className="flex items-center gap-3">
-                {/* Monogram avatar */}
                 <div className="relative flex-shrink-0">
                   <div
                     className="w-9 h-9 flex items-center justify-center"
@@ -132,7 +241,7 @@ export default function ChatWidget() {
                     </div>
                   )}
                   <div
-                    className="max-w-[78%] px-4 py-3 text-[12.5px] leading-[1.72]"
+                    className="max-w-[78%] px-4 py-3 text-[12.5px] leading-[1.72] whitespace-pre-line"
                     style={{
                       fontFamily: 'var(--font-montserrat)',
                       fontWeight: 300,
@@ -178,7 +287,7 @@ export default function ChatWidget() {
                 </div>
               )}
 
-              {/* Quick replies — shown only on first message */}
+              {/* Quick replies */}
               {showQuick && !loading && messages.length === 1 && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
@@ -265,7 +374,7 @@ export default function ChatWidget() {
                 className="text-center mt-2"
                 style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(255,255,255,0.1)', fontSize: '0.53rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}
               >
-                The Ivy Group · AI Assistant
+                The Ivy Group · Property Assistant
               </p>
             </div>
           </motion.div>
@@ -274,7 +383,6 @@ export default function ChatWidget() {
 
       {/* ── Trigger button — circular, above WhatsApp ── */}
       <div className="fixed bottom-28 right-7 z-50">
-        {/* Gold glow rings when closed */}
         <AnimatePresence>
           {!open && (
             <motion.div

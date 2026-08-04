@@ -177,7 +177,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ text: result.text })
   } catch (err) {
-    console.error('[chat]', err)
-    return NextResponse.json({ error: 'Failed', detail: String(err) }, { status: 500 })
+    const detail = String(err)
+    console.error('[chat]', detail)
+    const isQuota = detail.includes('429') || detail.includes('RESOURCE_EXHAUSTED') || detail.includes('quota')
+    return NextResponse.json({ error: isQuota ? 'quota' : 'failed', detail }, { status: 500 })
   }
 }
