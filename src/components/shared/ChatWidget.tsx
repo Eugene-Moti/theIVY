@@ -24,12 +24,33 @@ const BROCHURES: Record<string, { url: string; label: string }> = {
   'Luckinn Ivy':{ url: '/Luckinn Ivy Assets/Luckinn Brochure.pdf',                        label: 'Luckinn Ivy Residence Brochure' },
 }
 
-// Keywords that make action chips appear after Ivy's reply
 const CHIP_TRIGGERS = [
   'ivy park', 'ivy myst', 'blossom', 'luckinn', 'kilimani', 'kileleshwa', 'westlands',
   'price', 'how much', 'cost', 'ksh', 'available', 'buy', 'purchase', 'payment',
   'amenit', 'pool', 'gym', 'rooftop', 'completion', 'mortgage', 'invest',
 ]
+
+// SVG recreation of The Ivy Group tree mark
+function IvyMark({ size = 22, color = '#C9A84C' }: { size?: number; color?: string }) {
+  return (
+    <svg viewBox="0 0 44 54" fill="none" width={size} height={size} xmlns="http://www.w3.org/2000/svg">
+      {/* Trunk */}
+      <line x1="22" y1="11" x2="22" y2="51" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      {/* Right branches — fan from near-top of trunk outward */}
+      <path d="M22 13 C23 7 26 4 28 3" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 17 C27 11 33 10 36 11" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 21 C30 18 37 21 40 26" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 26 C31 28 38 35 38 42" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 31 C30 38 33 46 31 52" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      {/* Left branches — mirror */}
+      <path d="M22 13 C21 7 18 4 16 3" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 17 C17 11 11 10 8 11" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 21 C14 18 7 21 4 26" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 26 C13 28 6 35 6 42" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <path d="M22 31 C14 38 11 46 13 52" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+    </svg>
+  )
+}
 
 function detectProperty(text: string): string | null {
   const q = text.toLowerCase()
@@ -44,108 +65,87 @@ function detectProperty(text: string): string | null {
 const KB: { keys: string[]; reply: string }[] = [
   {
     keys: ['ivy park', 'kilimani', 'kirichwa'],
-    reply:
-      'Ivy Park Residence is on Kirichwa Road, Kilimani — 3 towers, 22 floors, 660 apartments. Prices start at KSh 6.82M (1BR), KSh 10.78M (2BR), and KSh 15.62M (3BR+DSQ). Completion is December 2028, with structural works already on the 4th floor. Amenities include a heated pool, rooftop garden, gym, yoga studio, co-working spaces, and 24-hour security.',
+    reply: 'Ivy Park Residence is on Kirichwa Road, Kilimani — 3 towers, 22 floors, 660 apartments. Prices start at KSh 6.82M (1BR), KSh 10.78M (2BR), and KSh 15.62M (3BR+DSQ). Completion is December 2028, with structural works already on the 4th floor. Amenities include a heated pool, rooftop garden, gym, yoga studio, co-working spaces, and 24-hour security.',
   },
   {
     keys: ['ivy myst', 'kileleshwa', 'gatundu'],
-    reply:
-      'Ivy Myst Residence is on Gatundu Road, Kileleshwa — 22 floors, 448 apartments. Prices start at KSh 8.8M (1BR), KSh 14.2M (2BR), and KSh 19.8M (3BR+DSQ). Completion: August 2029. Features a rooftop pool, restaurant, bar, fireplace, sauna, massage room, yoga studio, and heated indoor pool on the first floor.',
+    reply: 'Ivy Myst Residence is on Gatundu Road, Kileleshwa — 22 floors, 448 apartments. Prices start at KSh 8.8M (1BR), KSh 14.2M (2BR), and KSh 19.8M (3BR+DSQ). Completion: August 2029. Features a rooftop pool, restaurant, bar, fireplace, sauna, massage room, yoga studio, and heated indoor pool on the first floor.',
   },
   {
     keys: ['blossom', 'blossom ivy'],
-    reply:
-      'Blossom Ivy Residence is on Gatundu Road, Kileleshwa — 2 towers, 22 floors, 220 apartments. Only 3BR+DSQ units (180–236 sqm) remain from KSh 18.5M. 1BR, 2BR, and 4BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga studio, dual backup generators, and smart door locks.',
+    reply: 'Blossom Ivy Residence is on Gatundu Road, Kileleshwa — 2 towers, 22 floors, 220 apartments. Only 3BR+DSQ units (180–236 sqm) remain from KSh 18.5M. 1BR, 2BR, and 4BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga studio, dual backup generators, and smart door locks.',
   },
   {
     keys: ['luckinn', 'luckinn ivy', 'westlands'],
-    reply:
-      'Luckinn Ivy Residence is in Westlands — 1 tower, 20 floors, 120 apartments. Only 3BR+DSQ units (170–172 sqm) are still available; contact our team for pricing. 1BR and 2BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga room, co-working space, and 24-hour security.',
+    reply: 'Luckinn Ivy Residence is in Westlands — 1 tower, 20 floors, 120 apartments. Only 3BR+DSQ units (170–172 sqm) are still available; contact our team for pricing. 1BR and 2BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga room, co-working space, and 24-hour security.',
   },
   {
     keys: ['price', 'prices', 'cost', 'how much', 'pricing', 'ksh', 'million'],
-    reply:
-      'Here is a summary of our current starting prices:\n\n• Ivy Park (Kilimani) — 1BR from KSh 6.82M · 2BR from KSh 10.78M · 3BR+DSQ from KSh 15.62M\n• Ivy Myst (Kileleshwa) — 1BR from KSh 8.8M · 2BR from KSh 14.2M · 3BR+DSQ from KSh 19.8M\n• Blossom Ivy (Kileleshwa) — 3BR+DSQ from KSh 18.5M (only remaining)\n• Luckinn Ivy (Westlands) — 3BR+DSQ available, contact us for pricing\n\nWould you like details on a specific project?',
+    reply: 'Here is a summary of our current starting prices:\n\n• Ivy Park (Kilimani) — 1BR from KSh 6.82M · 2BR from KSh 10.78M · 3BR+DSQ from KSh 15.62M\n• Ivy Myst (Kileleshwa) — 1BR from KSh 8.8M · 2BR from KSh 14.2M · 3BR+DSQ from KSh 19.8M\n• Blossom Ivy (Kileleshwa) — 3BR+DSQ from KSh 18.5M (only remaining)\n• Luckinn Ivy (Westlands) — 3BR+DSQ available, contact us for pricing\n\nWould you like details on a specific project?',
   },
   {
     keys: ['payment', 'installment', 'instalment', 'deposit', 'plan', 'pay'],
-    reply:
-      'We offer three flexible payment options:\n\n1. Installment Plan — 20% deposit, balance spread over the construction period.\n\n2. Cash Purchase — full balance within 30 days, with a discounted price.\n\n3. Mortgage — 20% deposit, remaining balance financed by a bank at project completion.\n\nWould you like to discuss which plan suits you best?',
+    reply: 'We offer three flexible payment options:\n\n1. Installment Plan — 20% deposit, balance spread over the construction period.\n\n2. Cash Purchase — full balance within 30 days, with a discounted price.\n\n3. Mortgage — 20% deposit, remaining balance financed by a bank at project completion.\n\nWould you like to discuss which plan suits you best?',
   },
   {
     keys: ['mortgage', 'bank', 'loan', 'finance', 'financing'],
-    reply:
-      'Yes, mortgage financing is available through our approved banking partners. You pay a 20% deposit upfront, and the remaining balance is financed by a bank upon project completion. Our sales team can introduce you to our partner banks — shall I arrange for someone to call you?',
+    reply: 'Yes, mortgage financing is available through our approved banking partners. You pay a 20% deposit upfront, and the remaining balance is financed by a bank upon project completion. Our sales team can introduce you to our partner banks — shall I arrange for someone to call you?',
   },
   {
     keys: ['buy', 'buying', 'purchase', 'how does', 'process', 'steps', 'how do i'],
-    reply:
-      'The buying process is straightforward:\n\n1. Select your preferred apartment\n2. Confirm availability with our team\n3. Reserve the unit\n4. Pay the required deposit\n5. Sign the Sale Agreement\n6. Continue payments per your chosen plan\n7. Receive regular construction updates\n8. Complete final payment\n9. Handover and possession\n10. Registration and ownership documents\n\nOur team guides you every step of the way.',
+    reply: 'The buying process is straightforward:\n\n1. Select your preferred apartment\n2. Confirm availability with our team\n3. Reserve the unit\n4. Pay the required deposit\n5. Sign the Sale Agreement\n6. Continue payments per your chosen plan\n7. Receive regular construction updates\n8. Complete final payment\n9. Handover and possession\n10. Registration and ownership documents\n\nOur team guides you every step of the way.',
   },
   {
     keys: ['site visit', 'visit', 'view', 'see', 'show', 'tour', 'book', 'appointment', 'schedule'],
-    reply:
-      'We would love to arrange a site visit for you! Visits are available by appointment throughout the week. To book, please share your details below and our team will confirm your preferred date and time. We also offer virtual presentations via video call for diaspora clients.',
+    reply: 'We would love to arrange a site visit for you! Visits are available by appointment throughout the week. Share your details and our team will confirm your preferred date and time. We also offer virtual presentations via video call for diaspora clients.',
   },
   {
     keys: ['diaspora', 'abroad', 'outside kenya', 'uk', 'usa', 'canada', 'australia', 'overseas', 'remote'],
-    reply:
-      'Absolutely — we actively assist diaspora clients. The process is fully remote: virtual presentations, video walkthroughs, electronic documentation, and secure international payment options. Many of our buyers complete the purchase entirely from abroad. Our team will guide you through every step.',
+    reply: 'Absolutely — we actively assist diaspora clients. The process is fully remote: virtual presentations, video walkthroughs, electronic documentation, and secure international payment options. Many of our buyers complete the purchase entirely from abroad. Our team will guide you through every step.',
   },
   {
     keys: ['amenit', 'gym', 'pool', 'swimming', 'rooftop', 'parking', 'security', 'playground', 'children', 'cowork', 'co-work', 'yoga', 'sauna', 'massage', 'garden', 'lounge', 'restaurant', 'bar'],
-    reply:
-      'All Ivy Group developments feature premium lifestyle amenities:\n\n• Heated swimming pools (rooftop + indoor)\n• Fully equipped gyms and yoga studios\n• Co-working spaces and coffee bars\n• Children\'s play areas\n• 24-hour security, CCTV, smart access control\n• Backup generators and borehole water supply\n• Ivy Myst also has a rooftop restaurant, bar, sauna, and massage room\n\nWould you like amenity details for a specific development?',
+    reply: 'All Ivy Group developments feature premium lifestyle amenities:\n\n• Heated swimming pools (rooftop + indoor)\n• Fully equipped gyms and yoga studios\n• Co-working spaces and coffee bars\n• Children\'s play areas\n• 24-hour security, CCTV, smart access control\n• Backup generators and borehole water supply\n• Ivy Myst also has a rooftop restaurant, bar, sauna, and massage room\n\nWould you like amenity details for a specific development?',
   },
   {
     keys: ['available', 'availability', 'units', 'left', 'remaining', 'stock', 'sold out'],
-    reply:
-      'Current availability:\n\n• Ivy Park (Dec 2028) — 1BR, 2BR & 3BR+DSQ all available\n• Ivy Myst (Aug 2029) — 1BR, 2BR & 3BR+DSQ all available\n• Blossom Ivy (Dec 2026) — only 3BR+DSQ remaining\n• Luckinn Ivy (Dec 2026) — only 3BR+DSQ remaining\n\nAvailability changes regularly — contact our team for the latest unit selection.',
+    reply: 'Current availability:\n\n• Ivy Park (Dec 2028) — 1BR, 2BR & 3BR+DSQ all available\n• Ivy Myst (Aug 2029) — 1BR, 2BR & 3BR+DSQ all available\n• Blossom Ivy (Dec 2026) — only 3BR+DSQ remaining\n• Luckinn Ivy (Dec 2026) — only 3BR+DSQ remaining\n\nAvailability changes regularly — contact our team for the latest unit selection.',
   },
   {
     keys: ['completion', 'ready', 'when', 'handover', 'finish', 'complete', 'date'],
-    reply:
-      'Estimated completion dates:\n\n• Luckinn Ivy (Westlands) — December 2026\n• Blossom Ivy (Kileleshwa) — December 2026\n• Ivy Park (Kilimani) — December 2028\n• Ivy Myst (Kileleshwa) — August 2029\n\nOur team provides buyers with regular construction updates throughout.',
+    reply: 'Estimated completion dates:\n\n• Luckinn Ivy (Westlands) — December 2026\n• Blossom Ivy (Kileleshwa) — December 2026\n• Ivy Park (Kilimani) — December 2028\n• Ivy Myst (Kileleshwa) — August 2029\n\nOur team provides buyers with regular construction updates throughout.',
   },
   {
     keys: ['service charge', 'maintenance', 'monthly', 'fee', 'charges'],
-    reply:
-      'Yes, service charges apply in all our developments, covering maintenance of common areas, security, cleaning, lifts, landscaping, and shared amenities. Rates are communicated to buyers before handover. Our sales team can give you an estimate for your chosen development.',
+    reply: 'Yes, service charges apply in all our developments, covering maintenance of common areas, security, cleaning, lifts, landscaping, and shared amenities. Rates are communicated to buyers before handover.',
   },
   {
     keys: ['airbnb', 'short term', 'short-term', 'rent out', 'rental', 'invest', 'investment', 'returns', 'yield'],
-    reply:
-      'All Ivy Group apartments are excellent for both owner-occupation and rental investment. Our Kileleshwa and Kilimani locations see strong demand from expatriates and professionals, yielding solid rental returns. Short-term rentals may be available subject to each development\'s management policies. Shall I connect you with a consultant for investment projections?',
+    reply: 'All Ivy Group apartments are excellent for both owner-occupation and rental investment. Our Kileleshwa and Kilimani locations see strong demand from expatriates and professionals, yielding solid rental returns. Shall I connect you with a consultant for investment projections?',
   },
   {
     keys: ['pet', 'dog', 'cat', 'animal'],
-    reply:
-      'Pet policies are governed by each development\'s management rules. Please consult our sales team for specific guidance on your chosen development.',
+    reply: 'Pet policies are governed by each development\'s management rules. Please consult our sales team for specific guidance on your chosen development.',
   },
   {
     keys: ['contact', 'phone', 'call', 'whatsapp', 'email', 'reach', 'number', 'speak', 'talk'],
-    reply:
-      'You can reach The Ivy Group on:\n\n📞 Phone / WhatsApp: +254 118 266 666\n🌐 Website: www.ivygroup.ke\n\nOur consultants assist with unit availability, pricing, payment plans, site visits, mortgage guidance, and diaspora purchases.',
+    reply: 'You can reach The Ivy Group on:\n\n📞 Phone / WhatsApp: +254 118 266 666\n🌐 Website: www.ivygroup.ke\n\nOur consultants assist with unit availability, pricing, payment plans, site visits, and mortgage guidance.',
   },
   {
     keys: ['about', 'ivy group', 'who are you', 'developer', 'company', 'background'],
-    reply:
-      'The Ivy Group Kenya is a premium real estate developer delivering modern luxury residential developments in Nairobi\'s most sought-after neighbourhoods. Our portfolio includes Ivy Park (Kilimani), Ivy Myst (Kileleshwa), Blossom Ivy (Kileleshwa), and Luckinn Ivy (Westlands). We guide clients throughout their entire journey — from first enquiry to title ownership.',
+    reply: 'The Ivy Group Kenya is a premium real estate developer delivering modern luxury residential developments in Nairobi\'s most sought-after neighbourhoods. Our portfolio includes Ivy Park (Kilimani), Ivy Myst (Kileleshwa), Blossom Ivy (Kileleshwa), and Luckinn Ivy (Westlands). We guide clients throughout their entire journey — from first enquiry to title ownership.',
   },
   {
     keys: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
-    reply:
-      'Hello! Welcome to The Ivy Group. I\'m Ivy, your personal property consultant. How can I assist you today? Feel free to ask about our developments, prices, payment plans, or to book a site visit.',
+    reply: 'Hello! Welcome to The Ivy Group. I\'m Ivy, your personal property consultant. How can I assist you today? Feel free to ask about our developments, prices, payment plans, or to book a site visit.',
   },
   {
     keys: ['thank', 'thanks', 'appreciate', 'helpful'],
-    reply:
-      'You\'re most welcome! It\'s a pleasure assisting you. Feel free to reach out any time on +254 118 266 666 or WhatsApp. Have a wonderful day!',
+    reply: 'You\'re most welcome! It\'s a pleasure assisting you. Feel free to reach out any time on +254 118 266 666 or WhatsApp. Have a wonderful day!',
   },
 ]
 
-const FALLBACK =
-  "Thank you for your enquiry. For the most accurate information, I'd recommend speaking directly with our sales team — they're available on +254 118 266 666 (call or WhatsApp) and will be happy to assist you."
+const FALLBACK = "Thank you for your enquiry. For the most accurate information, I'd recommend speaking directly with our sales team — they're available on +254 118 266 666 (call or WhatsApp) and will be happy to assist you."
 
 function getReply(text: string): string {
   const q = text.toLowerCase()
@@ -216,33 +216,19 @@ export default function ChatWidget() {
     setLoading(true)
     await new Promise(r => setTimeout(r, 700 + Math.random() * 350))
 
-    // ── Lead capture flow: collect name then phone ──
     if (leadFlow) {
       if (leadFlow.step === 'name') {
         setLeadFlow({ ...leadFlow, step: 'phone', name: msg })
-        setMessages(prev => [...prev, {
-          role: 'model',
-          text: `Thank you, ${msg}! And the best phone number to reach you on?`,
-        }])
+        setMessages(prev => [...prev, { role: 'model', text: `Thank you, ${msg}! And the best phone number to reach you on?` }])
       } else if (leadFlow.step === 'phone') {
         await submitLead({ name: leadFlow.name!, phone: msg, type: leadFlow.type, property: currentProperty })
         if (leadFlow.type === 'callback') {
-          setMessages(prev => [...prev, {
-            role: 'model',
-            text: `Perfect, ${leadFlow.name}! Our team will call you on ${msg} during business hours. Is there anything else I can help you with?`,
-          }])
+          setMessages(prev => [...prev, { role: 'model', text: `Perfect, ${leadFlow.name}! Our team will call you on ${msg} during business hours. Is there anything else I can help with?` }])
         } else {
           const brochure = currentProperty ? BROCHURES[currentProperty] : null
           const reply: Message = brochure
-            ? {
-                role: 'model',
-                text: `Thank you, ${leadFlow.name}! Your brochure is ready to download. Our team will also follow up on ${msg}.`,
-                action: { type: 'download', url: brochure.url, label: brochure.label },
-              }
-            : {
-                role: 'model',
-                text: `Thank you, ${leadFlow.name}! Our team will send you the brochures and call you on ${msg} shortly.`,
-              }
+            ? { role: 'model', text: `Thank you, ${leadFlow.name}! Your brochure is ready. Our team will also follow up on ${msg}.`, action: { type: 'download', url: brochure.url, label: brochure.label } }
+            : { role: 'model', text: `Thank you, ${leadFlow.name}! Our team will send you the brochures and call you on ${msg} shortly.` }
           setMessages(prev => [...prev, reply])
         }
         setLeadFlow(null)
@@ -251,8 +237,7 @@ export default function ChatWidget() {
       return
     }
 
-    // ── Detect direct callback/brochure intent ──
-    if (/call( me)? back|callback|contact me|follow.?up|be called|call us/i.test(msg)) {
+    if (/call( me)? back|callback|contact me|follow.?up|be called/i.test(msg)) {
       setLeadFlow({ type: 'callback', step: 'name' })
       setMessages(prev => [...prev, { role: 'model', text: "I'd love to have our team reach out to you! May I have your full name?" }])
       setLoading(false)
@@ -265,30 +250,34 @@ export default function ChatWidget() {
       return
     }
 
-    // ── Normal keyword match ──
     const reply = getReply(msg)
     const prop = detectProperty(msg)
     if (prop) setCurrentProperty(prop)
-    const shouldShowChips = CHIP_TRIGGERS.some(k => msg.toLowerCase().includes(k))
-    setShowActionChips(shouldShowChips)
+    setShowActionChips(CHIP_TRIGGERS.some(k => msg.toLowerCase().includes(k)))
     setMessages(prev => [...prev, { role: 'model', text: reply }])
     setLoading(false)
   }, [input, loading, leadFlow, currentProperty])
 
-  const chipStyle = {
+  // ── Gold chip shared style helpers ─────────────────────────────────────
+  const chipBase: React.CSSProperties = {
     fontFamily: 'var(--font-montserrat)',
-    fontWeight: 400 as const,
+    fontWeight: 400,
     fontSize: '10px',
     letterSpacing: '0.05em',
-    border: '1px solid rgba(201,168,76,0.25)',
-    background: 'rgba(201,168,76,0.04)',
-    color: 'rgba(201,168,76,0.7)',
-    padding: '6px 10px',
+    border: '1px solid rgba(201,168,76,0.28)',
+    background: 'rgba(201,168,76,0.05)',
+    color: 'rgba(201,168,76,0.8)',
+    padding: '5px 10px',
     display: 'flex',
     alignItems: 'center',
     gap: '5px',
     cursor: 'pointer',
     transition: 'all 0.18s ease',
+  }
+  const chipHover = (el: HTMLButtonElement, on: boolean) => {
+    el.style.background    = on ? 'rgba(201,168,76,0.12)' : 'rgba(201,168,76,0.05)'
+    el.style.borderColor   = on ? 'rgba(201,168,76,0.55)' : 'rgba(201,168,76,0.28)'
+    el.style.color         = on ? '#C9A84C' : 'rgba(201,168,76,0.8)'
   }
 
   return (
@@ -306,40 +295,40 @@ export default function ChatWidget() {
               width: 356,
               height: 548,
               maxHeight: 'calc(100dvh - 120px)',
-              background: 'linear-gradient(170deg, #0c0c0c 0%, #070707 100%)',
-              border: '1px solid rgba(201,168,76,0.2)',
-              boxShadow: '0 40px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.025) inset',
+              background: 'linear-gradient(170deg, #FAFAF8 0%, #F5F2EE 100%)',
+              border: '1px solid rgba(201,168,76,0.28)',
+              boxShadow: '0 24px 72px rgba(0,0,0,0.14), 0 0 0 1px rgba(201,168,76,0.06)',
             }}
           >
             {/* Gold top rule */}
-            <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, #C9A84C 40%, #d4b565 60%, transparent)', flexShrink: 0 }} />
+            <div style={{ height: 2, background: 'linear-gradient(90deg, transparent, #C9A84C 35%, #d4b565 65%, transparent)', flexShrink: 0 }} />
 
             {/* Header */}
             <div
               className="flex items-center justify-between px-5 py-3.5 flex-shrink-0"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(0,0,0,0.07)' }}
             >
               <div className="flex items-center gap-3">
                 <div className="relative flex-shrink-0">
                   <div
-                    className="w-9 h-9 flex items-center justify-center"
+                    className="w-10 h-10 flex items-center justify-center"
                     style={{
-                      background: 'linear-gradient(145deg, rgba(201,168,76,0.12), rgba(201,168,76,0.05))',
-                      border: '1px solid rgba(201,168,76,0.3)',
+                      background: 'rgba(201,168,76,0.07)',
+                      border: '1px solid rgba(201,168,76,0.25)',
                     }}
                   >
-                    <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '1.15rem', fontWeight: 300, lineHeight: 1 }}>I</span>
+                    <IvyMark size={22} color="#C9A84C" />
                   </div>
                   <span
                     className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
-                    style={{ background: '#34d399', border: '2px solid #070707' }}
+                    style={{ background: '#22c55e', border: '2px solid #FFFFFF' }}
                   />
                 </div>
                 <div>
-                  <p style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.9)', fontSize: '1.05rem', fontWeight: 400, letterSpacing: '0.04em', lineHeight: 1.1 }}>
+                  <p style={{ fontFamily: 'var(--font-cormorant)', color: '#1a1a1a', fontSize: '1.1rem', fontWeight: 500, letterSpacing: '0.04em', lineHeight: 1.1 }}>
                     Ivy
                   </p>
-                  <p style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(201,168,76,0.6)', fontSize: '0.58rem', letterSpacing: '0.22em', textTransform: 'uppercase', marginTop: 2 }}>
+                  <p style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(201,168,76,0.75)', fontSize: '0.57rem', letterSpacing: '0.22em', textTransform: 'uppercase', marginTop: 2 }}>
                     Property Consultant · Online
                   </p>
                 </div>
@@ -347,9 +336,9 @@ export default function ChatWidget() {
               <button
                 onClick={() => setOpen(false)}
                 className="w-7 h-7 flex items-center justify-center transition-colors"
-                style={{ color: 'rgba(255,255,255,0.2)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+                style={{ color: 'rgba(0,0,0,0.25)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(0,0,0,0.6)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(0,0,0,0.25)')}
               >
                 <ChevronDown size={16} />
               </button>
@@ -361,10 +350,10 @@ export default function ChatWidget() {
                 <div key={i} className={`flex items-end gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {m.role === 'model' && (
                     <div
-                      className="w-6 h-6 flex-shrink-0 flex items-center justify-center mb-0.5"
-                      style={{ background: 'rgba(201,168,76,0.07)', border: '1px solid rgba(201,168,76,0.2)', flexShrink: 0 }}
+                      className="w-7 h-7 flex-shrink-0 flex items-center justify-center mb-0.5"
+                      style={{ background: 'rgba(201,168,76,0.07)', border: '1px solid rgba(201,168,76,0.22)', flexShrink: 0 }}
                     >
-                      <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '0.78rem' }}>I</span>
+                      <IvyMark size={15} color="#C9A84C" />
                     </div>
                   )}
                   <div className="max-w-[78%] flex flex-col gap-2">
@@ -375,24 +364,23 @@ export default function ChatWidget() {
                         fontWeight: 300,
                         ...(m.role === 'user'
                           ? { background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)', color: '#0D0D0D' }
-                          : { background: 'rgba(255,255,255,0.045)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.72)' }
+                          : { background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', color: '#2a2a2a', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }
                         ),
                       }}
                     >
                       {m.text}
                     </div>
-                    {/* Download action button */}
                     {m.action?.type === 'download' && (
                       <a
                         href={m.action.url}
                         download
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 text-[11px] transition-all"
+                        className="flex items-center gap-2 px-4 py-2.5 text-[11px] transition-all hover:opacity-90"
                         style={{
                           fontFamily: 'var(--font-montserrat)',
                           fontWeight: 500,
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.06em',
                           background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)',
                           color: '#0D0D0D',
                         }}
@@ -409,47 +397,47 @@ export default function ChatWidget() {
               {loading && (
                 <div className="flex items-end gap-2.5">
                   <div
-                    className="w-6 h-6 flex-shrink-0 flex items-center justify-center"
-                    style={{ background: 'rgba(201,168,76,0.07)', border: '1px solid rgba(201,168,76,0.2)' }}
+                    className="w-7 h-7 flex-shrink-0 flex items-center justify-center"
+                    style={{ background: 'rgba(201,168,76,0.07)', border: '1px solid rgba(201,168,76,0.22)' }}
                   >
-                    <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '0.78rem' }}>I</span>
+                    <IvyMark size={15} color="#C9A84C" />
                   </div>
                   <div
                     className="px-4 py-3.5 flex items-center gap-1.5"
-                    style={{ background: 'rgba(255,255,255,0.045)', border: '1px solid rgba(255,255,255,0.07)' }}
+                    style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' }}
                   >
                     {[0, 160, 320].map(d => (
                       <span
                         key={d}
                         className="w-1.5 h-1.5 rounded-full animate-bounce"
-                        style={{ background: 'rgba(201,168,76,0.5)', animationDelay: `${d}ms` }}
+                        style={{ background: '#C9A84C', animationDelay: `${d}ms` }}
                       />
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Action chips — appear after property/price answers */}
+              {/* Action chips */}
               {showActionChips && !loading && !leadFlow && (
                 <motion.div
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex gap-2 pl-8"
+                  transition={{ duration: 0.28 }}
+                  className="flex gap-2 pl-9"
                 >
                   <button
-                    style={chipStyle}
+                    style={chipBase}
                     onClick={() => startLeadFlow('callback')}
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.5)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,1)' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.04)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.25)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,0.7)' }}
+                    onMouseEnter={e => chipHover(e.currentTarget as HTMLButtonElement, true)}
+                    onMouseLeave={e => chipHover(e.currentTarget as HTMLButtonElement, false)}
                   >
                     <PhoneCall size={10} /> Request callback
                   </button>
                   <button
-                    style={chipStyle}
+                    style={chipBase}
                     onClick={() => startLeadFlow('brochure')}
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.5)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,1)' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.04)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.25)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,0.7)' }}
+                    onMouseEnter={e => chipHover(e.currentTarget as HTMLButtonElement, true)}
+                    onMouseLeave={e => chipHover(e.currentTarget as HTMLButtonElement, false)}
                   >
                     <Download size={10} /> Download brochure
                   </button>
@@ -464,7 +452,7 @@ export default function ChatWidget() {
                   transition={{ delay: 0.4, duration: 0.4 }}
                   className="pt-1 space-y-2.5"
                 >
-                  <p style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(255,255,255,0.18)', fontSize: '0.58rem', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
+                  <p style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(0,0,0,0.25)', fontSize: '0.57rem', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
                     Quick questions
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -482,20 +470,20 @@ export default function ChatWidget() {
                         style={{
                           fontFamily: 'var(--font-montserrat)',
                           fontWeight: 400,
-                          color: 'rgba(201,168,76,0.7)',
-                          border: '1px solid rgba(201,168,76,0.22)',
+                          color: 'rgba(201,168,76,0.8)',
+                          border: '1px solid rgba(201,168,76,0.28)',
                           letterSpacing: '0.04em',
-                          background: 'rgba(201,168,76,0.03)',
+                          background: 'rgba(201,168,76,0.04)',
                         }}
                         onMouseEnter={e => {
-                          e.currentTarget.style.background = 'rgba(201,168,76,0.09)'
-                          e.currentTarget.style.borderColor = 'rgba(201,168,76,0.45)'
-                          e.currentTarget.style.color = 'rgba(201,168,76,0.95)'
+                          e.currentTarget.style.background = 'rgba(201,168,76,0.1)'
+                          e.currentTarget.style.borderColor = 'rgba(201,168,76,0.5)'
+                          e.currentTarget.style.color = '#C9A84C'
                         }}
                         onMouseLeave={e => {
-                          e.currentTarget.style.background = 'rgba(201,168,76,0.03)'
-                          e.currentTarget.style.borderColor = 'rgba(201,168,76,0.22)'
-                          e.currentTarget.style.color = 'rgba(201,168,76,0.7)'
+                          e.currentTarget.style.background = 'rgba(201,168,76,0.04)'
+                          e.currentTarget.style.borderColor = 'rgba(201,168,76,0.28)'
+                          e.currentTarget.style.color = 'rgba(201,168,76,0.8)'
                         }}
                       >
                         {q}
@@ -509,19 +497,31 @@ export default function ChatWidget() {
             </div>
 
             {/* Input row */}
-            <div className="flex-shrink-0 px-4 pb-4 pt-2.5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+            <div
+              className="flex-shrink-0 px-4 pb-4 pt-3"
+              style={{ borderTop: '1px solid rgba(0,0,0,0.07)', background: '#FFFFFF' }}
+            >
               <div
                 className="flex items-center gap-2"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', padding: '7px 7px 7px 14px' }}
+                style={{ background: '#F5F2EE', border: '1px solid rgba(0,0,0,0.1)', padding: '7px 7px 7px 14px' }}
               >
                 <input
                   ref={inputRef}
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}
-                  placeholder={leadFlow?.step === 'name' ? 'Enter your full name…' : leadFlow?.step === 'phone' ? 'Enter your phone number…' : 'Ask about our properties…'}
-                  className="flex-1 bg-transparent focus:outline-none"
-                  style={{ fontFamily: 'var(--font-montserrat)', fontWeight: 300, fontSize: '12px', color: 'rgba(255,255,255,0.75)' }}
+                  placeholder={
+                    leadFlow?.step === 'name'  ? 'Enter your full name…' :
+                    leadFlow?.step === 'phone' ? 'Enter your phone number…' :
+                    'Ask about our properties…'
+                  }
+                  className="flex-1 bg-transparent focus:outline-none placeholder:text-black/30"
+                  style={{
+                    fontFamily: 'var(--font-montserrat)',
+                    fontWeight: 300,
+                    fontSize: '12px',
+                    color: '#1a1a1a',
+                  }}
                 />
                 <motion.button
                   onClick={() => send()}
@@ -539,7 +539,7 @@ export default function ChatWidget() {
               </div>
               <p
                 className="text-center mt-2"
-                style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(255,255,255,0.1)', fontSize: '0.53rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}
+                style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(0,0,0,0.2)', fontSize: '0.53rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}
               >
                 The Ivy Group · Property Assistant
               </p>
@@ -577,7 +577,7 @@ export default function ChatWidget() {
           onClick={() => setOpen(o => !o)}
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.93 }}
-          className="relative w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-2xl"
+          className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
           style={{
             background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)',
             border: '1px solid rgba(201,168,76,0.4)',
@@ -588,11 +588,10 @@ export default function ChatWidget() {
           <AnimatePresence mode="wait" initial={false}>
             {open
               ? <motion.div key="close" initial={{ opacity: 0, rotate: -80 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X size={17} style={{ color: 'rgba(255,255,255,0.45)' }} />
+                  <X size={17} style={{ color: 'rgba(255,255,255,0.55)' }} />
                 </motion.div>
-              : <motion.div key="ivy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="flex flex-col items-center gap-0.5">
-                  <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '1.45rem', fontWeight: 300, lineHeight: 1 }}>I</span>
-                  <span style={{ fontFamily: 'var(--font-montserrat)', color: 'rgba(201,168,76,0.5)', fontSize: '0.42rem', letterSpacing: '0.22em', textTransform: 'uppercase' }}>CHAT</span>
+              : <motion.div key="logo" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <IvyMark size={28} color="#C9A84C" />
                 </motion.div>
             }
           </AnimatePresence>
