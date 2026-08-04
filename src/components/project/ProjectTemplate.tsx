@@ -1,14 +1,14 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight, MapPin, Download, ChevronDown,
-  Phone, Check, ExternalLink,
+  Phone, Check, ExternalLink, ChevronLeft, ChevronRight, Pause, Play,
 } from 'lucide-react'
-import { ProjectData, getOtherProjects } from '@/data/projects'
+import { ProjectData, GallerySlide, getOtherProjects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
 
 const vp = { once: true, margin: '-80px' }
@@ -39,6 +39,148 @@ function SectionHeading({ children, light = false }: { children: React.ReactNode
     >
       {children}
     </motion.h2>
+  )
+}
+
+function ProjectGalleryCarousel({ slides }: { slides: GallerySlide[] }) {
+  const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const total = slides.length
+
+  const paginate = useCallback((dir: number) => {
+    setDirection(dir)
+    setCurrent(c => (c + dir + total) % total)
+  }, [total])
+
+  const goTo = (i: number) => {
+    setDirection(i > current ? 1 : -1)
+    setCurrent(i)
+  }
+
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => paginate(1), 6000)
+    return () => clearInterval(t)
+  }, [paused, paginate])
+
+  const imgVariants = {
+    enter: (d: number) => ({ opacity: 0, scale: 1.06, x: d > 0 ? 40 : -40 }),
+    center: { opacity: 1, scale: 1, x: 0, transition: { duration: 1.1, ease: [0.76, 0, 0.24, 1] } },
+    exit: (d: number) => ({ opacity: 0, scale: 0.97, x: d < 0 ? 40 : -40, transition: { duration: 0.55 } }),
+  }
+
+  const textVariants = {
+    enter: { opacity: 0, y: 22 },
+    center: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+    exit: { opacity: 0, y: -14, transition: { duration: 0.3 } },
+  }
+
+  return (
+    <section
+      className="bg-dark"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="relative overflow-hidden" style={{ height: '72vh' }}>
+        <AnimatePresence initial={false} custom={direction} mode="sync">
+          <motion.div
+            key={current}
+            custom={direction}
+            variants={imgVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="absolute inset-0"
+          >
+            <Image
+              src={slides[current].src}
+              alt={slides[current].label}
+              fill
+              quality={92}
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
+          </motion.div>
+        </AnimatePresence>
+
+        <button
+          onClick={e => { e.stopPropagation(); paginate(-1) }}
+          className="absolute left-5 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-white/30 flex items-center justify-center text-white/60 hover:text-white hover:border-white/70 hover:bg-white/10 transition-all"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          onClick={e => { e.stopPropagation(); paginate(1) }}
+          className="absolute right-5 top-1/2 -translate-y-1/2 z-10 w-11 h-11 border border-white/30 flex items-center justify-center text-white/60 hover:text-white hover:border-white/70 hover:bg-white/10 transition-all"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        <button
+          onClick={e => { e.stopPropagation(); setPaused(p => !p) }}
+          className="absolute bottom-5 right-5 z-10 w-8 h-8 border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/50 transition-all"
+        >
+          {paused ? <Play size={12} /> : <Pause size={12} />}
+        </button>
+
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 z-10">
+          {!paused && (
+            <motion.div
+              key={`prog-${current}`}
+              className="h-full bg-gold"
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 6, ease: 'linear' }}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 py-8 lg:py-10 items-end">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current}
+                custom={direction}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                <div className="flex items-center gap-4 mb-3">
+                  <span className="text-white/25 text-[9px] font-sans tracking-[0.3em] uppercase">
+                    {String(current + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+                  </span>
+                  <span className="w-px h-3 bg-white/15" />
+                  <span className="text-gold text-[9px] font-sans tracking-[0.28em] uppercase font-semibold">
+                    {slides[current].category}
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl lg:text-3xl text-white font-light mb-3 leading-[1.2]">
+                  {slides[current].label}
+                </h3>
+                <p className="text-white/45 text-sm font-sans font-light leading-[1.85] max-w-2xl">
+                  {slides[current].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`transition-all duration-400 ${i === current ? 'w-8 h-[2px] bg-gold' : 'w-2 h-[2px] bg-white/25 hover:bg-white/50'}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -443,6 +585,13 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             </motion.div>
           </div>
         </section>
+      )}
+
+      {/* ══════════════════════════════════════════════
+          GALLERY CAROUSEL
+      ══════════════════════════════════════════════ */}
+      {data.gallerySlides && data.gallerySlides.length > 0 && (
+        <ProjectGalleryCarousel slides={data.gallerySlides} />
       )}
 
       {/* ══════════════════════════════════════════════

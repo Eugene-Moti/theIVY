@@ -1,5 +1,12 @@
 const p = (path: string) => encodeURI(path)
 
+export interface GallerySlide {
+  src: string
+  label: string
+  category: string
+  description: string
+}
+
 export interface DescriptionBlock {
   type: 'text' | 'image' | 'image-pair'
   content?: string
@@ -58,6 +65,7 @@ export interface ProjectData {
   mapSrc: string
   brochurePath: string
   vrTours?: VrTour[]
+  gallerySlides?: GallerySlide[]
 }
 
 export const projects: ProjectData[] = [
@@ -158,6 +166,15 @@ export const projects: ProjectData[] = [
     ],
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d451.6556133047034!2d36.78503743441678!3d-1.276938025382227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE%2C%20Nairobi!3m2!1d-1.2771432999999999!2d36.785353199999996!5e1!3m2!1sen!2ske!4v1781850935628!5m2!1sen!2ske',
     brochurePath: p('/Blossoms Ivy Residence Assets/BlossomsIvy Brochure.pdf'),
+    gallerySlides: [
+      { src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), label: 'Blossom Ivy Residence', category: 'Architecture', description: 'Rising 22 floors across two elegant residential blocks on Gatundu Road — a landmark on the Kileleshwa skyline.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'), label: 'Grand Lobby', category: 'Arrival Experience', description: 'Soaring ceilings, premium stone finishes, bespoke lighting, and 24-hour concierge — a transition from city to sanctuary.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'), label: 'Lobby Reception', category: 'Architecture', description: 'Every return home is an intentional arrival experience — conceived to hotel-residences standards throughout.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/13_KCGV_Blossom Ivy_R1 Pool 2.jpg'), label: 'Heated Indoor Pool', category: 'Aquatics', description: 'A temperature-controlled indoor pool delivering a resort-like experience year-round, exclusively for residents.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Gym 2.jpg'), label: 'Fully Equipped Gym', category: 'Fitness', description: 'Premium cardio, strength, and functional training machinery — the tools of a boutique fitness club, steps from your door.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Spa 1.jpg'), label: 'Spa & Wellness', category: 'Wellness', description: 'Therapeutic treatments, steam rooms, and relaxation areas typically reserved for five-star hotels, now a permanent feature.' },
+      { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Restaurant 2.png'), label: 'Coffee Bar & Restaurant', category: 'Dining', description: 'Artisanal coffee, fresh pastries, and curated gourmet cuisine — world-class dining without leaving the building.' },
+    ],
   },
 
   /* ─────────────────────── LUCKINN IVY ─────────────────────── */
@@ -253,6 +270,15 @@ export const projects: ProjectData[] = [
     ],
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d2148.455932025552!2d36.810185702436065!3d-1.2677446121873845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE%20Nairobi%2C%20Mogotio%20Rd%2C%20KE!3m2!1d-1.2670761!2d36.8102079!5e1!3m2!1sen!2ske!4v1781851024052!5m2!1sen!2ske',
     brochurePath: p('/Luckinn Ivy Assets/Luckinn Brochure.pdf'),
+    gallerySlides: [
+      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'), label: 'Tower Exterior', category: 'Architecture', description: 'A 20-floor tower on Mogotio Road in Westlands — at the precise intersection of professional convenience and cosmopolitan lifestyle.' },
+      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), label: 'Arrival Entrance', category: 'Architecture', description: 'An arrival experience that sets the tone for the calibre of lifestyle that awaits within.' },
+      { src: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'), label: 'Heated Indoor Pool', category: 'Aquatics', description: 'An elegantly designed indoor heated swimming pool conceived as a private resort, available year-round regardless of the weather.' },
+      { src: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'), label: 'Fully Equipped Gym', category: 'Fitness', description: 'A fully kitted-out fitness suite delivering the performance of a boutique fitness club without leaving the building.' },
+      { src: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'), label: 'Yoga Studio', category: 'Wellness', description: 'A dedicated yoga and meditation studio bathed in considered light — a quiet counterpoint to the energy of Westlands outside.' },
+      { src: p('/Luckinn Ivy Assets/Amenities/Lounge Area.jpeg'), label: 'Co-working & Lounge', category: 'Professional', description: 'Sophisticated lounges and co-working spaces supporting residents who move fluidly between home and professional life.' },
+      { src: p('/Luckinn Ivy Assets/Amenities/Kids Play Area.jpeg'), label: "Children's Play Area", category: 'Family', description: 'A vibrant, safe play zone giving young residents their own dedicated community space within the building.' },
+    ],
     vrTours: [
       {
         category: 'Common Areas',
@@ -391,6 +417,18 @@ export const projects: ProjectData[] = [
     ],
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d3038.3471868036504!2d36.780312317928214!3d-1.2916600198019121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f1b000d6f3f39%3A0x854c68bdc588cef5!2sIVY%20PARK%20RESIDENCE%20Nairobi%2C%20Kirichwa%20Rd!3m2!1d-1.2914455!2d36.781751!5e1!3m2!1sen!2ske!4v1781850798389!5m2!1sen!2ske',
     brochurePath: p('/IVY PARK RESIDENCE Assests/IvyPark BROCHURE.pdf'),
+    gallerySlides: [
+      { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), label: 'Aerial Sunset View', category: 'Architecture', description: 'Three residential blocks on 1.06 acres near Yaya Centre — designed to create an internal community, not simply a building.' },
+      { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 1_IVY PARK.jpg'), label: 'Block A Façade', category: 'Architecture', description: 'A considered architectural language designed to hold its own in Kilimani\'s evolving skyline.' },
+      { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Drone 1_IVY PARK.jpg'), label: 'Development Overview', category: 'Architecture', description: 'Foundation and structural works progressing on schedule — connecting three blocks through landscaped courtyard gardens.' },
+      { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png'), label: 'Heated Swimming Pool', category: 'Aquatics', description: 'A resort-calibre heated pool set within a sun-drenched deck — rivalling the best hotel pools in Nairobi, for residents only.' },
+      { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Bar_001.png'), label: 'Bar & Lounge', category: 'Dining', description: 'Sophisticated design, curated cocktails, and a carefully selected wine list — Nairobi\'s finest atmosphere, inside your building.' },
+      { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Spa_001 Night.png'), label: 'Spa & Wellness', category: 'Wellness', description: 'A full-service spa and wellness centre — an immersive retreat from the pace of urban Nairobi, within daily reach.' },
+      { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/GYM/GYM_V1_B.png'), label: 'Fully Equipped Gym', category: 'Fitness', description: 'Natural light, generous floor area, and top-specification equipment — an environment that makes consistent training enjoyable.' },
+      { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/ROOFTOP/251027_FINAL_Creative(18).jpg'), label: 'Rooftop Garden & Lounge', category: 'Lifestyle', description: 'Panoramic views across Kilimani and beyond — an open-air living room at the summit of the development.' },
+      { src: p('/IVY PARK RESIDENCE Assests/INTERIOR/enhanced_Living_.png'), label: 'Living Space', category: 'Interiors', description: 'Generously proportioned living areas with premium finishes and natural light, designed for contemporary family life.' },
+      { src: p('/IVY PARK RESIDENCE Assests/INTERIOR/Bedroom_1.png'), label: 'Master Bedroom', category: 'Interiors', description: 'Thoughtfully designed bedrooms delivering the quality and finish that define every residence at Ivy Park.' },
+    ],
   },
 
   /* ─────────────────────── IVY MYST ─────────────────────── */
