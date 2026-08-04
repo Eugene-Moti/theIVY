@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Loader2, ChevronDown } from 'lucide-react'
+import { X, Send, Loader2, ChevronDown, Download, PhoneCall } from 'lucide-react'
 
-type Message = { role: 'user' | 'model'; text: string }
+type MessageAction = { type: 'download'; url: string; label: string }
+type Message = { role: 'user' | 'model'; text: string; action?: MessageAction }
+type LeadFlow = { type: 'callback' | 'brochure'; step: 'name' | 'phone'; name?: string }
 
 const GREETING = "Welcome to The Ivy Group. I'm Ivy, your personal property consultant. How may I assist you today?"
 
@@ -15,24 +17,45 @@ const QUICK_REPLIES = [
   'Book a site visit',
 ]
 
-// ── Knowledge base ─────────────────────────────────────────────────────────
-// Each entry: { keys: string[], reply: string }
-// First match wins — put more specific entries first.
+const BROCHURES: Record<string, { url: string; label: string }> = {
+  'Ivy Park':    { url: '/IVY PARK RESIDENCE Assests/IvyPark BROCHURE.pdf',               label: 'Ivy Park Residence Brochure' },
+  'Ivy Myst':   { url: '/Ivy Myst Assets/IvyMystBrochure.pdf',                            label: 'Ivy Myst Residence Brochure' },
+  'Blossom Ivy':{ url: '/Blossoms Ivy Residence Assets/BlossomsIvy Brochure.pdf',         label: 'Blossom Ivy Residence Brochure' },
+  'Luckinn Ivy':{ url: '/Luckinn Ivy Assets/Luckinn Brochure.pdf',                        label: 'Luckinn Ivy Residence Brochure' },
+}
+
+// Keywords that make action chips appear after Ivy's reply
+const CHIP_TRIGGERS = [
+  'ivy park', 'ivy myst', 'blossom', 'luckinn', 'kilimani', 'kileleshwa', 'westlands',
+  'price', 'how much', 'cost', 'ksh', 'available', 'buy', 'purchase', 'payment',
+  'amenit', 'pool', 'gym', 'rooftop', 'completion', 'mortgage', 'invest',
+]
+
+function detectProperty(text: string): string | null {
+  const q = text.toLowerCase()
+  if (q.includes('ivy park') || q.includes('kilimani') || q.includes('kirichwa')) return 'Ivy Park'
+  if (q.includes('ivy myst') || q.includes('kileleshwa') || q.includes('gatundu')) return 'Ivy Myst'
+  if (q.includes('blossom')) return 'Blossom Ivy'
+  if (q.includes('luckinn') || (q.includes('westlands') && !q.includes('near'))) return 'Luckinn Ivy'
+  return null
+}
+
+// ── Knowledge base ──────────────────────────────────────────────────────────
 const KB: { keys: string[]; reply: string }[] = [
   {
-    keys: ['ivy park', 'kilimani', 'kirichwa', 'ivy park residence'],
+    keys: ['ivy park', 'kilimani', 'kirichwa'],
     reply:
-      'Ivy Park Residence is on Kirichwa Road, Kilimani — 3 towers, 22 floors, 660 apartments. Prices start at KSh 6.82M (1BR), KSh 10.78M (2BR), and KSh 15.62M (3BR+DSQ). Completion is December 2028 with structural works already on the 4th floor. Amenities include a heated pool, rooftop garden, gym, yoga studio, co-working spaces, and 24-hour security.',
+      'Ivy Park Residence is on Kirichwa Road, Kilimani — 3 towers, 22 floors, 660 apartments. Prices start at KSh 6.82M (1BR), KSh 10.78M (2BR), and KSh 15.62M (3BR+DSQ). Completion is December 2028, with structural works already on the 4th floor. Amenities include a heated pool, rooftop garden, gym, yoga studio, co-working spaces, and 24-hour security.',
   },
   {
-    keys: ['ivy myst', 'kileleshwa', 'gatundu', 'ivy myst residence'],
+    keys: ['ivy myst', 'kileleshwa', 'gatundu'],
     reply:
-      'Ivy Myst Residence is on Gatundu Road, Kileleshwa — 22 floors, 448 apartments. Prices start at KSh 8.8M (1BR), KSh 14.2M (2BR), and KSh 19.8M (3BR+DSQ). Completion: August 2029. The building features a rooftop pool, restaurant, bar, fireplace, sauna, massage room, yoga studio, and a heated indoor pool on the first floor.',
+      'Ivy Myst Residence is on Gatundu Road, Kileleshwa — 22 floors, 448 apartments. Prices start at KSh 8.8M (1BR), KSh 14.2M (2BR), and KSh 19.8M (3BR+DSQ). Completion: August 2029. Features a rooftop pool, restaurant, bar, fireplace, sauna, massage room, yoga studio, and heated indoor pool on the first floor.',
   },
   {
     keys: ['blossom', 'blossom ivy'],
     reply:
-      'Blossom Ivy Residence is on Gatundu Road, Kileleshwa — 2 towers, 22 floors, 220 apartments. Only 3BR+DSQ units (180–236 sqm) remain from KSh 18.5M. 1BR, 2BR, and 4BR units are sold out. Completion is December 2026. Amenities include a heated indoor pool, gym, yoga studio, dual backup generators, and smart door locks.',
+      'Blossom Ivy Residence is on Gatundu Road, Kileleshwa — 2 towers, 22 floors, 220 apartments. Only 3BR+DSQ units (180–236 sqm) remain from KSh 18.5M. 1BR, 2BR, and 4BR units are sold out. Completion: December 2026. Amenities include a heated indoor pool, gym, yoga studio, dual backup generators, and smart door locks.',
   },
   {
     keys: ['luckinn', 'luckinn ivy', 'westlands'],
@@ -42,87 +65,87 @@ const KB: { keys: string[]; reply: string }[] = [
   {
     keys: ['price', 'prices', 'cost', 'how much', 'pricing', 'ksh', 'million'],
     reply:
-      'Here is a summary of our current starting prices:\n\n• Ivy Park (Kilimani) — 1BR from KSh 6.82M · 2BR from KSh 10.78M · 3BR+DSQ from KSh 15.62M\n• Ivy Myst (Kileleshwa) — 1BR from KSh 8.8M · 2BR from KSh 14.2M · 3BR+DSQ from KSh 19.8M\n• Blossom Ivy (Kileleshwa) — 3BR+DSQ from KSh 18.5M (only remaining)\n• Luckinn Ivy (Westlands) — 3BR+DSQ available, contact us for pricing\n\nAll prices are subject to availability. Would you like details on a specific project?',
+      'Here is a summary of our current starting prices:\n\n• Ivy Park (Kilimani) — 1BR from KSh 6.82M · 2BR from KSh 10.78M · 3BR+DSQ from KSh 15.62M\n• Ivy Myst (Kileleshwa) — 1BR from KSh 8.8M · 2BR from KSh 14.2M · 3BR+DSQ from KSh 19.8M\n• Blossom Ivy (Kileleshwa) — 3BR+DSQ from KSh 18.5M (only remaining)\n• Luckinn Ivy (Westlands) — 3BR+DSQ available, contact us for pricing\n\nWould you like details on a specific project?',
   },
   {
     keys: ['payment', 'installment', 'instalment', 'deposit', 'plan', 'pay'],
     reply:
-      'We offer three flexible payment options:\n\n1. Installment Plan — 20% deposit, balance spread over the construction period. Great for investors and salaried professionals.\n\n2. Cash Purchase — full balance within 30 days, with a discounted price. Best for maximum savings.\n\n3. Mortgage — 20% deposit, remaining balance financed by a bank at project completion. Ideal for first-time homeowners.\n\nWould you like to discuss which plan suits you best?',
+      'We offer three flexible payment options:\n\n1. Installment Plan — 20% deposit, balance spread over the construction period.\n\n2. Cash Purchase — full balance within 30 days, with a discounted price.\n\n3. Mortgage — 20% deposit, remaining balance financed by a bank at project completion.\n\nWould you like to discuss which plan suits you best?',
   },
   {
     keys: ['mortgage', 'bank', 'loan', 'finance', 'financing'],
     reply:
-      'Yes, mortgage financing is available through our approved banking partners. You pay a 20% deposit upfront, and the remaining balance is financed by a bank upon project completion. Our sales team can introduce you to our partner banks. Would you like us to reach out to you?',
+      'Yes, mortgage financing is available through our approved banking partners. You pay a 20% deposit upfront, and the remaining balance is financed by a bank upon project completion. Our sales team can introduce you to our partner banks — shall I arrange for someone to call you?',
   },
   {
     keys: ['buy', 'buying', 'purchase', 'how does', 'process', 'steps', 'how do i'],
     reply:
-      'The buying process is straightforward:\n\n1. Select your preferred apartment\n2. Confirm availability with our team\n3. Reserve the unit\n4. Pay the required deposit\n5. Sign the Sale Agreement\n6. Continue payments per your chosen plan\n7. Receive regular construction updates\n8. Complete final payment\n9. Handover and possession\n10. Registration and ownership documents issued\n\nOur team guides you every step of the way. Shall I connect you with a consultant?',
+      'The buying process is straightforward:\n\n1. Select your preferred apartment\n2. Confirm availability with our team\n3. Reserve the unit\n4. Pay the required deposit\n5. Sign the Sale Agreement\n6. Continue payments per your chosen plan\n7. Receive regular construction updates\n8. Complete final payment\n9. Handover and possession\n10. Registration and ownership documents\n\nOur team guides you every step of the way.',
   },
   {
     keys: ['site visit', 'visit', 'view', 'see', 'show', 'tour', 'book', 'appointment', 'schedule'],
     reply:
-      'We would love to arrange a site visit for you! Visits are available by appointment throughout the week. To book, please call or WhatsApp us on +254 118 266 666 and our team will confirm your preferred date and time. If you are based abroad, we also offer virtual presentations via video call.',
+      'We would love to arrange a site visit for you! Visits are available by appointment throughout the week. To book, please share your details below and our team will confirm your preferred date and time. We also offer virtual presentations via video call for diaspora clients.',
   },
   {
     keys: ['diaspora', 'abroad', 'outside kenya', 'uk', 'usa', 'canada', 'australia', 'overseas', 'remote'],
     reply:
-      'Absolutely — we actively assist diaspora clients. The process is fully remote: virtual property presentations, video call walkthroughs, electronic documentation, and secure international payment options. Many of our buyers complete their purchase entirely from abroad. Contact us on +254 118 266 666 or WhatsApp and we will guide you through every step.',
+      'Absolutely — we actively assist diaspora clients. The process is fully remote: virtual presentations, video walkthroughs, electronic documentation, and secure international payment options. Many of our buyers complete the purchase entirely from abroad. Our team will guide you through every step.',
   },
   {
     keys: ['amenit', 'gym', 'pool', 'swimming', 'rooftop', 'parking', 'security', 'playground', 'children', 'cowork', 'co-work', 'yoga', 'sauna', 'massage', 'garden', 'lounge', 'restaurant', 'bar'],
     reply:
-      'All Ivy Group developments feature premium lifestyle amenities. Highlights include:\n\n• Heated swimming pools (indoor on lower floors, rooftop at Ivy Myst)\n• Fully equipped gyms and yoga studios\n• Co-working spaces and coffee bars\n• Children\'s play areas\n• 24-hour security, CCTV, smart access control\n• Backup generators and borehole water supply\n• Ivy Myst also has a rooftop restaurant, bar, sauna, and massage room\n\nWould you like amenity details for a specific development?',
+      'All Ivy Group developments feature premium lifestyle amenities:\n\n• Heated swimming pools (rooftop + indoor)\n• Fully equipped gyms and yoga studios\n• Co-working spaces and coffee bars\n• Children\'s play areas\n• 24-hour security, CCTV, smart access control\n• Backup generators and borehole water supply\n• Ivy Myst also has a rooftop restaurant, bar, sauna, and massage room\n\nWould you like amenity details for a specific development?',
   },
   {
     keys: ['available', 'availability', 'units', 'left', 'remaining', 'stock', 'sold out'],
     reply:
-      'Here is the current availability snapshot:\n\n• Ivy Park (Dec 2028) — 1BR, 2BR & 3BR+DSQ all available\n• Ivy Myst (Aug 2029) — 1BR, 2BR & 3BR+DSQ all available\n• Blossom Ivy (Dec 2026) — only 3BR+DSQ units remaining\n• Luckinn Ivy (Dec 2026) — only 3BR+DSQ units remaining\n\nAvailability changes regularly. For the latest unit selection, please contact our sales team on +254 118 266 666.',
+      'Current availability:\n\n• Ivy Park (Dec 2028) — 1BR, 2BR & 3BR+DSQ all available\n• Ivy Myst (Aug 2029) — 1BR, 2BR & 3BR+DSQ all available\n• Blossom Ivy (Dec 2026) — only 3BR+DSQ remaining\n• Luckinn Ivy (Dec 2026) — only 3BR+DSQ remaining\n\nAvailability changes regularly — contact our team for the latest unit selection.',
   },
   {
     keys: ['completion', 'ready', 'when', 'handover', 'finish', 'complete', 'date'],
     reply:
-      'Estimated completion dates:\n\n• Luckinn Ivy (Westlands) — December 2026\n• Blossom Ivy (Kileleshwa) — December 2026\n• Ivy Park (Kilimani) — December 2028 (structural works currently on 4th floor)\n• Ivy Myst (Kileleshwa) — August 2029\n\nAll timelines are subject to construction progress. Our team provides buyers with regular construction updates.',
+      'Estimated completion dates:\n\n• Luckinn Ivy (Westlands) — December 2026\n• Blossom Ivy (Kileleshwa) — December 2026\n• Ivy Park (Kilimani) — December 2028\n• Ivy Myst (Kileleshwa) — August 2029\n\nOur team provides buyers with regular construction updates throughout.',
   },
   {
     keys: ['service charge', 'maintenance', 'monthly', 'fee', 'charges'],
     reply:
-      'Yes, service charges apply in all our developments. These cover maintenance of common areas, security, cleaning, lifts, landscaping, and shared amenities. The exact rates are communicated to buyers before handover. Our sales team can give you an estimate for your chosen development.',
+      'Yes, service charges apply in all our developments, covering maintenance of common areas, security, cleaning, lifts, landscaping, and shared amenities. Rates are communicated to buyers before handover. Our sales team can give you an estimate for your chosen development.',
   },
   {
     keys: ['airbnb', 'short term', 'short-term', 'rent out', 'rental', 'invest', 'investment', 'returns', 'yield'],
     reply:
-      'All Ivy Group apartments are excellent for both owner-occupation and rental investment. Short-term rentals like Airbnb may be available subject to each development\'s management policies. Our Kileleshwa and Kilimani locations see strong demand from expatriates and professionals, typically yielding solid rental returns. Speak with our sales team for investment projections.',
+      'All Ivy Group apartments are excellent for both owner-occupation and rental investment. Our Kileleshwa and Kilimani locations see strong demand from expatriates and professionals, yielding solid rental returns. Short-term rentals may be available subject to each development\'s management policies. Shall I connect you with a consultant for investment projections?',
   },
   {
     keys: ['pet', 'dog', 'cat', 'animal'],
     reply:
-      'Pet policies are governed by each development\'s management rules. Please consult our sales team for specific guidance on your chosen development — they will give you the most accurate and up-to-date information.',
+      'Pet policies are governed by each development\'s management rules. Please consult our sales team for specific guidance on your chosen development.',
   },
   {
     keys: ['contact', 'phone', 'call', 'whatsapp', 'email', 'reach', 'number', 'speak', 'talk'],
     reply:
-      'You can reach The Ivy Group on:\n\n📞 Phone / WhatsApp: +254 118 266 666\n🌐 Website: www.ivygroup.ke\n\nOur consultants assist with unit availability, pricing, payment plans, site visits, mortgage guidance, diaspora purchases, and general investment advice. We are here to help!',
+      'You can reach The Ivy Group on:\n\n📞 Phone / WhatsApp: +254 118 266 666\n🌐 Website: www.ivygroup.ke\n\nOur consultants assist with unit availability, pricing, payment plans, site visits, mortgage guidance, and diaspora purchases.',
   },
   {
-    keys: ['about', 'ivy group', 'who are you', 'developer', 'company', 'background', 'experience', 'track record'],
+    keys: ['about', 'ivy group', 'who are you', 'developer', 'company', 'background'],
     reply:
-      'The Ivy Group Kenya is a premium real estate developer delivering modern luxury residential developments in Nairobi\'s most sought-after neighbourhoods. We are known for exceptional architecture, premium finishes, strategic locations, and flexible payment plans. Our portfolio includes Ivy Park, Ivy Myst, Blossom Ivy, and Luckinn Ivy — all in prime Nairobi areas. We guide clients throughout their entire journey, from first enquiry to title ownership.',
+      'The Ivy Group Kenya is a premium real estate developer delivering modern luxury residential developments in Nairobi\'s most sought-after neighbourhoods. Our portfolio includes Ivy Park (Kilimani), Ivy Myst (Kileleshwa), Blossom Ivy (Kileleshwa), and Luckinn Ivy (Westlands). We guide clients throughout their entire journey — from first enquiry to title ownership.',
   },
   {
-    keys: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'greet'],
+    keys: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
     reply:
       'Hello! Welcome to The Ivy Group. I\'m Ivy, your personal property consultant. How can I assist you today? Feel free to ask about our developments, prices, payment plans, or to book a site visit.',
   },
   {
     keys: ['thank', 'thanks', 'appreciate', 'helpful'],
     reply:
-      'You\'re most welcome! It\'s a pleasure assisting you. If you have any more questions or would like to speak with one of our consultants, don\'t hesitate to reach out on +254 118 266 666. Have a wonderful day!',
+      'You\'re most welcome! It\'s a pleasure assisting you. Feel free to reach out any time on +254 118 266 666 or WhatsApp. Have a wonderful day!',
   },
 ]
 
 const FALLBACK =
-  "Thank you for your enquiry. For the most accurate and up-to-date information, I'd recommend speaking directly with our sales team — they're available on +254 118 266 666 (call or WhatsApp) and will be happy to assist you."
+  "Thank you for your enquiry. For the most accurate information, I'd recommend speaking directly with our sales team — they're available on +254 118 266 666 (call or WhatsApp) and will be happy to assist you."
 
 function getReply(text: string): string {
   const q = text.toLowerCase()
@@ -131,14 +154,34 @@ function getReply(text: string): string {
   }
   return FALLBACK
 }
-// ──────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────────
+
+async function submitLead(payload: {
+  name: string; phone: string; type: 'callback' | 'brochure'; property: string | null
+}) {
+  try {
+    await fetch('/api/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: `chat-${payload.type}`,
+        name: payload.name,
+        phone: payload.phone,
+        property_interest: payload.property ?? 'General Enquiry',
+      }),
+    })
+  } catch { /* fire-and-forget */ }
+}
 
 export default function ChatWidget() {
-  const [open, setOpen]           = useState(false)
-  const [messages, setMessages]   = useState<Message[]>([{ role: 'model', text: GREETING }])
-  const [input, setInput]         = useState('')
-  const [loading, setLoading]     = useState(false)
-  const [showQuick, setShowQuick] = useState(true)
+  const [open, setOpen]             = useState(false)
+  const [messages, setMessages]     = useState<Message[]>([{ role: 'model', text: GREETING }])
+  const [input, setInput]           = useState('')
+  const [loading, setLoading]       = useState(false)
+  const [showQuick, setShowQuick]   = useState(true)
+  const [showActionChips, setShowActionChips] = useState(false)
+  const [leadFlow, setLeadFlow]     = useState<LeadFlow | null>(null)
+  const [currentProperty, setCurrentProperty] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
 
@@ -150,19 +193,103 @@ export default function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 350)
   }, [open])
 
+  const startLeadFlow = useCallback(async (type: 'callback' | 'brochure') => {
+    setShowActionChips(false)
+    setShowQuick(false)
+    setLeadFlow({ type, step: 'name' })
+    setLoading(true)
+    await new Promise(r => setTimeout(r, 650))
+    const text = type === 'callback'
+      ? "I'd love to have our sales team reach out to you. May I have your full name?"
+      : "I'll get that brochure ready for you! May I have your full name first?"
+    setMessages(prev => [...prev, { role: 'model', text }])
+    setLoading(false)
+  }, [])
+
   const send = useCallback(async (text?: string) => {
     const msg = (text ?? input).trim()
     if (!msg || loading) return
     setInput('')
     setShowQuick(false)
+    setShowActionChips(false)
     setMessages(prev => [...prev, { role: 'user', text: msg }])
     setLoading(true)
-    // Simulate a short typing delay for natural feel
-    await new Promise(r => setTimeout(r, 700 + Math.random() * 400))
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 350))
+
+    // ── Lead capture flow: collect name then phone ──
+    if (leadFlow) {
+      if (leadFlow.step === 'name') {
+        setLeadFlow({ ...leadFlow, step: 'phone', name: msg })
+        setMessages(prev => [...prev, {
+          role: 'model',
+          text: `Thank you, ${msg}! And the best phone number to reach you on?`,
+        }])
+      } else if (leadFlow.step === 'phone') {
+        await submitLead({ name: leadFlow.name!, phone: msg, type: leadFlow.type, property: currentProperty })
+        if (leadFlow.type === 'callback') {
+          setMessages(prev => [...prev, {
+            role: 'model',
+            text: `Perfect, ${leadFlow.name}! Our team will call you on ${msg} during business hours. Is there anything else I can help you with?`,
+          }])
+        } else {
+          const brochure = currentProperty ? BROCHURES[currentProperty] : null
+          const reply: Message = brochure
+            ? {
+                role: 'model',
+                text: `Thank you, ${leadFlow.name}! Your brochure is ready to download. Our team will also follow up on ${msg}.`,
+                action: { type: 'download', url: brochure.url, label: brochure.label },
+              }
+            : {
+                role: 'model',
+                text: `Thank you, ${leadFlow.name}! Our team will send you the brochures and call you on ${msg} shortly.`,
+              }
+          setMessages(prev => [...prev, reply])
+        }
+        setLeadFlow(null)
+      }
+      setLoading(false)
+      return
+    }
+
+    // ── Detect direct callback/brochure intent ──
+    if (/call( me)? back|callback|contact me|follow.?up|be called|call us/i.test(msg)) {
+      setLeadFlow({ type: 'callback', step: 'name' })
+      setMessages(prev => [...prev, { role: 'model', text: "I'd love to have our team reach out to you! May I have your full name?" }])
+      setLoading(false)
+      return
+    }
+    if (/\bbrochure\b|download/i.test(msg)) {
+      setLeadFlow({ type: 'brochure', step: 'name' })
+      setMessages(prev => [...prev, { role: 'model', text: "I'll get that brochure ready for you! May I have your full name first?" }])
+      setLoading(false)
+      return
+    }
+
+    // ── Normal keyword match ──
     const reply = getReply(msg)
+    const prop = detectProperty(msg)
+    if (prop) setCurrentProperty(prop)
+    const shouldShowChips = CHIP_TRIGGERS.some(k => msg.toLowerCase().includes(k))
+    setShowActionChips(shouldShowChips)
     setMessages(prev => [...prev, { role: 'model', text: reply }])
     setLoading(false)
-  }, [input, loading])
+  }, [input, loading, leadFlow, currentProperty])
+
+  const chipStyle = {
+    fontFamily: 'var(--font-montserrat)',
+    fontWeight: 400 as const,
+    fontSize: '10px',
+    letterSpacing: '0.05em',
+    border: '1px solid rgba(201,168,76,0.25)',
+    background: 'rgba(201,168,76,0.04)',
+    color: 'rgba(201,168,76,0.7)',
+    padding: '6px 10px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    cursor: 'pointer',
+    transition: 'all 0.18s ease',
+  }
 
   return (
     <>
@@ -240,25 +367,40 @@ export default function ChatWidget() {
                       <span style={{ fontFamily: 'var(--font-cormorant)', color: '#C9A84C', fontSize: '0.78rem' }}>I</span>
                     </div>
                   )}
-                  <div
-                    className="max-w-[78%] px-4 py-3 text-[12.5px] leading-[1.72] whitespace-pre-line"
-                    style={{
-                      fontFamily: 'var(--font-montserrat)',
-                      fontWeight: 300,
-                      ...(m.role === 'user'
-                        ? {
-                            background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)',
-                            color: '#0D0D0D',
-                          }
-                        : {
-                            background: 'rgba(255,255,255,0.045)',
-                            border: '1px solid rgba(255,255,255,0.07)',
-                            color: 'rgba(255,255,255,0.72)',
-                          }
-                      ),
-                    }}
-                  >
-                    {m.text}
+                  <div className="max-w-[78%] flex flex-col gap-2">
+                    <div
+                      className="px-4 py-3 text-[12.5px] leading-[1.72] whitespace-pre-line"
+                      style={{
+                        fontFamily: 'var(--font-montserrat)',
+                        fontWeight: 300,
+                        ...(m.role === 'user'
+                          ? { background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)', color: '#0D0D0D' }
+                          : { background: 'rgba(255,255,255,0.045)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.72)' }
+                        ),
+                      }}
+                    >
+                      {m.text}
+                    </div>
+                    {/* Download action button */}
+                    {m.action?.type === 'download' && (
+                      <a
+                        href={m.action.url}
+                        download
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-4 py-2.5 text-[11px] transition-all"
+                        style={{
+                          fontFamily: 'var(--font-montserrat)',
+                          fontWeight: 500,
+                          letterSpacing: '0.08em',
+                          background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)',
+                          color: '#0D0D0D',
+                        }}
+                      >
+                        <Download size={11} />
+                        {m.action.label}
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -287,7 +429,34 @@ export default function ChatWidget() {
                 </div>
               )}
 
-              {/* Quick replies */}
+              {/* Action chips — appear after property/price answers */}
+              {showActionChips && !loading && !leadFlow && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex gap-2 pl-8"
+                >
+                  <button
+                    style={chipStyle}
+                    onClick={() => startLeadFlow('callback')}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.5)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,1)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.04)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.25)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,0.7)' }}
+                  >
+                    <PhoneCall size={10} /> Request callback
+                  </button>
+                  <button
+                    style={chipStyle}
+                    onClick={() => startLeadFlow('brochure')}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.5)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,1)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(201,168,76,0.04)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.25)'; (e.currentTarget as HTMLButtonElement).style.color = 'rgba(201,168,76,0.7)' }}
+                  >
+                    <Download size={10} /> Download brochure
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Initial quick replies */}
               {showQuick && !loading && messages.length === 1 && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
@@ -305,7 +474,10 @@ export default function ChatWidget() {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 + i * 0.08 }}
-                        onClick={() => send(q)}
+                        onClick={() => {
+                          if (q === 'Book a site visit') { startLeadFlow('callback'); setShowQuick(false) }
+                          else send(q)
+                        }}
                         className="px-3 py-1.5 text-[10.5px] transition-all"
                         style={{
                           fontFamily: 'var(--font-montserrat)',
@@ -347,14 +519,9 @@ export default function ChatWidget() {
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}
-                  placeholder="Ask about our properties…"
+                  placeholder={leadFlow?.step === 'name' ? 'Enter your full name…' : leadFlow?.step === 'phone' ? 'Enter your phone number…' : 'Ask about our properties…'}
                   className="flex-1 bg-transparent focus:outline-none"
-                  style={{
-                    fontFamily: 'var(--font-montserrat)',
-                    fontWeight: 300,
-                    fontSize: '12px',
-                    color: 'rgba(255,255,255,0.75)',
-                  }}
+                  style={{ fontFamily: 'var(--font-montserrat)', fontWeight: 300, fontSize: '12px', color: 'rgba(255,255,255,0.75)' }}
                 />
                 <motion.button
                   onClick={() => send()}
