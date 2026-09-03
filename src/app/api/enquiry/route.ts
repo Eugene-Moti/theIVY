@@ -26,7 +26,7 @@ function contactHtml(data: Record<string, string>) {
         </div>
       </div>
       <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;">
-        <p style="margin:0;color:#9ca3af;font-size:11px;">Sent from ivygroup.ke · The Ivy Group, Blossoms Ivy Residence, Gatundu Road, Kileleshwa</p>
+        <p style="margin:0;color:#9ca3af;font-size:11px;">Sent from ivygroup.ke · The Ivy Group, Ivy Park Residence, Kirichwa Road, Kilimani (near Yaya Centre), Nairobi</p>
       </div>
     </div>
   `

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
 
 const developments = [
   { label: 'Blossom Ivy Residence', href: '/blossom-ivy' },
@@ -157,9 +158,23 @@ export default function Footer() {
               <li>
                 <p className="text-white/25 text-[9px] tracking-[0.18em] uppercase mb-1">Head Office</p>
                 <address className="text-white/50 not-italic leading-relaxed">
-                  Blossoms Ivy Residence<br />
-                  Gatundu Road, Kileleshwa<br />
-                  Nairobi, Kenya
+                  {HEAD_OFFICE.building}<br />
+                  {HEAD_OFFICE.street}<br />
+                  {HEAD_OFFICE.landmark} · {HEAD_OFFICE.city}, {HEAD_OFFICE.country}
+                </address>
+                <a
+                  href={HEAD_OFFICE.mapLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gold/70 hover:text-gold transition-colors duration-300 text-[11px]"
+                >
+                  Get directions →
+                </a>
+              </li>
+              <li>
+                <p className="text-white/25 text-[9px] tracking-[0.18em] uppercase mb-1">By Appointment</p>
+                <address className="text-white/40 not-italic leading-relaxed text-[11px]">
+                  {FORMER_OFFICE.name}, {FORMER_OFFICE.street}
                 </address>
               </li>
             </ul>

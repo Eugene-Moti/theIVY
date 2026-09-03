@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import ContactContent from './ContactContent'
+import { HEAD_OFFICE } from '@/data/office'
 
 export const metadata: Metadata = {
   title: 'Contact Us | The Ivy Group',
-  description: 'Get in touch with The Ivy Group sales team. Call +254 118 266 666, email us, or visit our head office at Blossom Ivy Residence, Gatundu Road, Kileleshwa, Nairobi.',
+  description: 'Get in touch with The Ivy Group sales team. Call +254 118 266 666, email us, or visit our head office at the Ivy Park Sales Suite, Kirichwa Road, Kilimani (near Yaya Centre), Nairobi.',
   alternates: { canonical: '/contact' },
   openGraph: {
     title: 'Contact The Ivy Group | Luxury Real Estate Nairobi',
@@ -20,8 +21,9 @@ const jsonLd = {
   email: 'marketing.ivy-group@rsunproperty.net',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Gatundu Road, Kileleshwa',
+    streetAddress: HEAD_OFFICE.streetAddress,
     addressLocality: 'Nairobi',
+    addressRegion: 'Nairobi County',
     addressCountry: 'KE',
   },
   openingHoursSpecification: {

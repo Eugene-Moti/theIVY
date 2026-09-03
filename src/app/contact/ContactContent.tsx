@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, CheckCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, CheckCircle, Navigation } from 'lucide-react'
+import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
 
 type FormState = { name: string; email: string; phone: string; interest: string; message: string }
 const INTERESTS = ['Blossom Ivy Residence', 'Luckinn Ivy Residence', 'Ivy Park Residence', 'Ivy Myst', 'General Enquiry']
@@ -48,6 +49,27 @@ export default function ContactContent() {
             <h1 className="font-serif text-5xl md:text-6xl text-white font-light">Contact Us</h1>
             <div className="w-12 h-[2px] bg-gold mx-auto mt-5" />
           </motion.div>
+        </div>
+      </section>
+
+      {/* We've moved notice */}
+      <section className="bg-gold/10 border-y border-gold/25">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+          <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.28em] uppercase flex-shrink-0">
+            We&rsquo;ve Moved
+          </p>
+          <p className="text-dark/70 text-sm font-sans font-light leading-relaxed">
+            Our head office is now the {HEAD_OFFICE.name} at {HEAD_OFFICE.building}, {HEAD_OFFICE.street} ({HEAD_OFFICE.landmark}).
+            Blossom Ivy Residence in Kileleshwa remains open for viewings by appointment.
+          </p>
+          <a
+            href={HEAD_OFFICE.mapLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 inline-flex items-center gap-2 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase text-dark border border-dark px-5 py-3 hover:bg-dark hover:text-white transition-colors"
+          >
+            <Navigation size={12} /> Directions
+          </a>
         </div>
       </section>
 
@@ -97,8 +119,27 @@ export default function ContactContent() {
                   </div>
                   <div>
                     <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">Head Office</p>
-                    <p className="text-dark text-sm font-sans">Blossoms Ivy Residence</p>
-                    <p className="text-dark/50 text-xs font-sans">Gatundu Road, Kileleshwa, Nairobi</p>
+                    <p className="text-dark text-sm font-sans">{HEAD_OFFICE.building} — {HEAD_OFFICE.name}</p>
+                    <p className="text-dark/50 text-xs font-sans">{HEAD_OFFICE.street} ({HEAD_OFFICE.landmark}), {HEAD_OFFICE.city}</p>
+                    <a
+                      href={HEAD_OFFICE.mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-gold text-[11px] font-sans font-semibold tracking-wider uppercase mt-2 hover:gap-2.5 transition-all"
+                    >
+                      <Navigation size={11} /> Get Directions
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 border border-dark/15 flex items-center justify-center flex-shrink-0">
+                    <MapPin size={14} className="text-dark/40" />
+                  </div>
+                  <div>
+                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">By Appointment</p>
+                    <p className="text-dark text-sm font-sans">{FORMER_OFFICE.name}</p>
+                    <p className="text-dark/50 text-xs font-sans">{FORMER_OFFICE.street}, {FORMER_OFFICE.city} — {FORMER_OFFICE.note}</p>
                   </div>
                 </div>
               </div>
@@ -236,14 +277,14 @@ export default function ContactContent() {
           <p className="text-dark/35 text-[10px] font-sans tracking-[0.25em] uppercase mb-5">FIND US</p>
           <div className="w-full h-[400px] overflow-hidden border border-dark/8">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d451.6556133047034!2d36.78503743441678!3d-1.276938025382227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE%2C%20Nairobi!3m2!1d-1.2771432999999999!2d36.785353199999996!5e1!3m2!1sen!2ske!4v1781850935628!5m2!1sen!2ske"
+              src={HEAD_OFFICE.mapEmbed}
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="The Ivy Group Head Office — Blossoms Ivy Residence, Kileleshwa"
+              title={`The Ivy Group Head Office — ${HEAD_OFFICE.building}, Kirichwa Road, Kilimani`}
             />
           </div>
         </div>

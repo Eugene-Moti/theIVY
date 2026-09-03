@@ -4,6 +4,8 @@ import LaunchSection from '@/components/home/LaunchSection'
 import AboutSection from '@/components/home/AboutSection'
 import StatsSection from '@/components/home/StatsSection'
 import CTASection from '@/components/home/CTASection'
+import MovedNotice from '@/components/home/MovedNotice'
+import { HEAD_OFFICE } from '@/data/office'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -17,7 +19,7 @@ const jsonLd = {
   foundingDate: '2014',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Gatundu Road, Kileleshwa',
+    streetAddress: HEAD_OFFICE.streetAddress,
     addressLocality: 'Nairobi',
     addressRegion: 'Nairobi County',
     addressCountry: 'KE',
@@ -52,6 +54,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSlider />
+      <MovedNotice />
       <ProjectsSection />
       <LaunchSection />
       <AboutSection />

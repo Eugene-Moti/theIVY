@@ -69,7 +69,7 @@ export default function AboutContent() {
                 Our portfolio spans Kileleshwa, Westlands, and Kilimani — Nairobi's so-called golden triangle of prime real estate — with every development benchmarked against international standards of quality, finishes, and community design.
               </p>
               <p className="text-dark/60 text-sm font-sans font-light leading-[1.9]">
-                From our headquarters at Blossom Ivy Residence on Gatundu Road, our team of architects, engineers, and sales professionals collaborate to bring each project from concept to completion — on time, and to specification.
+                From our head office at Ivy Park Residence on Kirichwa Road, Kilimani — a short walk from Yaya Centre — our team of architects, engineers, and sales professionals collaborate to bring each project from concept to completion — on time, and to specification.
               </p>
             </motion.div>
 
