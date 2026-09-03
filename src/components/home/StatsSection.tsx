@@ -60,7 +60,7 @@ export default function StatsSection() {
           <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
             BY THE NUMBERS
           </p>
-          <h2 className="font-serif text-4xl md:text-5xl text-white font-light leading-tight">
+          <h2 className="font-serif text-4xl md:text-5xl text-white font-medium tracking-tight leading-tight">
             A Track Record of Excellence
           </h2>
         </motion.div>

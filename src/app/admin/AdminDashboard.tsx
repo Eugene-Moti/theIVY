@@ -55,7 +55,7 @@ export default function AdminDashboard() {
         {[
           { label: 'Total Listings', value: stats?.total,       icon: BedDouble,     color: 'text-white' },
           { label: 'Available',      value: stats?.available,   icon: CheckCircle,   color: 'text-emerald-400' },
-          { label: 'Coming Soon',    value: stats?.coming_soon, icon: Clock,         color: 'text-[#C9A84C]' },
+          { label: 'Coming Soon',    value: stats?.coming_soon, icon: Clock,         color: 'text-[#4E8862]' },
           { label: 'Occupied',       value: stats?.occupied,    icon: XCircle,       color: 'text-white/30' },
         ].map(({ label, value, icon: Icon, color }) => (
           <div key={label} className="bg-white/3 border border-white/7 p-5">
@@ -72,9 +72,9 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button
           onClick={() => router.push('/admin/listings')}
-          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/5 p-5 transition-colors text-left group"
+          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#4E8862]/30 hover:bg-[#4E8862]/5 p-5 transition-colors text-left group"
         >
-          <Plus size={18} className="text-[#C9A84C]" />
+          <Plus size={18} className="text-[#4E8862]" />
           <div>
             <p className="text-[12px] font-medium text-white/80 mb-0.5">Manage Listings</p>
             <p className="text-[10px] text-white/30">Add or edit rental units</p>
@@ -82,9 +82,9 @@ export default function AdminDashboard() {
         </button>
         <button
           onClick={() => router.push('/admin/media')}
-          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#C9A84C]/30 hover:bg-[#C9A84C]/5 p-5 transition-colors text-left group"
+          className="flex items-center gap-4 bg-white/3 border border-white/7 hover:border-[#4E8862]/30 hover:bg-[#4E8862]/5 p-5 transition-colors text-left group"
         >
-          <ImagePlay size={18} className="text-[#C9A84C]" />
+          <ImagePlay size={18} className="text-[#4E8862]" />
           <div>
             <p className="text-[12px] font-medium text-white/80 mb-0.5">Media Manager</p>
             <p className="text-[10px] text-white/30">Update website images & videos</p>

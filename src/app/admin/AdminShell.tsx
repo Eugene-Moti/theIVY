@@ -31,7 +31,7 @@ export default function AdminShell({
   const Sidebar = () => (
     <aside className="flex flex-col h-full w-60 bg-[#080808] border-r border-white/6">
       <div className="px-6 py-7 border-b border-white/6">
-        <p className="text-[8px] tracking-[0.38em] uppercase text-[#C9A84C] mb-1">The Ivy Group</p>
+        <p className="text-[8px] tracking-[0.38em] uppercase text-[#4E8862] mb-1">The Ivy Group</p>
         <p className="text-[13px] font-light text-white/60">Admin Portal</p>
       </div>
 
@@ -44,13 +44,13 @@ export default function AdminShell({
               onClick={() => { router.push(href); setOpen(false) }}
               className={`w-full flex items-center gap-3 px-6 py-3 text-[12px] tracking-wide transition-colors text-left group ${
                 active
-                  ? 'text-[#C9A84C] bg-[#C9A84C]/8'
+                  ? 'text-[#4E8862] bg-[#4E8862]/8'
                   : 'text-white/40 hover:text-white/75 hover:bg-white/4'
               }`}
             >
-              <Icon size={14} className={active ? 'text-[#C9A84C]' : 'text-white/25 group-hover:text-white/50'} />
+              <Icon size={14} className={active ? 'text-[#4E8862]' : 'text-white/25 group-hover:text-white/50'} />
               {label}
-              {active && <ChevronRight size={11} className="ml-auto text-[#C9A84C]/50" />}
+              {active && <ChevronRight size={11} className="ml-auto text-[#4E8862]/50" />}
             </button>
           )
         })}
@@ -84,7 +84,7 @@ export default function AdminShell({
           <button onClick={() => setOpen(true)} className="text-white/40 hover:text-white">
             <Menu size={18} />
           </button>
-          <p className="text-[9px] tracking-[0.35em] uppercase text-[#C9A84C]">The Ivy Group</p>
+          <p className="text-[9px] tracking-[0.35em] uppercase text-[#4E8862]">The Ivy Group</p>
           <div className="w-5" />
         </div>
         <main className="flex-1 overflow-y-auto p-6 lg:p-10">{children}</main>

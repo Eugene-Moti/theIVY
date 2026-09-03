@@ -36,7 +36,7 @@ export default function AboutContent() {
         <div className="relative h-full flex flex-col items-center justify-center text-center px-6 pt-20">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">OUR STORY</p>
-            <h1 className="font-serif text-5xl md:text-7xl text-white font-light leading-tight">About The Ivy Group</h1>
+            <h1 className="font-serif text-5xl md:text-7xl text-white font-semibold tracking-tight leading-[1.02]">About The Ivy Group</h1>
             <div className="w-12 h-[2px] bg-gold mx-auto mt-6" />
           </motion.div>
         </div>

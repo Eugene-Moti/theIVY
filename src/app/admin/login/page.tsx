@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo / wordmark */}
         <div className="mb-10 text-center">
-          <p className="text-[9px] tracking-[0.4em] uppercase text-[#C9A84C] mb-2">The Ivy Group</p>
+          <p className="text-[9px] tracking-[0.4em] uppercase text-[#4E8862] mb-2">The Ivy Group</p>
           <h1 className="text-2xl font-serif font-light text-white">Admin Portal</h1>
         </div>
 
@@ -48,7 +48,7 @@ export default function AdminLoginPage() {
               onChange={e => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:border-[#C9A84C]/60 transition-colors placeholder:text-white/20"
+              className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:border-[#4E8862]/60 transition-colors placeholder:text-white/20"
               placeholder="admin@example.com"
             />
           </div>
@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 pr-11 text-sm focus:outline-none focus:border-[#C9A84C]/60 transition-colors placeholder:text-white/20"
+                className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 pr-11 text-sm focus:outline-none focus:border-[#4E8862]/60 transition-colors placeholder:text-white/20"
                 placeholder="••••••••"
               />
               <button
@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0f0f0f] py-3 text-[11px] font-semibold tracking-[0.2em] uppercase hover:bg-[#d4b565] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full flex items-center justify-center gap-2 bg-[#4E8862] text-[#0f0f0f] py-3 text-[11px] font-semibold tracking-[0.2em] uppercase hover:bg-[#6FA682] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             <LogIn size={14} />
             {loading ? 'Signing in…' : 'Sign In'}

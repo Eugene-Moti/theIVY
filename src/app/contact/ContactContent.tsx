@@ -46,7 +46,7 @@ export default function ContactContent() {
         <div className="relative h-full flex flex-col items-center justify-center text-center px-6 pt-20">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">REACH US</p>
-            <h1 className="font-serif text-5xl md:text-6xl text-white font-light">Contact Us</h1>
+            <h1 className="font-serif text-5xl md:text-6xl text-white font-semibold tracking-tight">Contact Us</h1>
             <div className="w-12 h-[2px] bg-gold mx-auto mt-5" />
           </motion.div>
         </div>

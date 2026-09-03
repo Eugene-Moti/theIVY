@@ -66,7 +66,7 @@ export default function AboutSection() {
               ABOUT THE IVY GROUP
             </p>
 
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">
+            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-dark leading-[1.1] mb-5">
               Building Modern Communities.<br />
               <span className="italic">Creating Lasting Value.</span>
             </h2>

@@ -543,7 +543,7 @@ export default function IvyMystTemplate() {
               <MapPin size={11} className="text-gold" />
               <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.28em] uppercase">GATUNDU ROAD, KILELESHWA</p>
             </div>
-            <h1 className="font-serif text-[clamp(4rem,10vw,8rem)] text-white font-light leading-[0.95] mb-5">Ivy Myst</h1>
+            <h1 className="font-serif text-[clamp(3.6rem,9vw,7rem)] text-white font-semibold leading-[0.92] mb-5" style={{ letterSpacing: '-0.035em' }}>Ivy Myst</h1>
             <p className="text-white/60 text-sm font-sans font-light max-w-md leading-relaxed mb-3">
               1, 2 &amp; 3 Bedroom Luxury Residences with Garden Terraces
             </p>

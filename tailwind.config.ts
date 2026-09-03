@@ -9,17 +9,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        /* Accent — "ivy": the single brand colour, tuned to read on both the
+           light stone/white grounds and the near-black sections. The class name
+           `gold` is kept from the previous palette so the re-skin needs no
+           repo-wide rename; `ivy` is the alias new code should use. */
         gold: {
-          DEFAULT: '#C9A84C',
-          light: '#D9BC78',
-          dark: '#A8872A',
+          DEFAULT: '#4E8862',
+          light: '#6FA682',
+          dark: '#2F5540',
         },
-        dark: '#0D0D0D',
-        cream: '#F7F3EE',
+        ivy: {
+          DEFAULT: '#4E8862',
+          light: '#6FA682',
+          dark: '#2F5540',
+        },
+        dark: '#17191B',
+        ink: '#17191B',
+        cream: '#F1F2ED',
+        stone: '#F1F2ED',
       },
       fontFamily: {
-        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
-        sans: ['var(--font-montserrat)', 'system-ui', 'sans-serif'],
+        /* `serif` is kept as the display key (previous markup uses `font-serif`);
+           it now resolves to the Libre Franklin sans display face. */
+        serif: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         widest: '0.25em',

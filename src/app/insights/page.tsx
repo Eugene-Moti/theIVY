@@ -26,7 +26,7 @@ export default function InsightsPage() {
         <div className="relative h-full flex flex-col items-center justify-center text-center px-6 pt-20">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.35em] uppercase mb-4">EDITORIAL</p>
-            <h1 className="font-serif text-5xl md:text-6xl text-white font-light">Insights</h1>
+            <h1 className="font-serif text-5xl md:text-6xl text-white font-semibold tracking-tight">Insights</h1>
             <div className="w-12 h-[2px] bg-gold mx-auto mt-5" />
             <p className="text-white/50 text-sm font-sans font-light max-w-lg mx-auto mt-4 leading-relaxed">
               Market intelligence, neighbourhood guides, and investment perspectives from The Ivy Group.

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Montserrat } from 'next/font/google'
+import { Libre_Franklin, IBM_Plex_Sans } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
@@ -7,18 +7,20 @@ import Footer from '@/components/layout/Footer'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import ChatWidget from '@/components/shared/ChatWidget'
 
-const cormorant = Cormorant_Garamond({
+// Display — Libre Franklin: an editorial gothic with authority, set light at
+// large sizes and heavy for uppercase labels. Replaces the Cormorant serif.
+const display = Libre_Franklin({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-display',
   display: 'swap',
 })
 
-const montserrat = Montserrat({
+// Body — IBM Plex Sans: a neutral humanist sans for everything read at length.
+const body = IBM_Plex_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-montserrat',
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-body',
   display: 'swap',
 })
 
@@ -56,7 +58,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${cormorant.variable} ${montserrat.variable}`}>
+      <body className={`${display.variable} ${body.variable}`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-G4MF7YCDPV"
           strategy="afterInteractive"

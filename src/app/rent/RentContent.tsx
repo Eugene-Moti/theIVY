@@ -47,7 +47,7 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
             </div>
 
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.4em] uppercase mb-5">Rentals</p>
-            <h1 className="font-serif text-5xl md:text-7xl text-white font-light leading-[1.04] mb-4">
+            <h1 className="font-serif text-5xl md:text-7xl text-white font-semibold tracking-tight leading-[1.02] mb-4">
               {hasListings ? 'Premium Rentals' : 'Coming Soon'}
             </h1>
             <div className="w-12 h-[2px] bg-gold mx-auto mb-7" />

@@ -34,8 +34,8 @@ function SectionHeading({ children, light = false }: { children: React.ReactNode
       whileInView={{ opacity: 1, y: 0 }}
       viewport={vp}
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-      className={`font-serif font-light leading-[1.12] ${light ? 'text-white' : 'text-dark'}`}
-      style={{ fontSize: 'clamp(2rem, 4vw, 3.4rem)' }}
+      className={`font-serif font-medium leading-[1.1] ${light ? 'text-white' : 'text-dark'}`}
+      style={{ fontSize: 'clamp(2rem, 4vw, 3.4rem)', letterSpacing: '-0.025em' }}
     >
       {children}
     </motion.h2>
@@ -238,8 +238,8 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               {data.locationLabel}
             </p>
             <h1
-              className="font-serif text-white font-light leading-[1.04] mb-6"
-              style={{ fontSize: 'clamp(3rem, 7.5vw, 6.5rem)' }}
+              className="font-serif text-white font-semibold leading-[0.98] mb-6"
+              style={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', letterSpacing: '-0.03em' }}
             >
               {data.name}
             </h1>
@@ -633,17 +633,17 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   <div className="text-center select-none">
                     <p
                       className="font-serif font-light leading-none mb-1"
-                      style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', color: unit.available ? 'rgba(201,168,76,0.12)' : 'rgba(255,255,255,0.04)' }}
+                      style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', color: unit.available ? 'rgba(111,166,130,0.12)' : 'rgba(255,255,255,0.04)' }}
                     >
                       {unit.type.match(/\d/)?.[0] ?? '—'}
                     </p>
                     <p className="text-[9px] font-sans tracking-[0.22em] uppercase" style={{ color: 'rgba(255,255,255,0.08)' }}>
                       {unit.type.toLowerCase().includes('bedroom') ? 'Bedroom' : 'Unit'}
                     </p>
-                    <div className="mt-3 mx-auto" style={{ width: 32, height: 1, background: unit.available ? 'rgba(201,168,76,0.3)' : 'rgba(255,255,255,0.08)' }} />
+                    <div className="mt-3 mx-auto" style={{ width: 32, height: 1, background: unit.available ? 'rgba(111,166,130,0.3)' : 'rgba(255,255,255,0.08)' }} />
                     <p
                       className="mt-3 font-sans font-light tabular-nums"
-                      style={{ fontSize: '0.7rem', color: unit.available ? 'rgba(201,168,76,0.5)' : 'rgba(255,255,255,0.12)', letterSpacing: '0.12em' }}
+                      style={{ fontSize: '0.7rem', color: unit.available ? 'rgba(111,166,130,0.5)' : 'rgba(255,255,255,0.12)', letterSpacing: '0.12em' }}
                     >
                       {unit.size}
                     </p>

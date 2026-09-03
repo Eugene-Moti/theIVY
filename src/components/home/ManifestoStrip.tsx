@@ -24,7 +24,7 @@ export default function ManifestoStrip() {
             <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">
               The Ivy Group · Est. 2014
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.6rem] text-white font-light leading-[1.1]">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.6rem] text-white font-medium tracking-tight leading-[1.1]">
               A decade of landmark<br className="hidden lg:block" /> addresses in Nairobi.
             </h2>
             <div className="h-px w-10 bg-gold mt-6" />

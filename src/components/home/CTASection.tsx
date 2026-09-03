@@ -34,7 +34,7 @@ export default function CTASection() {
               GET IN TOUCH
             </p>
 
-            <h2 className="font-serif text-4xl md:text-5xl font-light text-dark leading-[1.1] mb-5">
+            <h2 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-dark leading-[1.1] mb-5">
               Find Your Perfect Home<br />with The Ivy Group
             </h2>
 

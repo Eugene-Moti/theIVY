@@ -50,7 +50,7 @@ export default function LaunchSection() {
               Kileleshwa, Nairobi
             </p>
 
-            <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-white font-light leading-[1.0] mb-5">
+            <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-white font-semibold leading-[0.95] mb-5" style={{ letterSpacing: '-0.035em' }}>
               Ivy Myst
             </h2>
 

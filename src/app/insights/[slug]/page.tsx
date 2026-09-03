@@ -41,7 +41,7 @@ export default function InsightArticlePage({ params }: { params: { slug: string 
             <Tag size={10} className="text-gold" />
             <span className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase">{article.category}</span>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-light leading-[1.06] mb-5">{article.title}</h1>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-semibold tracking-tight leading-[1.04] mb-5">{article.title}</h1>
           <div className="flex items-center gap-5 text-white/45 text-[11px] font-sans">
             <span className="flex items-center gap-1.5"><Clock size={11} />{article.readTime}</span>
             <span>{article.date}</span>

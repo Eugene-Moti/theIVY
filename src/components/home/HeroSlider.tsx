@@ -78,16 +78,14 @@ export default function HeroSlider() {
           className="absolute inset-0"
         >
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute inset-0 ken-burns">
-              <Image
-                src={slides[current].image}
-                alt={slides[current].title.replace('\n', ' ')}
-                fill
-                className="object-cover"
-                priority={current === 0}
-                sizes="100vw"
-              />
-            </div>
+            <Image
+              src={slides[current].image}
+              alt={slides[current].title.replace('\n', ' ')}
+              fill
+              className="object-cover"
+              priority={current === 0}
+              sizes="100vw"
+            />
           </div>
         </motion.div>
       </AnimatePresence>
@@ -121,8 +119,8 @@ export default function HeroSlider() {
                   {slides[current].location}
                 </p>
                 <h1
-                  className="font-serif text-white font-light leading-[1.06] whitespace-pre-line"
-                  style={{ fontSize: 'clamp(1.7rem, 3.2vw, 2.8rem)' }}
+                  className="font-serif text-white font-medium leading-[1.04] whitespace-pre-line"
+                  style={{ fontSize: 'clamp(1.8rem, 3.4vw, 3rem)', letterSpacing: '-0.02em' }}
                 >
                   {slides[current].title}
                 </h1>
