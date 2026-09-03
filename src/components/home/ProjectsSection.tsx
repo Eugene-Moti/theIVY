@@ -130,8 +130,8 @@ export default function ProjectsSection() {
                     className="font-serif leading-[1.15] text-dark hover:text-gold transition-colors duration-300"
                     style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2.2rem)' }}
                   >
-                    <span className="font-normal uppercase tracking-tight">{project.boldPart}</span>{' '}
-                    <span style={{ fontStyle: 'italic', fontWeight: 300 }}>{project.lightPart}</span>
+                    <span className="font-medium uppercase" style={{ letterSpacing: '0.04em' }}>{project.boldPart}</span>{' '}
+                    <span className="font-light" style={{ letterSpacing: '0.02em' }}>{project.lightPart}</span>
                   </h3>
                 </Link>
 

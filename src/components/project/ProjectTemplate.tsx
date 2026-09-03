@@ -238,8 +238,8 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               {data.locationLabel}
             </p>
             <h1
-              className="font-serif text-white font-semibold leading-[0.98] mb-6"
-              style={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)', letterSpacing: '-0.03em' }}
+              className="font-serif text-white font-light leading-[1.02] mb-6"
+              style={{ fontSize: 'clamp(2.9rem, 7.2vw, 6.2rem)', letterSpacing: '0.005em' }}
             >
               {data.name}
             </h1>

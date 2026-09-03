@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Libre_Franklin, IBM_Plex_Sans } from 'next/font/google'
+import { Jost, IBM_Plex_Sans } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
@@ -7,11 +7,11 @@ import Footer from '@/components/layout/Footer'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import ChatWidget from '@/components/shared/ChatWidget'
 
-// Display — Libre Franklin: an editorial gothic with authority, set light at
-// large sizes and heavy for uppercase labels. Replaces the Cormorant serif.
-const display = Libre_Franklin({
+// Display — Jost: a geometric sans in the Futura lineage. Quiet, architectural,
+// upmarket; set light-to-medium at large sizes for the development titles.
+const display = Jost({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-display',
   display: 'swap',
 })

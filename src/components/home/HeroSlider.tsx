@@ -119,8 +119,8 @@ export default function HeroSlider() {
                   {slides[current].location}
                 </p>
                 <h1
-                  className="font-serif text-white font-medium leading-[1.04] whitespace-pre-line"
-                  style={{ fontSize: 'clamp(1.8rem, 3.4vw, 3rem)', letterSpacing: '-0.02em' }}
+                  className="font-serif text-white font-light leading-[1.05] whitespace-pre-line"
+                  style={{ fontSize: 'clamp(1.9rem, 3.6vw, 3.1rem)', letterSpacing: '0.01em' }}
                 >
                   {slides[current].title}
                 </h1>

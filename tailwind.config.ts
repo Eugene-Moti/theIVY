@@ -30,9 +30,9 @@ const config: Config = {
       },
       fontFamily: {
         /* `serif` is kept as the display key (previous markup uses `font-serif`);
-           it now resolves to the Libre Franklin sans display face. */
-        serif: ['var(--font-display)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+           it now resolves to Jost, a geometric sans display face. */
+        serif: ['var(--font-display)', 'Futura', 'Trebuchet MS', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Futura', 'Trebuchet MS', 'system-ui', 'sans-serif'],
         sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
