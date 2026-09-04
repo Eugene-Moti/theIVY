@@ -20,6 +20,19 @@ export interface ProjectUnit {
   size: string
   price: string
   available: boolean
+  note?: string
+  priceRange?: string
+  roi?: { furnished: string; unfurnished: string }
+}
+
+export interface FloorPlan {
+  src: string
+  label: string
+}
+
+export interface FloorPlanGroup {
+  label: string
+  plans: FloorPlan[]
 }
 
 export interface ProjectAmenity {
@@ -66,6 +79,8 @@ export interface ProjectData {
   brochurePath: string
   vrTours?: VrTour[]
   gallerySlides?: GallerySlide[]
+  floorPlanOverview?: FloorPlan
+  floorPlanGroups?: FloorPlanGroup[]
 }
 
 export const projects: ProjectData[] = [
@@ -435,17 +450,18 @@ export const projects: ProjectData[] = [
   {
     slug: 'ivy-myst',
     name: 'Ivy Myst',
-    tagline: '1, 2 & 3 Bedroom Luxury Residences with Garden Terraces — Now Selling',
+    tagline: '1, 2 & 3 bedroom luxury residences with private garden terraces, on Gatundu Road, Kileleshwa.',
     locationLabel: 'KILELESHWA, NAIROBI',
-    locationFull: 'Kileleshwa, Nairobi',
+    locationFull: 'Gatundu Road, Kileleshwa, Nairobi',
     type: 'Luxury Residences',
-    floors: 25,
-    totalUnits: 0,
+    blocks: '2 Wings — A & B',
+    floors: 22,
+    totalUnits: 448,
     parking: 'Basement Parking',
-    completion: 'To be announced',
+    completion: 'August 2029',
     statusLabel: 'NOW SELLING',
     isLaunchingSoon: false,
-    heroImage: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
+    heroImage: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
     exteriorImages: [
       p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
       p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
@@ -455,14 +471,23 @@ export const projects: ProjectData[] = [
       p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'),
     ],
     descriptionParagraphs: [
-      "Ivy Myst is a landmark luxury residential development in the heart of Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — offering buyers the opportunity to secure one of Nairobi's most architecturally distinctive addresses.",
-      "Comprising two wings of generously proportioned 1, 2 and 3 bedroom residences — many with private garden terraces — Ivy Myst raises the benchmark for luxury living in Nairobi. The development is defined by its sweeping curved architecture, lush green balconies, and a suite of world-class rooftop amenities including the signature Celestial Pool.",
-      "Every detail has been considered — from the sculptural reception lobby to the rooftop restaurant and bar overlooking the Nairobi skyline. This is not merely a residence; it is an experience.",
+      "Ivy Myst is a landmark luxury residential development on Gatundu Road, Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open.",
+      "Two wings hold generously proportioned 1, 2 and 3 bedroom residences, many with private garden terraces, beneath sweeping curved architecture and a signature rooftop — the Celestial Pool, a restaurant and bar, and an uninterrupted view across Nairobi.",
+    ],
+    descriptionBlocks: [
+      { type: 'text', content: "Ivy Myst is a landmark luxury residential development on Gatundu Road, Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — the opportunity to secure one of Nairobi's most architecturally distinctive addresses at early-stage pricing." },
+      { type: 'image', src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), caption: 'Ivy Myst — the sweeping curved façade on Gatundu Road' },
+      { type: 'text', content: "Two wings — A and B — hold generously proportioned 1, 2 and 3 bedroom residences, many with private garden terraces. The sweeping curved architecture and planted balconies give the building a presence unlike anything else on the Kileleshwa skyline, while ceiling heights and window ratios are calibrated to carry natural light deep into every home." },
+      { type: 'image-pair', images: [
+        { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), caption: 'The illuminated façade after dark' },
+        { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), caption: 'The rooftop, above Nairobi' },
+      ]},
+      { type: 'text', content: "The rooftop is the development's signature: the Celestial Pool with its waterfall feature, a rooftop restaurant and bar, and an uninterrupted panorama across the city. Below, a sculptural garden stream runs through the landscaped grounds and the grand reception lobby sets the tone from arrival. Estimated completion is August 2029." },
     ],
     availableUnits: [
-      { type: '1 Bedroom', size: '79 – 84 SQM', price: 'From KES 8,800,000', available: true },
-      { type: '2 Bedroom', size: '121 – 159 SQM', price: 'From KES 14,200,000', available: true },
-      { type: '3 Bedroom + DSQ', size: '169 – 231 SQM', price: 'From KES 19,800,000', available: true },
+      { type: '1 Bedroom', size: '79 – 84 SQM', price: 'From KES 8,800,000', priceRange: 'KES 8.8M – 10.5M', roi: { furnished: '19.75%', unfurnished: '13.67%' }, note: 'Garden terrace on select units', available: true },
+      { type: '2 Bedroom', size: '121 – 159 SQM', price: 'From KES 14,200,000', priceRange: 'KES 14.2M – 20.4M', roi: { furnished: '15.17%', unfurnished: '10.95%' }, note: 'Garden terrace options available', available: true },
+      { type: '3 Bedroom + DSQ', size: '169 – 231 SQM', price: 'From KES 19,800,000', priceRange: 'KES 19.8M – 29.6M', roi: { furnished: '18.09%', unfurnished: '12.06%' }, note: 'DSQ & garden terrace on select units', available: true },
     ],
     soldOutUnits: [],
     amenities: [
@@ -491,7 +516,7 @@ export const projects: ProjectData[] = [
     ],
     investmentPoints: [
       'Groundbreaking completed — construction actively underway',
-      'Early-stage pricing for maximum capital appreciation',
+      'Early-stage pricing — projected ROI up to 19.75% furnished on 1-bedroom units',
       'Prime Kileleshwa address with proven strong rental demand',
       'Architecturally distinctive — a landmark on the Nairobi skyline',
       'Garden terrace units available — a rare offering in Nairobi',
@@ -506,8 +531,49 @@ export const projects: ProjectData[] = [
       'Shopping malls & supermarkets nearby',
       'Easy highway and expressway access',
     ],
-    mapSrc: 'https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d451.6556133047034!2d36.78503743441678!3d-1.276938025382227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE%2C%20Nairobi!3m2!1d-1.2771432999999999!2d36.785353199999996!5e1!3m2!1sen!2ske!4v1781850935628!5m2!1sen!2ske',
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3038.3640841920273!2d36.7854601!3d-1.2774497999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f171eb89deccd%3A0xe0d248c01f726963!2sIVY%20MYST%20RESIDENCE!5e1!3m2!1sen!2ske!4v1785406432997!5m2!1sen!2ske',
     brochurePath: p('/Ivy Myst Assets/IvyMystBrochure.pdf'),
+    interiorImages: [
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (6).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (8).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (10).png'),
+      p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'),
+    ],
+    gallerySlides: [
+      { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), label: 'The Architecture', category: 'Exterior', description: "The sweeping curved façade of Ivy Myst rises above Gatundu Road, Kileleshwa — a landmark that redefines the neighbourhood's skyline." },
+      { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'), label: 'Celestial Rooftop Pool', category: 'Amenity', description: 'An infinity pool with a signature waterfall, perched at the apex of Ivy Myst. Morning laps with a city-wide view; twilight drinks as Nairobi lights up below.' },
+      { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'), label: 'Living & Dining', category: 'Interior', description: 'Premium marble floors, bespoke cabinetry and carefully curated joinery define every living space. Expansive openings frame the city beyond.' },
+      { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), label: 'Above Nairobi', category: 'Rooftop', description: 'From the rooftop, Nairobi stretches in every direction — an uninterrupted panorama available to every resident.' },
+      { src: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'), label: 'Rooftop Restaurant', category: 'Dining', description: "Nairobi's most elevated dining destination — an inspired menu, curated interiors, and a panoramic backdrop." },
+      { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (5).png'), label: 'Master Bedroom', category: 'Interior', description: 'Generous proportions, premium finishes and considered lighting design make the master bedrooms a genuine sanctuary.' },
+      { src: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'), label: 'Garden Stream', category: 'Landscape', description: "A sculpted water feature flows through the heart of the landscaped gardens — an unexpected moment of nature in Kileleshwa." },
+      { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), label: 'After Dark', category: 'Exterior', description: 'The illuminated façade, rooftop bar lights and garden lanterns — a development that looks as remarkable by night as by day.' },
+    ],
+    floorPlanOverview: { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/IVY MYST FULL FLOOR PLAN.jpg'), label: 'Full Floor Plan — Wing A & B, all unit types' },
+    floorPlanGroups: [
+      { label: 'Wing A', plans: [
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 01 -3BR 213SQM.jpg'), label: 'Unit 1 — 3 Bed + DSQ · 213 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Odd - 3BR 217SQM.jpg'), label: 'Unit 2, odd floors — 3 Bed + Garden · 217 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 02 Even - 3BR 231QM.jpg'), label: 'Unit 2, even floors — 3 Bed + Garden · 231 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 03&04 -1BR 84SQM.jpg'), label: 'Units 3 & 4 — 1 Bed + Garden · 84 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 05&06 - 2BR 142SQM.jpg'), label: 'Units 5 & 6 — 2 Bed + Garden · 142 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Odd- 2BR 146SQM.jpg'), label: 'Unit 7, odd floors — 2 Bed + Garden · 146 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 07 Even- 2BR 159SQM.jpg'), label: 'Unit 7, even floors — 2 Bed + Garden · 159 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 08-2BR 142SQM.jpg'), label: 'Unit 8 — 2 Bedroom · 142 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING A - 09&010&11 -1BR 79SQM.jpg'), label: 'Units 9, 10 & 11 — 1 Bedroom · 79 SQM' },
+      ]},
+      { label: 'Wing B', plans: [
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 01 - 3BR 212SQM.jpg'), label: 'Unit 1 — 3 Bed + DSQ · 212 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 02 - 3BR 169SQM.jpg'), label: 'Unit 2 — 3 Bed + DSQ · 169 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 03 - 2BR 128SQM.jpg'), label: 'Unit 3 — 2 Bedroom · 128 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 04 - 2BR 128SQM.jpg'), label: 'Unit 4 — 2 Bedroom · 128 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 05 - 2BR 121SQM.jpg'), label: 'Unit 5 — 2 Bedroom · 121 SQM' },
+        { src: p('/Ivy Myst Assets/Ivy Myst Floor-plans/WING B - 07&08 -1BR 79SQM.jpg'), label: 'Units 7 & 8 — 1 Bedroom · 79 SQM' },
+      ]},
+    ],
   },
 ]
 

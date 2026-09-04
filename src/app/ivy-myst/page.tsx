@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import IvyMystTemplate from './IvyMystTemplate'
+import { getProject } from '@/data/projects'
+import ProjectTemplate from '@/components/project/ProjectTemplate'
 
 export const metadata: Metadata = {
   title: 'Ivy Myst — Now Selling | Luxury Residences in Kileleshwa | The Ivy Group',
@@ -30,5 +31,6 @@ export const metadata: Metadata = {
 }
 
 export default function IvyMystPage() {
-  return <IvyMystTemplate />
+  const data = getProject('ivy-myst')!
+  return <ProjectTemplate data={data} />
 }
