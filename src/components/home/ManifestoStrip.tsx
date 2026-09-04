@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion'
 
 const facts = [
-  { value: '10+', label: 'Years' },
+  { value: '2017', label: 'Established' },
   { value: '4', label: 'Developments' },
   { value: '3', label: 'Nairobi Neighbourhoods' },
-  { value: '1,000+', label: 'Residences' },
+  { value: '1,400+', label: 'Residences' },
 ]
 
 export default function ManifestoStrip() {
@@ -22,10 +22,10 @@ export default function ManifestoStrip() {
             transition={{ duration: 0.75 }}
           >
             <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-5">
-              The Ivy Group · Est. 2014
+              The Ivy Group · Est. 2017
             </p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-[2.6rem] text-white font-medium tracking-tight leading-[1.1]">
-              A decade of landmark<br className="hidden lg:block" /> addresses in Nairobi.
+              Landmark addresses<br className="hidden lg:block" /> across Nairobi.
             </h2>
             <div className="h-px w-10 bg-gold mt-6" />
           </motion.div>

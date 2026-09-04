@@ -84,8 +84,8 @@ export default function AboutContent() {
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-gold p-6 shadow-xl">
-                <p className="font-serif text-3xl text-dark font-light">10+</p>
-                <p className="text-dark/70 text-[10px] font-sans font-semibold tracking-wider uppercase mt-0.5">Years of Excellence</p>
+                <p className="font-serif text-3xl text-dark font-light">2017</p>
+                <p className="text-dark/70 text-[10px] font-sans font-semibold tracking-wider uppercase mt-0.5">Building Since</p>
               </div>
             </motion.div>
           </div>

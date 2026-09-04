@@ -142,6 +142,9 @@ export async function POST(request: Request) {
     } else if (type === 'chat-brochure') {
       subject = `📄 Brochure Request — ${rest.name || 'Unknown'} · ${rest.property_interest || 'General'}`
       html = chatLeadHtml(rest, type)
+    } else if (type === 'chat-ticket') {
+      subject = `💬 New Chat Contact — ${rest.name || 'Unknown'}`
+      html = contactHtml(rest)
     } else if (type === 'rental-waitlist') {
       subject = 'New Rental Waitlist Sign-up — The Ivy Group'
       html = waitlistHtml(rest)

@@ -6,10 +6,10 @@ import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 
 const highlights = [
-  'Over 10 years of proven expertise in Nairobi real estate',
-  'Successfully delivered Diamond Homes, Nandwa Ivy, and Diamond Ivy',
+  'Delivering premium Nairobi residential developments since 2017',
+  'A portfolio of four landmark developments across the city',
   'Prime locations — Kileleshwa, Westlands and Kilimani',
-  'Commitment to quality, innovation, integrity and customer satisfaction',
+  'A record of on-time delivery and flexible payment plans',
 ]
 
 export default function AboutSection() {
@@ -37,7 +37,7 @@ export default function AboutSection() {
               />
             </div>
 
-            {/* Floating "10+ Years" card — bottom-right */}
+            {/* Floating "Since 2017" card — bottom-right */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -45,9 +45,9 @@ export default function AboutSection() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="absolute -bottom-6 -right-4 lg:-right-8 bg-dark px-8 py-6 hidden sm:block"
             >
-              <p className="font-serif text-5xl font-light text-white leading-none">10+</p>
+              <p className="font-serif text-5xl font-light text-white leading-none">2017</p>
               <p className="text-white/50 text-[10px] font-sans tracking-[0.2em] uppercase mt-2">
-                Years of Excellence
+                Building Since
               </p>
             </motion.div>
 
@@ -75,10 +75,10 @@ export default function AboutSection() {
             <div className="w-12 h-[2px] bg-gold mb-7" />
 
             <p className="text-dark/65 text-sm font-sans font-light leading-[1.85] mb-8">
-              The Ivy Group is a reputable real estate developer with over a decade of experience
-              delivering high-quality residential developments across Nairobi. Since 2017, we have
-              successfully completed and handed over several landmark projects, transforming the
-              residential landscape in the city's most prestigious neighbourhoods.
+              The Ivy Group is a Nairobi residential developer, part of R-Sun Properties. Since 2017 we
+              have delivered high-quality developments across the city&apos;s most prestigious
+              neighbourhoods — combining refined architecture, premium finishes, and flexible payment
+              plans, on time and to specification.
             </p>
 
             {/* Highlights */}

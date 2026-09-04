@@ -27,7 +27,7 @@ const body = IBM_Plex_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ivygroup.ke'),
   title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',
-  description: "Nairobi's premier luxury residential developer. 10+ years delivering landmark apartments in Kileleshwa, Westlands and Kilimani. Explore our portfolio.",
+  description: "Nairobi's premier luxury residential developer. Delivering landmark apartments in Kileleshwa, Westlands and Kilimani since 2017. Explore our portfolio.",
   keywords:
     'luxury apartments Nairobi, Kileleshwa apartments, Westlands apartments, Kilimani apartments, The Ivy Group, Blossom Ivy, Luckinn Ivy, Ivy Park, Ivy Myst',
   alternates: { canonical: '/' },

@@ -7,8 +7,10 @@ import { X, Send, Loader2, ChevronDown, Download, PhoneCall, Sun, Moon } from 'l
 type MessageAction = { type: 'download'; url: string; label: string }
 type Message = { role: 'user' | 'model'; text: string; action?: MessageAction }
 type LeadFlow = { type: 'callback' | 'brochure'; step: 'name' | 'phone'; name?: string }
+type Lead = { name: string; phone: string; email: string }
 
-const GREETING = "Welcome to The Ivy Group. I'm Ivy, your personal property consultant. How may I assist you today?"
+const LEAD_KEY = 'ivy-chat-lead'
+const GREETING = "Welcome to The Ivy Group. I'm Ivy, your property consultant. Before we start, could I take a few details so one of our consultants can follow up with you?"
 
 const QUICK_REPLIES = [
   'Tell me about Ivy Myst',
@@ -165,7 +167,7 @@ function getReply(text: string): string {
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function submitLead(payload: {
-  name: string; phone: string; type: 'callback' | 'brochure'; property: string | null
+  name: string; phone: string; email?: string; type: 'callback' | 'brochure'; property: string | null
 }) {
   try {
     await fetch('/api/enquiry', {
@@ -175,6 +177,7 @@ async function submitLead(payload: {
         type: `chat-${payload.type}`,
         name: payload.name,
         phone: payload.phone,
+        email: payload.email,
         property_interest: payload.property ?? 'General Enquiry',
       }),
     })
@@ -191,13 +194,26 @@ export default function ChatWidget() {
   const [showActionChips, setShowActionChips] = useState(false)
   const [leadFlow, setLeadFlow]     = useState<LeadFlow | null>(null)
   const [currentProperty, setCurrentProperty] = useState<string | null>(null)
+  const [lead, setLead]            = useState<Lead | null>(null)
+  const [gate, setGate]            = useState({ name: '', phone: '', email: '' })
+  const [gateBusy, setGateBusy]    = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
 
-  // Persist theme preference
+  // Persist theme preference + recall returning visitor's details
   useEffect(() => {
     const saved = localStorage.getItem('ivy-chat-theme')
     if (saved === 'dark') setDark(true)
+    try {
+      const raw = localStorage.getItem(LEAD_KEY)
+      if (raw) {
+        const l: Lead = JSON.parse(raw)
+        if (l?.name) {
+          setLead(l)
+          setMessages([{ role: 'model', text: `Welcome back, ${l.name.split(' ')[0]}. How can I help you today?` }])
+        }
+      }
+    } catch { /* ignore */ }
   }, [])
 
   const toggleTheme = () => setDark(d => {
@@ -216,9 +232,53 @@ export default function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 350)
   }, [open])
 
+  const submitGate = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
+    const l: Lead = { name: gate.name.trim(), phone: gate.phone.trim(), email: gate.email.trim() }
+    if (!l.name || !l.phone || !l.email) return
+    setGateBusy(true)
+    try {
+      await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'chat-ticket', name: l.name, phone: l.phone, email: l.email }),
+      })
+    } catch { /* fire-and-forget */ }
+    try { localStorage.setItem(LEAD_KEY, JSON.stringify(l)) } catch { /* ignore */ }
+    setLead(l)
+    setGateBusy(false)
+    setMessages(prev => [...prev, {
+      role: 'model',
+      text: `Thank you, ${l.name.split(' ')[0]}. How can I help you today? Ask me about any of our developments, pricing, payment plans, or booking a viewing.`,
+    }])
+  }, [gate])
+
   const startLeadFlow = useCallback(async (type: 'callback' | 'brochure') => {
     setShowActionChips(false)
     setShowQuick(false)
+
+    // We already hold the visitor's details from the intro step — confirm straight away.
+    if (lead) {
+      setLoading(true)
+      await new Promise(r => setTimeout(r, 600))
+      await submitLead({ name: lead.name, phone: lead.phone, email: lead.email, type, property: currentProperty })
+      const first = lead.name.split(' ')[0]
+      if (type === 'callback') {
+        setMessages(prev => [...prev, {
+          role: 'model',
+          text: `Done, ${first}. Our team will call you on ${lead.phone} during business hours. Anything else I can help with?`,
+        }])
+      } else {
+        const brochure = currentProperty ? BROCHURES[currentProperty] : null
+        setMessages(prev => [...prev, brochure
+          ? { role: 'model', text: `Here is the ${currentProperty} brochure, ${first}. Our team will also follow up on ${lead.phone}.`, action: { type: 'download', url: brochure.url, label: brochure.label } }
+          : { role: 'model', text: `Our team will send the brochures to ${lead.email} and call you on ${lead.phone} shortly.` }
+        ])
+      }
+      setLoading(false)
+      return
+    }
+
     setLeadFlow({ type, step: 'name' })
     setLoading(true)
     await new Promise(r => setTimeout(r, 650))
@@ -229,7 +289,7 @@ export default function ChatWidget() {
         : "I'll get that brochure ready for you! May I have your full name first?",
     }])
     setLoading(false)
-  }, [])
+  }, [lead, currentProperty])
 
   const send = useCallback(async (text?: string) => {
     const msg = (text ?? input).trim()
@@ -263,15 +323,13 @@ export default function ChatWidget() {
     }
 
     if (/call( me)? back|callback|contact me|follow.?up|be called/i.test(msg)) {
-      setLeadFlow({ type: 'callback', step: 'name' })
-      setMessages(prev => [...prev, { role: 'model', text: "I'd love to have our team reach out to you! May I have your full name?" }])
       setLoading(false)
+      startLeadFlow('callback')
       return
     }
     if (/\bbrochure\b|download/i.test(msg)) {
-      setLeadFlow({ type: 'brochure', step: 'name' })
-      setMessages(prev => [...prev, { role: 'model', text: "I'll get that brochure ready for you! May I have your full name first?" }])
       setLoading(false)
+      startLeadFlow('brochure')
       return
     }
 
@@ -281,7 +339,7 @@ export default function ChatWidget() {
     setShowActionChips(CHIP_TRIGGERS.some(k => msg.toLowerCase().includes(k)))
     setMessages(prev => [...prev, { role: 'model', text: reply }])
     setLoading(false)
-  }, [input, loading, leadFlow, currentProperty])
+  }, [input, loading, leadFlow, currentProperty, startLeadFlow])
 
   const chipStyle: React.CSSProperties = {
     fontFamily: 'var(--font-body)',
@@ -479,8 +537,56 @@ export default function ChatWidget() {
                 </motion.div>
               )}
 
+              {/* Intro step — capture details before chatting */}
+              {!lead && !loading && (
+                <motion.form
+                  onSubmit={submitGate}
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.4 }}
+                  className="pl-9 space-y-2"
+                >
+                  <p style={{ fontFamily: 'var(--font-body)', color: t.quickLabel, fontSize: '0.57rem', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
+                    Your details
+                  </p>
+                  {([
+                    { k: 'name', ph: 'Full name', type: 'text' },
+                    { k: 'phone', ph: 'Phone number', type: 'tel' },
+                    { k: 'email', ph: 'Email address', type: 'email' },
+                  ] as const).map(f => (
+                    <input
+                      key={f.k}
+                      type={f.type}
+                      required
+                      value={gate[f.k]}
+                      onChange={e => setGate(g => ({ ...g, [f.k]: e.target.value }))}
+                      placeholder={f.ph}
+                      className={`w-full focus:outline-none ${t.inputPlaceholder}`}
+                      style={{
+                        fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px',
+                        color: t.inputText, background: t.inputAreaBg,
+                        border: `1px solid ${t.inputAreaBorder}`, padding: '8px 12px',
+                      }}
+                    />
+                  ))}
+                  <button
+                    type="submit"
+                    disabled={gateBusy || !gate.name.trim() || !gate.phone.trim() || !gate.email.trim()}
+                    className="w-full flex items-center justify-center gap-1.5 disabled:opacity-40 transition-opacity"
+                    style={{
+                      fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '10px',
+                      letterSpacing: '0.16em', textTransform: 'uppercase', color: '#0D0D0D',
+                      background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)', padding: '10px 12px',
+                    }}
+                  >
+                    {gateBusy ? <Loader2 size={12} className="animate-spin" /> : 'Start chat'}
+                  </button>
+                  <p style={{ fontFamily: 'var(--font-body)', color: t.footerText, fontSize: '0.5rem', letterSpacing: '0.06em', lineHeight: 1.5 }}>
+                    We use your details only to follow up on your enquiry.
+                  </p>
+                </motion.form>
+              )}
+
               {/* Initial quick replies */}
-              {showQuick && !loading && messages.length === 1 && (
+              {showQuick && lead && !loading && messages.length <= 2 && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.4 }}
                   className="pt-1 space-y-2.5"
@@ -521,19 +627,21 @@ export default function ChatWidget() {
                 <input
                   ref={inputRef}
                   value={input}
+                  disabled={!lead}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}
                   placeholder={
+                    !lead                     ? 'Add your details above to start…' :
                     leadFlow?.step === 'name'  ? 'Enter your full name…' :
                     leadFlow?.step === 'phone' ? 'Enter your phone number…' :
                     'Ask about our properties…'
                   }
-                  className={`flex-1 bg-transparent focus:outline-none ${t.inputPlaceholder}`}
+                  className={`flex-1 bg-transparent focus:outline-none disabled:opacity-60 ${t.inputPlaceholder}`}
                   style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '12px', color: t.inputText, transition: 'color 0.3s ease' }}
                 />
                 <motion.button
                   onClick={() => send()}
-                  disabled={!input.trim() || loading}
+                  disabled={!lead || !input.trim() || loading}
                   whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.93 }}
                   className="w-8 h-8 flex items-center justify-center flex-shrink-0 disabled:opacity-30 transition-opacity"
                   style={{ background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)' }}

@@ -15,8 +15,8 @@ const jsonLd = {
   url: 'https://www.ivygroup.ke',
   telephone: '+254118266666',
   email: 'marketing.ivy-group@rsunproperty.net',
-  description: 'Premium luxury residential property developer in Nairobi, Kenya. Building landmark apartment communities in Kileleshwa, Westlands, and Kilimani for over 10 years.',
-  foundingDate: '2014',
+  description: 'Premium luxury residential property developer in Nairobi, Kenya. Building landmark apartment communities in Kileleshwa, Westlands, and Kilimani since 2017.',
+  foundingDate: '2017',
   address: {
     '@type': 'PostalAddress',
     streetAddress: HEAD_OFFICE.streetAddress,

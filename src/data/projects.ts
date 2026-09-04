@@ -521,7 +521,7 @@ export const projects: ProjectData[] = [
       'Architecturally distinctive — a landmark on the Nairobi skyline',
       'Garden terrace units available — a rare offering in Nairobi',
       'Flexible payment plans: 20% deposit, balance through construction',
-      "Developed by The Ivy Group — 10+ years of on-time delivery",
+      "Developed by The Ivy Group — a record of on-time delivery since 2017",
     ],
     locationAdvantages: [
       'Prestigious Kileleshwa address',

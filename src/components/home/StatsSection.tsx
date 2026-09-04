@@ -4,9 +4,9 @@ import { useRef, useEffect, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 const stats = [
-  { end: 10, suffix: '+', label: 'Years of Excellence' },
+  { end: 8, suffix: '', label: 'Years Building Nairobi' },
   { end: 4, suffix: '', label: 'Active Developments' },
-  { end: 1000, suffix: '+', label: 'Homes Delivered' },
+  { end: 1400, suffix: '+', label: 'Residences in the Portfolio' },
   { end: 3, suffix: '', label: 'Prime Nairobi Locations' },
 ]
 
