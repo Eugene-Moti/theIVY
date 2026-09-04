@@ -9,15 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Accent — "ivy": the single brand colour, tuned to read on both the
-           light stone/white grounds and the near-black sections. The class name
-           `gold` is kept from the previous palette so the re-skin needs no
-           repo-wide rename; `ivy` is the alias new code should use. */
+        /* Brand gold — from the Ivy Group logo mark. The primary accent:
+           eyebrows, rules, small marks, and gold-on-dark moments. Use
+           `gold-dark` for links and text on light grounds (better contrast). */
         gold: {
-          DEFAULT: '#4E8862',
-          light: '#6FA682',
-          dark: '#2F5540',
+          DEFAULT: '#C9A84C',
+          light: '#DEC584',
+          dark: '#A8872A',
         },
+        /* Ivy green — a supporting tint (courtyards, planting, quiet accents). */
         ivy: {
           DEFAULT: '#4E8862',
           light: '#6FA682',

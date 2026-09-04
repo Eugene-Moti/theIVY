@@ -73,7 +73,7 @@ export default function LeadsManager() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <p className="text-[9px] tracking-[0.35em] uppercase text-[#4E8862] mb-1">Admin</p>
+          <p className="text-[9px] tracking-[0.35em] uppercase text-[#C9A84C] mb-1">Admin</p>
           <h1 className="text-2xl font-light text-white/85">Leads</h1>
         </div>
         <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function LeadsManager() {
             onClick={() => setFilter(f.key)}
             className="flex-shrink-0 px-3 py-1.5 text-[10.5px] tracking-wide transition-all"
             style={filter === f.key
-              ? { background: 'rgba(78,136,98,0.1)', color: '#4E8862', border: '1px solid rgba(78,136,98,0.3)' }
+              ? { background: 'rgba(201,168,76,0.1)', color: '#C9A84C', border: '1px solid rgba(201,168,76,0.3)' }
               : { background: 'transparent', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.07)' }
             }
           >
@@ -144,7 +144,7 @@ export default function LeadsManager() {
                   </td>
                   <td className="py-4 pr-4">
                     {lead.phone
-                      ? <a href={`tel:${lead.phone}`} className="flex items-center gap-1.5 text-[12px] text-[#4E8862]/70 hover:text-[#4E8862] transition-colors">
+                      ? <a href={`tel:${lead.phone}`} className="flex items-center gap-1.5 text-[12px] text-[#C9A84C]/70 hover:text-[#C9A84C] transition-colors">
                           <PhoneCall size={10} />{lead.phone}
                         </a>
                       : <span className="text-white/20 text-[12px]">—</span>

@@ -71,7 +71,7 @@ export default function Footer() {
               alt="The Ivy Group"
               width={150}
               height={52}
-              className="h-10 w-auto object-contain brightness-0 invert mb-6"
+              className="h-10 w-auto object-contain mb-6"
             />
 
             <p className="text-white/40 text-xs font-sans font-light leading-relaxed mb-7 max-w-xs">

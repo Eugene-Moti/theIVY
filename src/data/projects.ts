@@ -430,7 +430,7 @@ export const projects: ProjectData[] = [
       'Close to major hospitals', 'Near leading schools',
       'Shopping malls & supermarkets nearby', 'Strong road infrastructure network',
     ],
-    mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d3038.3471868036504!2d36.780312317928214!3d-1.2916600198019121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f1b000d6f3f39%3A0x854c68bdc588cef5!2sIVY%20PARK%20RESIDENCE%20Nairobi%2C%20Kirichwa%20Rd!3m2!1d-1.2914455!2d36.781751!5e1!3m2!1sen!2ske!4v1781850798389!5m2!1sen!2ske',
+    mapSrc: 'https://www.google.com/maps/embed?pb=!1m19!1m8!1m3!1d982.7834738622485!2d36.781634957029155!3d-1.2914471018236187!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f1b000d6f3f39%3A0x854c68bdc588cef5!2sIVY%20PARK%20RESIDENCE%20Nairobi%2C%20Kirichwa%20Rd!3m2!1d-1.2914455!2d36.781751!5e1!3m2!1sen!2ske!4v1788511994363!5m2!1sen!2ske',
     brochurePath: p('/IVY PARK RESIDENCE Assests/IvyPark BROCHURE.pdf'),
     gallerySlides: [
       { src: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), label: 'Aerial Sunset View', category: 'Architecture', description: 'Three residential blocks on 1.06 acres near Yaya Centre — designed to create an internal community, not simply a building.' },

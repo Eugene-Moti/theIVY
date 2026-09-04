@@ -38,7 +38,7 @@ const PROPERTIES  = ['Ivy Myst', 'Blossom Ivy', 'Luckinn Ivy', 'Ivy Park', 'Othe
 const UNIT_TYPES  = ['Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '3 Bedroom + DSQ', 'Penthouse']
 const STATUS_OPTS = [
   { value: 'available',   label: 'Available',    icon: CheckCircle, color: 'text-emerald-400' },
-  { value: 'coming_soon', label: 'Coming Soon',  icon: Clock,       color: 'text-[#4E8862]' },
+  { value: 'coming_soon', label: 'Coming Soon',  icon: Clock,       color: 'text-[#C9A84C]' },
   { value: 'occupied',    label: 'Occupied',     icon: XCircle,     color: 'text-white/30' },
 ]
 
@@ -173,7 +173,7 @@ export default function ListingsManager() {
         </div>
         <button
           onClick={openNew}
-          className="flex items-center gap-2 bg-[#4E8862] text-[#0f0f0f] px-4 py-2.5 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#6FA682] transition-colors"
+          className="flex items-center gap-2 bg-[#C9A84C] text-[#0f0f0f] px-4 py-2.5 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#d4b565] transition-colors"
         >
           <Plus size={13} /> Add Listing
         </button>
@@ -187,7 +187,7 @@ export default function ListingsManager() {
       ) : listings.length === 0 ? (
         <div className="border border-white/7 bg-white/2 py-16 text-center">
           <p className="text-white/30 text-sm mb-4">No listings yet.</p>
-          <button onClick={openNew} className="text-[#4E8862] text-[11px] tracking-widest uppercase hover:underline">
+          <button onClick={openNew} className="text-[#C9A84C] text-[11px] tracking-widest uppercase hover:underline">
             Add your first listing
           </button>
         </div>
@@ -343,7 +343,7 @@ export default function ListingsManager() {
                   </button>
                 </div>
                 {/* Upload button */}
-                <label className={`flex items-center gap-2 border border-dashed border-white/15 px-4 py-2.5 mb-3 cursor-pointer hover:border-[#4E8862]/40 transition-colors ${uploading ? 'opacity-60 pointer-events-none' : ''}`}>
+                <label className={`flex items-center gap-2 border border-dashed border-white/15 px-4 py-2.5 mb-3 cursor-pointer hover:border-[#C9A84C]/40 transition-colors ${uploading ? 'opacity-60 pointer-events-none' : ''}`}>
                   {uploading
                     ? <Loader2 size={13} className="animate-spin text-white/40" />
                     : <Upload size={13} className="text-white/30" />}
@@ -367,7 +367,7 @@ export default function ListingsManager() {
                           }
                         </div>
                         <span className="text-[10px] text-white/40 truncate flex-1">{url.split('/').pop()}</span>
-                        {i === 0 && <span className="text-[9px] text-[#4E8862] tracking-wider flex-shrink-0">Featured</span>}
+                        {i === 0 && <span className="text-[9px] text-[#C9A84C] tracking-wider flex-shrink-0">Featured</span>}
                         <button onClick={() => removeImage(i)} className="text-white/20 hover:text-red-400 flex-shrink-0"><X size={10} /></button>
                       </div>
                     )
@@ -381,7 +381,7 @@ export default function ListingsManager() {
               <button
                 onClick={save}
                 disabled={saving}
-                className="w-full flex items-center justify-center gap-2 bg-[#4E8862] text-[#0f0f0f] py-3 text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-[#6FA682] transition-colors disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0f0f0f] py-3 text-[11px] font-semibold tracking-[0.18em] uppercase hover:bg-[#d4b565] transition-colors disabled:opacity-50"
               >
                 {saving ? <Loader2 size={13} className="animate-spin" /> : null}
                 {saving ? 'Saving…' : isNew ? 'Create Listing' : 'Save Changes'}
@@ -421,5 +421,5 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-const inputCls  = 'w-full bg-white/5 border border-white/10 text-white text-[12px] px-3 py-2.5 focus:outline-none focus:border-[#4E8862]/50 transition-colors placeholder:text-white/20'
-const selectCls = 'w-full bg-white/5 border border-white/10 text-white text-[12px] px-3 py-2.5 focus:outline-none focus:border-[#4E8862]/50 transition-colors'
+const inputCls  = 'w-full bg-white/5 border border-white/10 text-white text-[12px] px-3 py-2.5 focus:outline-none focus:border-[#C9A84C]/50 transition-colors placeholder:text-white/20'
+const selectCls = 'w-full bg-white/5 border border-white/10 text-white text-[12px] px-3 py-2.5 focus:outline-none focus:border-[#C9A84C]/50 transition-colors'

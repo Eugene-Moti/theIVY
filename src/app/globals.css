@@ -33,7 +33,7 @@
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4E8862;
+  background: #C9A84C;
 }
 
 @media (prefers-reduced-motion: reduce) {

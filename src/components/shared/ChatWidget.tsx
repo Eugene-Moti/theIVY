@@ -34,17 +34,17 @@ const CHIP_TRIGGERS = [
 const THEMES = {
   light: {
     panel:           'linear-gradient(170deg, #FAFAF8 0%, #F5F2EE 100%)',
-    panelBorder:     'rgba(78,136,98,0.28)',
-    panelShadow:     '0 24px 72px rgba(0,0,0,0.13), 0 0 0 1px rgba(78,136,98,0.06)',
-    topRule:         'linear-gradient(90deg, transparent, #4E8862 35%, #6FA682 65%, transparent)',
+    panelBorder:     'rgba(201,168,76,0.28)',
+    panelShadow:     '0 24px 72px rgba(0,0,0,0.13), 0 0 0 1px rgba(201,168,76,0.06)',
+    topRule:         'linear-gradient(90deg, transparent, #C9A84C 35%, #d4b565 65%, transparent)',
     headerBg:        '#FFFFFF',
     headerBorder:    'rgba(0,0,0,0.07)',
-    avatarBg:        'rgba(78,136,98,0.07)',
-    avatarBorder:    'rgba(78,136,98,0.25)',
+    avatarBg:        'rgba(201,168,76,0.07)',
+    avatarBorder:    'rgba(201,168,76,0.25)',
     onlineDot:       '#22c55e',
     onlineDotBorder: '#FFFFFF',
     nameColor:       '#1a1a1a',
-    subtitleColor:   'rgba(78,136,98,0.75)',
+    subtitleColor:   'rgba(201,168,76,0.75)',
     closeColor:      'rgba(0,0,0,0.25)',
     closeHover:      'rgba(0,0,0,0.65)',
     toggleColor:     'rgba(0,0,0,0.3)',
@@ -55,7 +55,7 @@ const THEMES = {
     botShadow:       '0 1px 4px rgba(0,0,0,0.05)',
     typingBg:        '#FFFFFF',
     typingBorder:    'rgba(0,0,0,0.08)',
-    typingDot:       '#4E8862',
+    typingDot:       '#C9A84C',
     inputFooterBg:   '#FFFFFF',
     inputFooterBorder:'rgba(0,0,0,0.07)',
     inputAreaBg:     '#F5F2EE',
@@ -67,17 +67,17 @@ const THEMES = {
   },
   dark: {
     panel:           'linear-gradient(170deg, #0c0c0c 0%, #070707 100%)',
-    panelBorder:     'rgba(78,136,98,0.2)',
+    panelBorder:     'rgba(201,168,76,0.2)',
     panelShadow:     '0 40px 100px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.025) inset',
-    topRule:         'linear-gradient(90deg, transparent, #4E8862 40%, #6FA682 60%, transparent)',
+    topRule:         'linear-gradient(90deg, transparent, #C9A84C 40%, #d4b565 60%, transparent)',
     headerBg:        'transparent',
     headerBorder:    'rgba(255,255,255,0.05)',
-    avatarBg:        'rgba(78,136,98,0.07)',
-    avatarBorder:    'rgba(78,136,98,0.2)',
+    avatarBg:        'rgba(201,168,76,0.07)',
+    avatarBorder:    'rgba(201,168,76,0.2)',
     onlineDot:       '#34d399',
     onlineDotBorder: '#070707',
     nameColor:       'rgba(255,255,255,0.9)',
-    subtitleColor:   'rgba(78,136,98,0.6)',
+    subtitleColor:   'rgba(201,168,76,0.6)',
     closeColor:      'rgba(255,255,255,0.2)',
     closeHover:      'rgba(255,255,255,0.65)',
     toggleColor:     'rgba(255,255,255,0.25)',
@@ -88,7 +88,7 @@ const THEMES = {
     botShadow:       'none',
     typingBg:        'rgba(255,255,255,0.045)',
     typingBorder:    'rgba(255,255,255,0.07)',
-    typingDot:       'rgba(78,136,98,0.7)',
+    typingDot:       'rgba(201,168,76,0.7)',
     inputFooterBg:   'transparent',
     inputFooterBorder:'rgba(255,255,255,0.05)',
     inputAreaBg:     'rgba(255,255,255,0.04)',
@@ -101,7 +101,7 @@ const THEMES = {
 } as const
 
 // ── Logo mark SVG ─────────────────────────────────────────────────────────────
-function IvyMark({ size = 22, color = '#4E8862' }: { size?: number; color?: string }) {
+function IvyMark({ size = 22, color = '#C9A84C' }: { size?: number; color?: string }) {
   return (
     <svg viewBox="0 0 44 54" fill="none" width={size} height={size}>
       <line x1="22" y1="11" x2="22" y2="51" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
@@ -288,9 +288,9 @@ export default function ChatWidget() {
     fontWeight: 400,
     fontSize: '10px',
     letterSpacing: '0.05em',
-    border: '1px solid rgba(78,136,98,0.28)',
-    background: 'rgba(78,136,98,0.05)',
-    color: 'rgba(78,136,98,0.8)',
+    border: '1px solid rgba(201,168,76,0.28)',
+    background: 'rgba(201,168,76,0.05)',
+    color: 'rgba(201,168,76,0.8)',
     padding: '5px 10px',
     display: 'flex',
     alignItems: 'center',
@@ -299,14 +299,14 @@ export default function ChatWidget() {
     transition: 'all 0.18s ease',
   }
   const onChipEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.background   = 'rgba(78,136,98,0.12)'
-    e.currentTarget.style.borderColor  = 'rgba(78,136,98,0.55)'
-    e.currentTarget.style.color        = '#4E8862'
+    e.currentTarget.style.background   = 'rgba(201,168,76,0.12)'
+    e.currentTarget.style.borderColor  = 'rgba(201,168,76,0.55)'
+    e.currentTarget.style.color        = '#C9A84C'
   }
   const onChipLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.style.background   = 'rgba(78,136,98,0.05)'
-    e.currentTarget.style.borderColor  = 'rgba(78,136,98,0.28)'
-    e.currentTarget.style.color        = 'rgba(78,136,98,0.8)'
+    e.currentTarget.style.background   = 'rgba(201,168,76,0.05)'
+    e.currentTarget.style.borderColor  = 'rgba(201,168,76,0.28)'
+    e.currentTarget.style.color        = 'rgba(201,168,76,0.8)'
   }
 
   return (
@@ -344,7 +344,7 @@ export default function ChatWidget() {
                     className="w-10 h-10 flex items-center justify-center"
                     style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}` }}
                   >
-                    <IvyMark size={22} color="#4E8862" />
+                    <IvyMark size={22} color="#C9A84C" />
                   </div>
                   <span
                     className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
@@ -403,7 +403,7 @@ export default function ChatWidget() {
                       className="w-7 h-7 flex-shrink-0 flex items-center justify-center mb-0.5"
                       style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}`, flexShrink: 0 }}
                     >
-                      <IvyMark size={15} color="#4E8862" />
+                      <IvyMark size={15} color="#C9A84C" />
                     </div>
                   )}
                   <div className="max-w-[78%] flex flex-col gap-2">
@@ -414,7 +414,7 @@ export default function ChatWidget() {
                         fontWeight: 300,
                         transition: 'background 0.3s ease, color 0.3s ease',
                         ...(m.role === 'user'
-                          ? { background: 'linear-gradient(135deg, #4E8862 0%, #6FA682 100%)', color: '#0D0D0D' }
+                          ? { background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)', color: '#0D0D0D' }
                           : { background: t.botBg, border: `1px solid ${t.botBorder}`, color: t.botText, boxShadow: t.botShadow }
                         ),
                       }}
@@ -432,7 +432,7 @@ export default function ChatWidget() {
                           fontFamily: 'var(--font-body)',
                           fontWeight: 500,
                           letterSpacing: '0.06em',
-                          background: 'linear-gradient(135deg, #4E8862 0%, #6FA682 100%)',
+                          background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)',
                           color: '#0D0D0D',
                         }}
                       >
@@ -450,7 +450,7 @@ export default function ChatWidget() {
                     className="w-7 h-7 flex-shrink-0 flex items-center justify-center"
                     style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}` }}
                   >
-                    <IvyMark size={15} color="#4E8862" />
+                    <IvyMark size={15} color="#C9A84C" />
                   </div>
                   <div
                     className="px-4 py-3.5 flex items-center gap-1.5"
@@ -495,9 +495,9 @@ export default function ChatWidget() {
                         initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.08 }}
                         onClick={() => { if (q === 'Book a site visit') { startLeadFlow('callback'); setShowQuick(false) } else send(q) }}
                         className="px-3 py-1.5 text-[10.5px] transition-all"
-                        style={{ fontFamily: 'var(--font-body)', fontWeight: 400, color: 'rgba(78,136,98,0.8)', border: '1px solid rgba(78,136,98,0.28)', letterSpacing: '0.04em', background: 'rgba(78,136,98,0.04)' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(78,136,98,0.1)'; e.currentTarget.style.borderColor = 'rgba(78,136,98,0.5)'; e.currentTarget.style.color = '#4E8862' }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(78,136,98,0.04)'; e.currentTarget.style.borderColor = 'rgba(78,136,98,0.28)'; e.currentTarget.style.color = 'rgba(78,136,98,0.8)' }}
+                        style={{ fontFamily: 'var(--font-body)', fontWeight: 400, color: 'rgba(201,168,76,0.8)', border: '1px solid rgba(201,168,76,0.28)', letterSpacing: '0.04em', background: 'rgba(201,168,76,0.04)' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(201,168,76,0.1)'; e.currentTarget.style.borderColor = 'rgba(201,168,76,0.5)'; e.currentTarget.style.color = '#C9A84C' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(201,168,76,0.04)'; e.currentTarget.style.borderColor = 'rgba(201,168,76,0.28)'; e.currentTarget.style.color = 'rgba(201,168,76,0.8)' }}
                       >
                         {q}
                       </motion.button>
@@ -536,7 +536,7 @@ export default function ChatWidget() {
                   disabled={!input.trim() || loading}
                   whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.93 }}
                   className="w-8 h-8 flex items-center justify-center flex-shrink-0 disabled:opacity-30 transition-opacity"
-                  style={{ background: 'linear-gradient(135deg, #4E8862 0%, #6FA682 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #C9A84C 0%, #d4b565 100%)' }}
                 >
                   {loading
                     ? <Loader2 size={12} className="animate-spin text-[#0D0D0D]" />
@@ -557,9 +557,9 @@ export default function ChatWidget() {
         <AnimatePresence>
           {!open && (
             <motion.div key="rings" className="absolute inset-0 rounded-full pointer-events-none" exit={{ opacity: 0, transition: { duration: 0.15 } }}>
-              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(78,136,98,0.25)' }}
+              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.25)' }}
                 animate={{ scale: [1, 1.9], opacity: [0.6, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.9 }} />
-              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(78,136,98,0.15)' }}
+              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.15)' }}
                 animate={{ scale: [1, 2.4], opacity: [0.4, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', delay: 0.55, repeatDelay: 0.9 }} />
             </motion.div>
           )}
@@ -569,7 +569,7 @@ export default function ChatWidget() {
           onClick={() => setOpen(o => !o)}
           whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.93 }}
           className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
-          style={{ background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)', border: '1px solid rgba(78,136,98,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(78,136,98,0.08)' }}
+          style={{ background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)', border: '1px solid rgba(201,168,76,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(201,168,76,0.08)' }}
           aria-label="Chat with Ivy"
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -578,7 +578,7 @@ export default function ChatWidget() {
                   <X size={17} style={{ color: 'rgba(255,255,255,0.55)' }} />
                 </motion.div>
               : <motion.div key="logo" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <IvyMark size={28} color="#4E8862" />
+                  <IvyMark size={28} color="#C9A84C" />
                 </motion.div>
             }
           </AnimatePresence>

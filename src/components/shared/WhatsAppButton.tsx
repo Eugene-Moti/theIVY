@@ -96,7 +96,7 @@ export default function WhatsAppButton() {
             className="absolute inset-0 pointer-events-none"
             animate={{ opacity: hovered ? 1 : 0 }}
             transition={{ duration: 0.2 }}
-            style={{ boxShadow: 'inset 0 0 0 1px rgba(78,136,98,0.45)' }}
+            style={{ boxShadow: 'inset 0 0 0 1px rgba(201,168,76,0.45)' }}
           />
 
           {/* WhatsApp icon — always visible, left side */}

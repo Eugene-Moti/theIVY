@@ -23,7 +23,7 @@ const fade = {
 
 const btnPrimary =
   'inline-flex items-center gap-2 bg-dark text-white px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-dark transition-colors duration-300'
-const btnGreen =
+const btnGold =
   'inline-flex items-center gap-2 bg-gold-dark text-white px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-dark transition-colors duration-300'
 const btnGhost =
   'inline-flex items-center gap-2 border border-dark/25 text-dark px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-dark hover:text-white transition-all duration-300'
@@ -163,7 +163,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               {data.tagline}
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href="#residences" className={btnGreen}>
+              <a href="#residences" className={btnGold}>
                 View Residences <ArrowRight size={13} />
               </a>
               <button type="button" onClick={() => setBrochureOpen(true)} className={btnGhostLight}>
