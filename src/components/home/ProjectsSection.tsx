@@ -3,157 +3,132 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, MapPin } from 'lucide-react'
+import { ArrowRight, MapPin, MessageCircle } from 'lucide-react'
+import { projects, ProjectUnit } from '@/data/projects'
+import { waLink } from '@/lib/contact'
 
-const p = (path: string) => encodeURI(path)
+const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 
-const projects = [
-  {
-    boldPart: 'BLOSSOM IVY',
-    lightPart: 'Residence',
-    location: 'Kileleshwa, Nairobi',
-    status: 'AVAILABLE',
-    description:
-      'Luxury residences with indoor heated pool, spa, yoga studio and grand lobby across 22 floors in Kileleshwa.',
-    image: p(
-      '/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/13_KCGV_Blossom Ivy_R1 Pool 2.jpg',
-    ),
-    href: '/blossom-ivy',
-    cta: 'EXPLORE',
-  },
-  {
-    boldPart: 'LUCKINN IVY',
-    lightPart: 'Residence',
-    location: 'Westlands, Nairobi',
-    status: 'LIMITED UNITS',
-    description:
-      'Premium 2 & 3BR apartments with heated pool, co-working spaces and business lounge in the heart of Westlands.',
-    image: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'),
-    href: '/luckinn-ivy',
-    cta: 'EXPLORE',
-  },
-  {
-    boldPart: 'IVY PARK',
-    lightPart: 'Residence',
-    location: 'Kilimani, Nairobi',
-    status: 'EARLY BIRD',
-    description:
-      'Modern 1, 2 & 3BR apartments with rooftop garden, lounge and bar — 660 units across 3 blocks in Kilimani.',
-    image: p('/IVY PARK RESIDENCE Assests/AMENITIES/ROOFTOP/251027_FINAL_Creative(18).jpg'),
-    href: '/ivy-park',
-    cta: 'EXPLORE',
-  },
-  {
-    boldPart: 'IVY MYST',
-    lightPart: 'Now Selling',
-    location: 'Kileleshwa, Nairobi',
-    status: 'NOW SELLING',
-    description:
-      '1, 2 & 3BR luxury residences with private garden terraces and the Celestial Rooftop Pool. Sales now open.',
-    image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'),
-    href: '/ivy-myst',
-    cta: 'SECURE A UNIT',
-  },
-]
+const blurbs: Record<string, string> = {
+  'blossom-ivy': 'Heated indoor pool, spa, yoga studio and a grand lobby across 22 floors — nearing completion in Kileleshwa.',
+  'luckinn-ivy': 'Premium 2 & 3-bedroom apartments with a heated pool, co-working spaces and a business lounge in the heart of Westlands.',
+  'ivy-park': '1, 2 & 3-bedroom homes with a rooftop garden, lounge and bar — 660 residences across three blocks near Yaya Centre.',
+  'ivy-myst': '1, 2 & 3-bedroom residences with private garden terraces and the rooftop Celestial Pool. Now selling in Kileleshwa.',
+}
 
+function priceFrom(units: ProjectUnit[]): string | null {
+  const nums = units
+    .map((u) => Number(String(u.price).replace(/[^0-9]/g, '')))
+    .filter((n) => n > 100000)
+  if (!nums.length) return null
+  return `From KES ${Math.min(...nums).toLocaleString('en-KE')}`
+}
+
+const list = ORDER.map((slug) => projects.find((p) => p.slug === slug)!)
 
 export default function ProjectsSection() {
   return (
-    <section className="bg-white py-24 lg:py-32">
-      <div className="max-w-[1360px] mx-auto px-8 lg:px-14">
-
-        {/* Eyebrow */}
+    <section className="bg-cream py-24 lg:py-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <motion.div
-          initial={{ opacity: 0, x: -24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.7 }}
-          className="flex items-center gap-5 mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+          className="flex items-end justify-between gap-6 mb-16"
         >
-          <span className="text-[10px] font-sans font-semibold tracking-[0.32em] uppercase text-dark/35 whitespace-nowrap">
-            Our Portfolio
-          </span>
-          <div className="flex-1 h-px bg-dark/10" />
+          <div>
+            <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
+              Our Developments
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-dark leading-[1.1]">
+              Choose where you&apos;ll live, or invest
+            </h2>
+          </div>
           <Link
             href="/developments"
-            className="flex items-center gap-1.5 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase text-dark/28 hover:text-gold transition-colors duration-300 group whitespace-nowrap"
+            className="hidden sm:inline-flex items-center gap-2 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase text-dark/50 hover:text-gold transition-colors flex-shrink-0"
           >
-            View All
-            <ArrowRight size={10} className="group-hover:translate-x-0.5 transition-transform" />
+            View all <ArrowRight size={11} />
           </Link>
         </motion.div>
 
-        {/* 2-column wide card grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-14 lg:gap-20">
-          {projects.map((project, i) => (
-            <motion.article
-              key={project.boldPart}
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: '-60px' }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: i % 2 === 0 ? 0 : 0.15 }}
-              className="group flex flex-col"
-            >
-              {/* Image — wider aspect ratio so images are prominent */}
-              <Link
-                href={project.href}
-                className="block relative overflow-hidden mb-7"
-                style={{ aspectRatio: '3 / 2' }}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+          {list.map((proj, i) => {
+            const from = priceFrom(proj.availableUnits)
+            return (
+              <motion.article
+                key={proj.slug}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, delay: (i % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="group bg-white border border-dark/8 hover:border-gold/40 transition-colors flex flex-col"
               >
-                <Image
-                  src={project.image}
-                  alt={`${project.boldPart} ${project.lightPart}`}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={88}
-                />
-                {/* Status badge */}
-                <div className="absolute top-4 left-4 bg-dark/72 backdrop-blur-sm px-3 py-[6px]">
-                  <span className="text-white text-[8px] font-sans font-semibold tracking-[0.2em]">
-                    {project.status}
-                  </span>
-                </div>
-              </Link>
-
-              {/* Text */}
-              <div className="flex flex-col flex-1">
-                <div className="flex items-center gap-1.5 mb-3.5">
-                  <MapPin size={10} className="text-gold flex-shrink-0" />
-                  <p className="text-[9px] font-sans font-semibold tracking-[0.25em] uppercase text-gold">
-                    {project.location}
-                  </p>
-                </div>
-
-                <Link href={project.href} className="block mb-4">
-                  <h3
-                    className="font-serif leading-[1.15] text-dark hover:text-gold transition-colors duration-300"
-                    style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2.2rem)' }}
-                  >
-                    <span className="font-medium uppercase" style={{ letterSpacing: '0.04em' }}>{project.boldPart}</span>{' '}
-                    <span className="font-light" style={{ letterSpacing: '0.02em' }}>{project.lightPart}</span>
-                  </h3>
-                </Link>
-
-                <p className="text-dark/48 text-[13px] font-sans font-light leading-[1.85] mb-7 flex-1">
-                  {project.description}
-                </p>
-
-                <Link
-                  href={project.href}
-                  className="self-start inline-flex items-center gap-2.5 bg-dark text-white text-[9px] font-sans font-semibold tracking-[0.22em] uppercase px-6 py-3.5 hover:bg-gold hover:text-dark transition-colors duration-300 group/btn"
-                >
-                  {project.cta}
-                  <ArrowRight
-                    size={10}
-                    className="group-hover/btn:translate-x-0.5 transition-transform"
+                <Link href={`/${proj.slug}`} className="relative aspect-[16/10] overflow-hidden block">
+                  <Image
+                    src={proj.heroImage}
+                    alt={proj.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={84}
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   />
+                  <span className="absolute top-4 left-4 bg-dark/75 backdrop-blur-sm px-3 py-[6px] text-white text-[8px] font-sans font-semibold tracking-[0.2em]">
+                    {proj.statusLabel}
+                  </span>
                 </Link>
-              </div>
-            </motion.article>
-          ))}
-        </div>
 
+                <div className="p-7 lg:p-8 flex flex-col flex-1">
+                  <div className="flex items-center gap-1.5 mb-3">
+                    <MapPin size={11} className="text-gold flex-shrink-0" />
+                    <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.24em] uppercase">
+                      {proj.locationLabel}
+                    </p>
+                  </div>
+
+                  <Link href={`/${proj.slug}`}>
+                    <h3
+                      className="font-serif text-2xl text-dark font-light leading-tight mb-3 group-hover:text-gold transition-colors"
+                      style={{ letterSpacing: '0.01em' }}
+                    >
+                      {proj.name}
+                    </h3>
+                  </Link>
+
+                  <p className="text-dark/50 text-[13px] font-sans font-light leading-[1.8] mb-6 flex-1">
+                    {blurbs[proj.slug]}
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mb-6 text-dark/40 text-[10.5px] font-sans tracking-wide">
+                    {proj.floors > 0 && <span>{proj.floors} floors</span>}
+                    {proj.totalUnits > 0 && <span>{proj.totalUnits.toLocaleString()} residences</span>}
+                    <span>{proj.completion}</span>
+                    {from && <span className="text-dark/70 font-medium">{from}</span>}
+                  </div>
+
+                  <div className="flex gap-2.5">
+                    <Link
+                      href={`/${proj.slug}`}
+                      className="flex-1 text-center bg-dark text-white py-3 text-[10px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-dark transition-colors"
+                    >
+                      View development
+                    </Link>
+                    <a
+                      href={waLink(proj.name)}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`WhatsApp about ${proj.name}`}
+                      className="flex items-center justify-center border border-dark/20 text-dark/60 w-12 hover:border-gold hover:text-gold transition-colors"
+                    >
+                      <MessageCircle size={15} />
+                    </a>
+                  </div>
+                </div>
+              </motion.article>
+            )
+          })}
+        </div>
       </div>
     </section>
   )

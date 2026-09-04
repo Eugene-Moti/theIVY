@@ -1,10 +1,12 @@
 import HeroSlider from '@/components/home/HeroSlider'
+import MovedNotice from '@/components/home/MovedNotice'
+import ManifestoStrip from '@/components/home/ManifestoStrip'
+import FeatureRow from '@/components/home/FeatureRow'
 import ProjectsSection from '@/components/home/ProjectsSection'
 import LaunchSection from '@/components/home/LaunchSection'
 import AboutSection from '@/components/home/AboutSection'
-import StatsSection from '@/components/home/StatsSection'
+import InsightsTeaser from '@/components/home/InsightsTeaser'
 import CTASection from '@/components/home/CTASection'
-import MovedNotice from '@/components/home/MovedNotice'
 import { HEAD_OFFICE } from '@/data/office'
 
 const jsonLd = {
@@ -55,10 +57,12 @@ export default function HomePage() {
       />
       <HeroSlider />
       <MovedNotice />
+      <ManifestoStrip />
+      <FeatureRow />
       <ProjectsSection />
       <LaunchSection />
       <AboutSection />
-      <StatsSection />
+      <InsightsTeaser />
       <CTASection />
     </>
   )
