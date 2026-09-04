@@ -71,7 +71,7 @@ export default function Navbar() {
               alt="The Ivy Group"
               width={160}
               height={55}
-              className={`h-11 w-auto object-contain transition-all duration-500 ${isLight ? 'brightness-0 invert' : ''}`}
+              className={`h-11 w-auto object-contain transition-all duration-500 ${isLight ? 'brightness-0 invert' : 'brightness-0'}`}
               priority
             />
           </Link>
