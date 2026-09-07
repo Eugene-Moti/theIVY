@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle, ShieldCheck } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 
 /* ── Options ─────────────────────────────────────────────────────────────── */
 
@@ -102,11 +102,6 @@ export default function LeadForm({
   const showMessage = variant === 'full'
 
   const mountedAt = useRef(Date.now())
-  const challenge = useMemo(() => {
-    const a = 2 + Math.floor(Math.random() * 7)
-    const b = 2 + Math.floor(Math.random() * 7)
-    return { a, b }
-  }, [])
 
   const [f, setF] = useState({
     name: '',
@@ -118,7 +113,6 @@ export default function LeadForm({
     buyerType: '',
     timeline: '',
     message: '',
-    answer: '',
     website: '', // honeypot
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
@@ -130,12 +124,6 @@ export default function LeadForm({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-
-    if (Number(f.answer) !== challenge.a + challenge.b) {
-      setError('The verification answer is not correct — please try again.')
-      return
-    }
-
     setStatus('loading')
     const payload = {
       type: leadType,
@@ -300,27 +288,6 @@ export default function LeadForm({
           />
         </div>
       )}
-
-      {/* Human check */}
-      <div>
-        <label className={`${label} flex items-center gap-1.5`}>
-          <ShieldCheck size={12} className="text-gold" /> Confirm you&apos;re human *
-        </label>
-        <div className="flex items-center gap-3">
-          <span className={`text-sm font-sans ${dark ? 'text-white/70' : 'text-dark/70'}`}>
-            {challenge.a} + {challenge.b} =
-          </span>
-          <input
-            type="text"
-            inputMode="numeric"
-            required
-            value={f.answer}
-            onChange={set('answer')}
-            placeholder="?"
-            className={`${field} w-20`}
-          />
-        </div>
-      </div>
 
       {error && (
         <p className="text-[12px] font-sans" style={{ color: '#d14343' }}>{error}</p>
