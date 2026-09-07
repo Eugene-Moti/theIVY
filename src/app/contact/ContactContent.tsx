@@ -1,35 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, CheckCircle, Navigation } from 'lucide-react'
+import { Phone, Mail, MapPin, Navigation } from 'lucide-react'
 import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
-
-type FormState = { name: string; email: string; phone: string; interest: string; message: string }
-const INTERESTS = ['Blossom Ivy Residence', 'Luckinn Ivy Residence', 'Ivy Park Residence', 'Ivy Myst', 'General Enquiry']
+import LeadForm from '@/components/shared/LeadForm'
 
 export default function ContactContent() {
-  const [form, setForm] = useState<FormState>({ name: '', email: '', phone: '', interest: '', message: '' })
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
-
-  const set = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm(f => ({ ...f, [key]: e.target.value }))
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-    try {
-      await fetch('/api/enquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, type: 'contact-form' }),
-      })
-    } catch { /* continue */ }
-    setStatus('success')
-  }
-
   return (
     <>
       {/* Hero */}
@@ -176,96 +153,7 @@ export default function ContactContent() {
               transition={{ duration: 0.7 }}
               className="lg:col-span-3"
             >
-              {status === 'success' ? (
-                <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center px-10">
-                  <CheckCircle size={48} className="text-gold mb-5" />
-                  <h3 className="font-serif text-3xl text-dark font-light mb-3">Message Received</h3>
-                  <p className="text-dark/55 text-sm font-sans font-light leading-relaxed max-w-sm">
-                    Thank you for getting in touch. A member of our team will contact you within 24 hours.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setStatus('idle')}
-                    className="mt-8 text-[11px] font-sans font-semibold tracking-widest uppercase text-dark/40 hover:text-gold transition-colors"
-                  >
-                    SEND ANOTHER MESSAGE
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-[10px] font-sans font-semibold tracking-[0.15em] uppercase text-dark/45 mb-1.5">Full Name *</label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={set('name')}
-                        placeholder="Your full name"
-                        className="w-full border border-dark/15 px-4 py-3.5 text-sm font-sans text-dark placeholder:text-dark/30 focus:outline-none focus:border-gold transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-sans font-semibold tracking-[0.15em] uppercase text-dark/45 mb-1.5">Phone Number *</label>
-                      <input
-                        type="tel"
-                        required
-                        value={form.phone}
-                        onChange={set('phone')}
-                        placeholder="+254 7XX XXX XXX"
-                        className="w-full border border-dark/15 px-4 py-3.5 text-sm font-sans text-dark placeholder:text-dark/30 focus:outline-none focus:border-gold transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-sans font-semibold tracking-[0.15em] uppercase text-dark/45 mb-1.5">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={set('email')}
-                      placeholder="your@email.com"
-                      className="w-full border border-dark/15 px-4 py-3.5 text-sm font-sans text-dark placeholder:text-dark/30 focus:outline-none focus:border-gold transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-sans font-semibold tracking-[0.15em] uppercase text-dark/45 mb-1.5">I'm Interested In</label>
-                    <select
-                      value={form.interest}
-                      onChange={set('interest')}
-                      className="w-full border border-dark/15 px-4 py-3.5 text-sm font-sans text-dark focus:outline-none focus:border-gold transition-colors appearance-none bg-white"
-                    >
-                      <option value="">Select a development (optional)</option>
-                      {INTERESTS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-sans font-semibold tracking-[0.15em] uppercase text-dark/45 mb-1.5">Message</label>
-                    <textarea
-                      rows={5}
-                      value={form.message}
-                      onChange={set('message')}
-                      placeholder="Tell us about your requirements, preferred unit type, budget, or any questions you have…"
-                      className="w-full border border-dark/15 px-4 py-3.5 text-sm font-sans text-dark placeholder:text-dark/30 focus:outline-none focus:border-gold transition-colors resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="w-full bg-dark text-white py-4 text-[11px] font-sans font-semibold tracking-[0.2em] uppercase hover:bg-gold transition-colors duration-300 disabled:opacity-60"
-                  >
-                    {status === 'loading' ? <span className="animate-pulse">SENDING…</span> : 'SEND ENQUIRY'}
-                  </button>
-
-                  <p className="text-dark/30 text-[10px] font-sans text-center">
-                    We typically respond within 24 hours. Your details are kept strictly confidential.
-                  </p>
-                </form>
-              )}
+              <LeadForm variant="full" leadType="contact-form" source="Contact page" submitLabel="Send enquiry" />
             </motion.div>
           </div>
         </div>

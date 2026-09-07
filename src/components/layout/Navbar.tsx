@@ -15,7 +15,6 @@ const devDropdown = [
 
 const navLinks = [
   { label: 'DEVELOPMENTS', href: '/developments', hasDropdown: true },
-  { label: 'BUY', href: '/buy' },
   { label: 'RENT', href: '/rent' },
   { label: 'INSIGHTS', href: '/insights' },
   { label: 'ABOUT', href: '/about' },
@@ -24,7 +23,6 @@ const navLinks = [
 
 const mobileLinks = [
   { label: 'Developments', href: '/developments' },
-  { label: 'Buy', href: '/buy' },
   { label: 'Rent', href: '/rent' },
   { label: 'Insights', href: '/insights' },
   { label: 'About', href: '/about' },

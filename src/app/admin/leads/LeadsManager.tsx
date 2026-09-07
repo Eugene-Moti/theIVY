@@ -4,6 +4,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { PhoneCall, Download, Mail, RefreshCw, Filter } from 'lucide-react'
 
+type LeadMeta = {
+  budget?: string
+  buyer_type?: string
+  timeline?: string
+  message?: string
+  country_code?: string
+  source?: string
+}
+
 type Lead = {
   id: string
   name: string | null
@@ -12,7 +21,10 @@ type Lead = {
   property_interest: string | null
   lead_type: string | null
   created_at: string
+  meta: LeadMeta | null
 }
+
+const isAgent = (v?: string) => !!v && /agent|broker/i.test(v)
 
 const TYPE_LABELS: Record<string, { label: string; color: string }> = {
   'chat-callback':   { label: 'Callback',   color: 'rgba(251,191,36,0.15)'  },
@@ -122,7 +134,7 @@ export default function LeadsManager() {
           <table className="w-full border-collapse">
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                {['Name', 'Phone', 'Email', 'Property Interest', 'Type', 'Date'].map(h => (
+                {['Name', 'Phone', 'Email', 'Interest', 'Budget', 'Timeframe', 'Type', 'Date'].map(h => (
                   <th
                     key={h}
                     className="text-left pb-3 pr-4 text-[9px] tracking-[0.2em] uppercase text-white/20 font-normal"
@@ -161,8 +173,22 @@ export default function LeadsManager() {
                   <td className="py-4 pr-4 text-[12px] text-white/50 font-light">
                     {lead.property_interest || <span className="text-white/20">—</span>}
                   </td>
-                  <td className="py-4 pr-4">
+                  <td className="py-4 pr-4 text-[12px] text-white/50 font-light whitespace-nowrap">
+                    {lead.meta?.budget || <span className="text-white/20">—</span>}
+                  </td>
+                  <td className="py-4 pr-4 text-[12px] text-white/50 font-light whitespace-nowrap">
+                    {lead.meta?.timeline || <span className="text-white/20">—</span>}
+                  </td>
+                  <td className="py-4 pr-4 whitespace-nowrap">
                     <TypeBadge type={lead.lead_type} />
+                    {isAgent(lead.meta?.buyer_type) && (
+                      <span
+                        className="ml-1.5 inline-block px-2 py-0.5 text-[10px] font-semibold tracking-wide uppercase"
+                        style={{ background: 'rgba(220,38,38,0.16)', color: '#f87171', letterSpacing: '0.1em' }}
+                      >
+                        Agent
+                      </span>
+                    )}
                   </td>
                   <td className="py-4 text-[11px] text-white/25 whitespace-nowrap">
                     {formatDate(lead.created_at)}

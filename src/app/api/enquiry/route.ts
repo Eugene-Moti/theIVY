@@ -6,7 +6,16 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const TO   = 'marketing.ivy-group@rsunproperty.net'
 const FROM = 'The Ivy Group Website <onboarding@resend.dev>'
 
+const ROW = (k: string, v: string) =>
+  `<tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;width:150px;vertical-align:top;">${k}</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;line-height:1.5;">${v || '—'}</td></tr>`
+
+function isAgent(v?: string) {
+  return !!v && /agent|broker/i.test(v)
+}
+
 function contactHtml(data: Record<string, string>) {
+  const agent = isAgent(data.buyer_type)
+  const hot = /as soon as possible|1.3 months/i.test(data.timeline || '')
   return `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;">
       <div style="background:#0D0D0D;padding:28px 32px;">
@@ -14,12 +23,21 @@ function contactHtml(data: Record<string, string>) {
         <h1 style="color:#ffffff;font-size:22px;font-weight:300;margin:0;">New Website Enquiry</h1>
       </div>
       <div style="padding:32px;">
+        ${agent
+          ? `<div style="margin:0 0 20px;padding:12px 16px;background:#fef2f2;border-left:3px solid #dc2626;"><p style="margin:0;color:#991b1b;font-size:13px;font-weight:700;">AGENT / BROKER ENQUIRY — not a direct buyer</p></div>`
+          : hot
+          ? `<div style="margin:0 0 20px;padding:12px 16px;background:#ecfdf5;border-left:3px solid #059669;"><p style="margin:0;color:#065f46;font-size:13px;font-weight:700;">HOT LEAD — ready to buy soon</p></div>`
+          : ''}
         <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;width:130px;">Name</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">${data.name || '—'}</td></tr>
-          <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Email</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;"><a href="mailto:${data.email}" style="color:#C9A84C;">${data.email || '—'}</a></td></tr>
-          <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Phone</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;"><a href="tel:${data.phone}" style="color:#C9A84C;">${data.phone || '—'}</a></td></tr>
-          ${data.interest ? `<tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Interested In</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">${data.interest}</td></tr>` : ''}
-          ${data.message ? `<tr><td style="padding:10px 0;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;">Message</td><td style="padding:10px 0;color:#111827;font-size:14px;line-height:1.6;">${data.message}</td></tr>` : ''}
+          ${ROW('Name', data.name)}
+          ${ROW('Email', `<a href="mailto:${data.email}" style="color:#C9A84C;">${data.email || '—'}</a>`)}
+          ${ROW('Phone', `<a href="tel:${data.phone}" style="color:#C9A84C;">${data.phone || '—'}</a>`)}
+          ${data.interest ? ROW('Interested in', data.interest) : ''}
+          ${data.budget ? ROW('Budget', `<strong>${data.budget}</strong>`) : ''}
+          ${data.buyer_type ? ROW('Decision maker', `<strong>${data.buyer_type}</strong>`) : ''}
+          ${data.timeline ? ROW('Timeframe', `<strong>${data.timeline}</strong>`) : ''}
+          ${data.source ? ROW('Came from', data.source) : ''}
+          ${data.message ? ROW('Message', String(data.message).replace(/\n/g, '<br>')) : ''}
         </table>
         <div style="margin-top:28px;padding:16px;background:#f9fafb;border-left:3px solid #C9A84C;">
           <p style="margin:0;color:#6b7280;font-size:12px;">Reply directly to this email to respond to the enquirer.</p>
@@ -27,33 +45,6 @@ function contactHtml(data: Record<string, string>) {
       </div>
       <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;">
         <p style="margin:0;color:#9ca3af;font-size:11px;">Sent from ivygroup.ke · The Ivy Group, Ivy Park Residence, Kirichwa Road, Kilimani (near Yaya Centre), Nairobi</p>
-      </div>
-    </div>
-  `
-}
-
-function brochureHtml(data: Record<string, string>) {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;">
-      <div style="background:#0D0D0D;padding:28px 32px;">
-        <p style="color:#C9A84C;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;">The Ivy Group</p>
-        <h1 style="color:#ffffff;font-size:22px;font-weight:300;margin:0;">New Brochure Download Lead</h1>
-      </div>
-      <div style="padding:32px;">
-        <div style="background:#C9A84C;display:inline-block;padding:6px 14px;margin-bottom:24px;">
-          <p style="color:#0D0D0D;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0;">📄 ${data.project || 'Unknown Project'}</p>
-        </div>
-        <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;width:130px;">Name</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">${data.name || '—'}</td></tr>
-          <tr><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Email</td><td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;"><a href="mailto:${data.email}" style="color:#C9A84C;">${data.email || '—'}</a></td></tr>
-          <tr><td style="padding:10px 0;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Phone</td><td style="padding:10px 0;color:#111827;font-size:14px;"><a href="tel:${data.phone}" style="color:#C9A84C;">${data.phone || '—'}</a></td></tr>
-        </table>
-        <div style="margin-top:28px;padding:16px;background:#f9fafb;border-left:3px solid #C9A84C;">
-          <p style="margin:0;color:#6b7280;font-size:12px;">This lead downloaded the <strong>${data.project}</strong> brochure. Follow up within 24 hours for best conversion.</p>
-        </div>
-      </div>
-      <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;">
-        <p style="margin:0;color:#9ca3af;font-size:11px;">Sent from ivygroup.ke</p>
       </div>
     </div>
   `
@@ -115,27 +106,45 @@ function waitlistHtml(data: Record<string, string>) {
 async function saveLead(data: Record<string, string>, type: string) {
   try {
     const supabase = createAdminClient()
-    await supabase.from('leads').insert({
+    const meta: Record<string, string> = {}
+    for (const k of ['budget', 'buyer_type', 'timeline', 'country_code', 'message', 'source'] as const) {
+      if (data[k]) meta[k] = data[k]
+    }
+    const row: Record<string, unknown> = {
       name:              data.name || null,
       phone:             data.phone || null,
       email:             data.email || null,
-      property_interest: data.property_interest || data.project || null,
+      property_interest: data.interest || data.property_interest || data.project || null,
       lead_type:         type,
-    })
+    }
+    if (Object.keys(meta).length) row.meta = meta
+    const { error } = await supabase.from('leads').insert(row)
+    // `meta` column may not exist yet — retry without it so the lead is still saved.
+    if (error && 'meta' in row) {
+      delete row.meta
+      await supabase.from('leads').insert(row)
+    }
   } catch { /* non-critical — email is primary notification */ }
 }
 
 export async function POST(request: Request) {
   try {
     const data = await request.json()
-    const { type, ...rest } = data
+    const { type, _hp, _elapsed, ...rest } = data
+
+    // Bot filters — honeypot field, and submissions faster than a human could fill the form.
+    if ((typeof _hp === 'string' && _hp.trim()) || (typeof _elapsed === 'number' && _elapsed > 0 && _elapsed < 2500)) {
+      return NextResponse.json({ success: true })
+    }
 
     let subject = 'New Enquiry — The Ivy Group Website'
     let html = contactHtml(rest)
 
+    const tag = isAgent(rest.buyer_type) ? '⚠ AGENT · ' : ''
+
     if (type === 'brochure-download') {
-      subject = `Brochure Download Lead — ${rest.project || 'Unknown Project'}`
-      html = brochureHtml(rest)
+      subject = `${tag}Brochure Request — ${rest.project || rest.interest || 'General'} · ${rest.name || 'Unknown'}`
+      html = contactHtml(rest)
     } else if (type === 'chat-callback') {
       subject = `🔴 Callback Request — ${rest.name || 'Unknown'} · ${rest.property_interest || 'General'}`
       html = chatLeadHtml(rest, type)
@@ -149,7 +158,7 @@ export async function POST(request: Request) {
       subject = 'New Rental Waitlist Sign-up — The Ivy Group'
       html = waitlistHtml(rest)
     } else if (type === 'contact-form') {
-      subject = `Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
+      subject = `${tag}Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
     }
 
     // Save to Supabase (non-blocking)

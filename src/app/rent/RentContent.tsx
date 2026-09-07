@@ -106,11 +106,11 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
           {!hasListings && (
             <div className="mt-20 pt-12 border-t border-white/10">
               <p className="text-white/35 text-xs font-sans font-light mb-6 uppercase tracking-widest">
-                Meanwhile, explore our properties for sale
+                Meanwhile, explore our developments
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/buy" className="border border-white/30 text-white/70 px-8 py-3 text-[10px] font-sans font-semibold tracking-wider uppercase hover:border-gold hover:text-gold transition-colors">
-                  VIEW PROPERTIES FOR SALE
+                <Link href="/developments" className="border border-white/30 text-white/70 px-8 py-3 text-[10px] font-sans font-semibold tracking-wider uppercase hover:border-gold hover:text-gold transition-colors">
+                  VIEW DEVELOPMENTS
                 </Link>
                 <Link href="/contact" className="border border-white/30 text-white/70 px-8 py-3 text-[10px] font-sans font-semibold tracking-wider uppercase hover:border-gold hover:text-gold transition-colors">
                   CONTACT US
