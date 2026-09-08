@@ -241,7 +241,7 @@ export default function ChatWidget() {
       await fetch('/api/enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'chat-ticket', name: l.name, phone: l.phone, email: l.email }),
+        body: JSON.stringify({ type: 'chat-ticket', name: l.name, phone: l.phone, email: l.email, consent: true, source: 'Chat assistant' }),
       })
     } catch { /* fire-and-forget */ }
     try { localStorage.setItem(LEAD_KEY, JSON.stringify(l)) } catch { /* ignore */ }
@@ -580,7 +580,8 @@ export default function ChatWidget() {
                     {gateBusy ? <Loader2 size={12} className="animate-spin" /> : 'Start chat'}
                   </button>
                   <p style={{ fontFamily: 'var(--font-body)', color: t.footerText, fontSize: '0.5rem', letterSpacing: '0.06em', lineHeight: 1.5 }}>
-                    We use your details only to follow up on your enquiry.
+                    We use your details only to follow up on your enquiry. By starting the chat you accept our{' '}
+                    <a href="/privacy" target="_blank" rel="noreferrer" style={{ color: '#C9A84C', textDecoration: 'underline' }}>Privacy Policy</a>.
                   </p>
                 </motion.form>
               )}

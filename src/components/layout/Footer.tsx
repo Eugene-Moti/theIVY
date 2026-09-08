@@ -184,13 +184,18 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/8 px-6 lg:px-10 py-5">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/25 text-[11px] font-sans">
             &copy; {year} The Ivy Group. All rights reserved.
           </p>
-          <p className="text-white/15 text-[11px] font-sans">
-            The Ivy Group &mdash; Building Modern Communities.
-          </p>
+          <div className="flex items-center gap-5 text-[11px] font-sans">
+            <Link href="/privacy" className="text-white/30 hover:text-gold transition-colors duration-300">
+              Privacy &amp; Cookies
+            </Link>
+            <Link href="/terms" className="text-white/30 hover:text-gold transition-colors duration-300">
+              Terms of Use
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

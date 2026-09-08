@@ -38,6 +38,7 @@ function contactHtml(data: Record<string, string>) {
           ${data.timeline ? ROW('Timeframe', `<strong>${data.timeline}</strong>`) : ''}
           ${data.source ? ROW('Came from', data.source) : ''}
           ${data.message ? ROW('Message', String(data.message).replace(/\n/g, '<br>')) : ''}
+          ${String(data.consent) === 'true' ? ROW('Consent', 'Agreed to privacy policy &amp; contact') : ''}
         </table>
         <div style="margin-top:28px;padding:16px;background:#f9fafb;border-left:3px solid #C9A84C;">
           <p style="margin:0;color:#6b7280;font-size:12px;">Reply directly to this email to respond to the enquirer.</p>
@@ -110,6 +111,7 @@ async function saveLead(data: Record<string, string>, type: string) {
     for (const k of ['budget', 'buyer_type', 'timeline', 'country_code', 'message', 'source'] as const) {
       if (data[k]) meta[k] = data[k]
     }
+    if (String(data.consent) === 'true') meta.consent = `given ${new Date().toISOString()}`
     const row: Record<string, unknown> = {
       name:              data.name || null,
       phone:             data.phone || null,

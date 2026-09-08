@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
 
@@ -113,6 +114,7 @@ export default function LeadForm({
     buyerType: '',
     timeline: '',
     message: '',
+    consent: false,
     website: '', // honeypot
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
@@ -137,6 +139,7 @@ export default function LeadForm({
       buyer_type: showBuyerType ? f.buyerType : undefined,
       timeline: showTimeline ? f.timeline : undefined,
       message: showMessage ? f.message.trim() : undefined,
+      consent: f.consent,
       source,
       _hp: f.website,
       _elapsed: Date.now() - mountedAt.current,
@@ -288,6 +291,23 @@ export default function LeadForm({
           />
         </div>
       )}
+
+      <label className={`flex items-start gap-2.5 cursor-pointer text-[12px] font-sans font-light leading-relaxed ${dark ? 'text-white/55' : 'text-dark/55'}`}>
+        <input
+          type="checkbox"
+          required
+          checked={f.consent}
+          onChange={(e) => setF((prev) => ({ ...prev, consent: e.target.checked }))}
+          className="mt-0.5 h-4 w-4 flex-shrink-0 accent-[#C9A84C]"
+        />
+        <span>
+          I have read the{' '}
+          <Link href="/privacy" target="_blank" className={dark ? 'text-gold-light underline' : 'text-gold-dark underline'}>
+            Privacy Policy
+          </Link>{' '}
+          and agree to The Ivy Group contacting me about my enquiry. *
+        </span>
+      </label>
 
       {error && (
         <p className="text-[12px] font-sans" style={{ color: '#d14343' }}>{error}</p>
