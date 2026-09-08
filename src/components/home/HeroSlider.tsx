@@ -12,8 +12,17 @@ import BrochureModal from '@/components/shared/BrochureModal'
 // Curated running order — selling priority
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 
+// Hero-carousel images — the lit entrance renders read best full-bleed.
+const HERO: Record<string, string> = {
+  'ivy-myst': encodeURI('/Ivy Myst Assets/Entrance.jpg'),
+  'ivy-park': encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/Night_EXTERIOS_01.png'),
+  'luckinn-ivy': encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
+  'blossom-ivy': encodeURI('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
+}
+
 const slides = ORDER.map((slug) => {
   const p = projects.find((x) => x.slug === slug)!
+  const img = HERO[p.slug] ?? p.heroImage
   return {
     slug: p.slug,
     name: p.name,
@@ -21,8 +30,8 @@ const slides = ORDER.map((slug) => {
     location: p.locationLabel,
     status: p.statusLabel,
     tagline: p.tagline,
-    image: p.heroImage,
-    imageMobile: p.heroImageMobile ?? p.heroImage,
+    image: img,
+    imageMobile: p.heroImageMobile ?? img,
     brochure: p.brochurePath,
   }
 })
@@ -76,7 +85,7 @@ export default function HeroSlider() {
             priority={current === 0}
             quality={86}
             sizes="100vw"
-            className="object-cover object-[50%_32%] sm:object-center"
+            className="object-cover object-center"
           />
         </motion.div>
       </AnimatePresence>
