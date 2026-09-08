@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Download, Phone, ChevronLeft, ChevronRight } from 'lucide-react'
 import { projects } from '@/data/projects'
 import { PHONE_RAW, PHONE_PRETTY, waLink } from '@/lib/contact'
+import BrochureModal from '@/components/shared/BrochureModal'
 
 // Curated running order — selling priority
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
@@ -30,14 +31,15 @@ const DWELL = 7000
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [brochure, setBrochure] = useState<{ name: string; path: string } | null>(null)
 
   const go = useCallback((i: number) => setCurrent((i + slides.length) % slides.length), [])
 
   useEffect(() => {
-    if (paused) return
+    if (paused || brochure) return
     const t = setInterval(() => setCurrent((c) => (c + 1) % slides.length), DWELL)
     return () => clearInterval(t)
-  }, [paused])
+  }, [paused, brochure])
 
   const s = slides[current]
 
@@ -97,14 +99,13 @@ export default function HeroSlider() {
                 <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <div className="flex items-stretch gap-3">
-                <a
-                  href={s.brochure}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={() => setBrochure({ name: s.name, path: s.brochure })}
                   className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-white/35 text-white px-5 py-3.5 text-[11px] font-sans font-semibold tracking-[0.16em] uppercase hover:bg-white hover:text-dark transition-all duration-300"
                 >
                   <Download size={13} /> Brochure
-                </a>
+                </button>
                 <a
                   href={waLink(s.name)}
                   target="_blank"
@@ -164,6 +165,13 @@ export default function HeroSlider() {
           </div>
         </div>
       </div>
+
+      <BrochureModal
+        isOpen={!!brochure}
+        onClose={() => setBrochure(null)}
+        projectName={brochure?.name ?? ''}
+        brochurePath={brochure?.path ?? ''}
+      />
     </section>
   )
 }
