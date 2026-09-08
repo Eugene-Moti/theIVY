@@ -65,6 +65,9 @@ export interface ProjectData {
   isLaunchingSoon?: boolean
   specialOffer?: string
   heroImage: string
+  /** Optional portrait / square crop used for the hero on small screens.
+   *  Falls back to heroImage when not supplied. */
+  heroImageMobile?: string
   exteriorImages: string[]
   interiorImages?: string[]
   descriptionParagraphs: string[]

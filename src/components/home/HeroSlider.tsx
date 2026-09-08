@@ -22,6 +22,7 @@ const slides = ORDER.map((slug) => {
     status: p.statusLabel,
     tagline: p.tagline,
     image: p.heroImage,
+    imageMobile: p.heroImageMobile ?? p.heroImage,
     brochure: p.brochurePath,
   }
 })
@@ -31,7 +32,16 @@ const DWELL = 7000
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [narrow, setNarrow] = useState(false)
   const [brochure, setBrochure] = useState<{ name: string; path: string } | null>(null)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const on = () => setNarrow(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
 
   const go = useCallback((i: number) => setCurrent((i + slides.length) % slides.length), [])
 
@@ -45,7 +55,7 @@ export default function HeroSlider() {
 
   return (
     <section
-      className="relative h-[100svh] min-h-[600px] overflow-hidden bg-dark"
+      className="relative h-[82svh] min-h-[560px] sm:h-[90vh] lg:h-screen overflow-hidden bg-dark"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -59,7 +69,15 @@ export default function HeroSlider() {
           transition={{ opacity: { duration: 1.2, ease: 'easeInOut' }, scale: { duration: 7.5, ease: 'linear' } }}
           className="absolute inset-0"
         >
-          <Image src={s.image} alt={s.name} fill priority={current === 0} quality={88} sizes="100vw" className="object-cover" />
+          <Image
+            src={narrow ? s.imageMobile : s.image}
+            alt={s.name}
+            fill
+            priority={current === 0}
+            quality={86}
+            sizes="100vw"
+            className="object-cover object-[50%_32%] sm:object-center"
+          />
         </motion.div>
       </AnimatePresence>
 
@@ -67,7 +85,7 @@ export default function HeroSlider() {
       <div className="absolute inset-0 bg-gradient-to-r from-dark/55 to-transparent" />
 
       {/* Content */}
-      <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-10 flex flex-col justify-end pb-16 lg:pb-24">
+      <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-10 flex flex-col justify-end pb-10 sm:pb-14 lg:pb-24">
         <AnimatePresence mode="wait">
           <motion.div
             key={s.slug}
@@ -77,16 +95,16 @@ export default function HeroSlider() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-2xl"
           >
-            <p className="text-gold-light text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-gold-light text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {s.location} &nbsp;·&nbsp; {s.status}
             </p>
             <h1
-              className="font-serif text-white font-light leading-[1.02] mb-5"
-              style={{ fontSize: 'clamp(2.6rem, 7vw, 5.6rem)', letterSpacing: '0.01em' }}
+              className="font-serif text-white font-light leading-[1.02] mb-4 sm:mb-5"
+              style={{ fontSize: 'clamp(2.1rem, 6.5vw, 5.6rem)', letterSpacing: '0.01em' }}
             >
               {s.name}
             </h1>
-            <p className="text-white/70 text-sm sm:text-base font-sans font-light leading-relaxed max-w-md mb-8">
+            <p className="text-white/70 text-[13px] sm:text-base font-sans font-light leading-relaxed max-w-md mb-6 sm:mb-8 line-clamp-2 sm:line-clamp-none">
               {s.tagline}
             </p>
 
@@ -133,7 +151,7 @@ export default function HeroSlider() {
         </AnimatePresence>
 
         {/* Controls */}
-        <div className="flex items-center gap-4 mt-10 pt-6 border-t border-white/12">
+        <div className="flex items-center gap-4 mt-6 pt-4 sm:mt-10 sm:pt-6 border-t border-white/12">
           <div className="flex items-center gap-2">
             {slides.map((sl, i) => (
               <button

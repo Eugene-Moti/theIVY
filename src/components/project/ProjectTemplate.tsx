@@ -76,6 +76,15 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
   const [brochureOpen, setBrochureOpen] = useState(false)
   const [lb, setLb] = useState<{ imgs: LBImg[]; i: number } | null>(null)
   const [planTab, setPlanTab] = useState(0)
+  const [narrow, setNarrow] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const on = () => setNarrow(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
 
   const others = getOtherProjects(data.slug)
   const from = priceFrom(data.availableUnits)
@@ -129,15 +138,15 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
   return (
     <>
       {/* ─────────────── HERO ─────────────── */}
-      <section className="relative min-h-[86vh] flex items-end bg-dark overflow-hidden">
+      <section className="relative min-h-[74vh] sm:min-h-[82vh] lg:min-h-[86vh] flex items-end bg-dark overflow-hidden">
         <Image
-          src={data.heroImage}
+          src={(narrow && data.heroImageMobile) || data.heroImage}
           alt={data.name}
           fill
           priority
-          quality={90}
+          quality={88}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[50%_32%] sm:object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/25 to-dark/45" />
 
@@ -146,7 +155,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
           <span className="text-white text-[9px] font-sans font-semibold tracking-[0.22em]">{data.statusLabel}</span>
         </div>
 
-        <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 pt-36">
+        <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-10 pb-10 sm:pb-14 lg:pb-20 pt-28 sm:pt-32 lg:pt-36">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,12 +163,12 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
           >
             <Eyebrow light>{data.locationLabel}</Eyebrow>
             <h1
-              className="font-serif text-white font-light mt-4 mb-5"
-              style={{ fontSize: 'clamp(2.6rem, 6.2vw, 5.2rem)', letterSpacing: '0.012em', lineHeight: 1.02 }}
+              className="font-serif text-white font-light mt-3 sm:mt-4 mb-4 sm:mb-5"
+              style={{ fontSize: 'clamp(2.2rem, 6vw, 5.2rem)', letterSpacing: '0.012em', lineHeight: 1.02 }}
             >
               {data.name}
             </h1>
-            <p className="text-white/70 font-sans font-light text-base max-w-xl mb-9 leading-relaxed">
+            <p className="text-white/70 font-sans font-light text-[13px] sm:text-base max-w-xl mb-7 sm:mb-9 leading-relaxed line-clamp-2 sm:line-clamp-none">
               {data.tagline}
             </p>
             <div className="flex flex-wrap items-center gap-3">
