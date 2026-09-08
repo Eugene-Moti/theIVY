@@ -292,9 +292,16 @@ export async function POST(request: Request) {
       subject = `${tag}Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
     }
 
-    // Save to Supabase and push into Ivy Group CRM (both non-blocking)
-    saveLead(rest, type)
-    if (type !== 'rental-waitlist') pushToCrm(rest, type)
+    // Save to Supabase and push into Ivy Group CRM in parallel with the
+    // email send — started here, awaited below (with the email) rather
+    // than left to run loose. A serverless function can be frozen the
+    // instant its response is returned, which was silently killing these
+    // two mid-flight on every submission whenever they hadn't already
+    // finished before the email did.
+    const sidePromise = Promise.allSettled([
+      saveLead(rest, type),
+      type !== 'rental-waitlist' ? pushToCrm(rest, type) : Promise.resolve(),
+    ])
 
     await resend.emails.send({
       from: FROM,
@@ -303,6 +310,8 @@ export async function POST(request: Request) {
       subject,
       html,
     })
+
+    await sidePromise
 
     return NextResponse.json({ success: true })
   } catch (error) {
