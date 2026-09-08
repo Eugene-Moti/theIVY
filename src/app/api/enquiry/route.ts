@@ -134,6 +134,95 @@ function waitlistHtml(data: Record<string, string>) {
   `
 }
 
+// The site's own project names ("Ivy Park Residence", chat's short "Blossom
+// Ivy", ...) don't always match Ivy Group CRM's canonical project names
+// exactly (its /Settings > Projects table currently has 'Ivy Park', 'Ivy
+// Myst', 'Blossoms Ivy', 'Luckinn Ivy') — the CRM webhook only links a lead
+// to a project on an exact case-insensitive match, so this normalizes
+// every known spelling this site uses before sending. Anything not listed
+// here (e.g. "Rental enquiry", "General — not sure yet") is left unmatched
+// on purpose — it isn't one of the four real developments.
+const CRM_PROJECT_MAP: Record<string, string> = {
+  'ivy park': 'Ivy Park',
+  'ivy park residence': 'Ivy Park',
+  'ivy myst': 'Ivy Myst',
+  'blossom ivy': 'Blossoms Ivy',
+  'blossom ivy residence': 'Blossoms Ivy',
+  'blossoms ivy': 'Blossoms Ivy',
+  'luckinn ivy': 'Luckinn Ivy',
+  'luckinn ivy residence': 'Luckinn Ivy',
+}
+
+function crmProjectName(raw?: string): string | undefined {
+  if (!raw) return undefined
+  return CRM_PROJECT_MAP[raw.trim().toLowerCase()]
+}
+
+// Same first-word/rest-of-name split Ivy Group CRM's own import tool uses,
+// so a name splits the same way everywhere it enters the system.
+function splitName(full: string): { first: string; last?: string } {
+  const parts = full.trim().split(/\s+/).filter(Boolean)
+  if (parts.length <= 1) return { first: parts[0] ?? '' }
+  return { first: parts[0], last: parts.slice(1).join(' ') }
+}
+
+const CRM_SOURCE_LABEL: Record<string, string> = {
+  'contact-form': 'Website — Contact form',
+  'brochure-download': 'Website — Brochure request',
+  'chat-callback': 'Website — Chat callback request',
+  'chat-brochure': 'Website — Chat brochure request',
+  'chat-ticket': 'Website — Chat assistant',
+}
+
+/**
+ * Mirrors every real enquiry into Ivy Group CRM as a lead, alongside the
+ * existing email notification and this site's own Supabase leads table —
+ * rental-waitlist is skipped (email only, nothing a CRM lead needs a name
+ * or phone for). Fire-and-forget, same shape as saveLead: a CRM outage
+ * should never block or fail a visitor's submission.
+ */
+async function pushToCrm(data: Record<string, string>, type: string) {
+  const url = process.env.CRM_WEBHOOK_URL
+  const secret = process.env.CRM_WEBHOOK_SECRET
+  if (!url || !secret) return
+
+  const name = (data.name || '').trim()
+  if (!name) return
+
+  const { first, last } = splitName(name)
+  const project = crmProjectName(data.project || data.interest || data.property_interest)
+
+  const extras = [
+    data.budget ? `Budget: ${data.budget}` : null,
+    data.timeline ? `Timeline: ${data.timeline}` : null,
+    data.buyer_type ? `Decision maker: ${data.buyer_type}` : null,
+    data.country ? `Country: ${data.country}` : null,
+  ].filter(Boolean).join(' · ')
+  const message = [extras, data.message].filter(Boolean).join('\n') || undefined
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${secret}` },
+      body: JSON.stringify({
+        first_name: first,
+        last_name: last,
+        phone: data.phone || undefined,
+        email: data.email || undefined,
+        source: CRM_SOURCE_LABEL[type] || 'Website',
+        project,
+        message,
+        lead_type: isAgent(data.buyer_type) ? 'Real Estate Agent' : 'Direct Client',
+      }),
+    })
+    if (!res.ok) {
+      console.error('[Ivy Group] CRM webhook rejected the lead:', res.status, await res.text().catch(() => ''))
+    }
+  } catch (err) {
+    console.error('[Ivy Group] CRM webhook failed:', err)
+  }
+}
+
 async function saveLead(data: Record<string, string>, type: string) {
   try {
     const supabase = createAdminClient()
@@ -203,8 +292,9 @@ export async function POST(request: Request) {
       subject = `${tag}Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
     }
 
-    // Save to Supabase (non-blocking)
+    // Save to Supabase and push into Ivy Group CRM (both non-blocking)
     saveLead(rest, type)
+    if (type !== 'rental-waitlist') pushToCrm(rest, type)
 
     await resend.emails.send({
       from: FROM,
