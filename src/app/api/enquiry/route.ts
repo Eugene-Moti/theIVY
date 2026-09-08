@@ -1,8 +1,38 @@
 import { NextResponse } from 'next/server'
+import { resolveMx, resolve4 } from 'node:dns/promises'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([p, new Promise<T>((_, r) => setTimeout(() => r(new Error('timeout')), ms))])
+}
+
+/**
+ * Checks the email domain can actually receive mail. Rejects obvious junk
+ * ("@gmial.com", made-up domains); stays permissive on transient DNS errors
+ * so a real enquiry is never lost to a flaky lookup.
+ */
+async function emailDeliverable(email: string): Promise<boolean> {
+  const domain = String(email).split('@')[1]?.toLowerCase().trim()
+  if (!domain || !domain.includes('.') || domain.endsWith('.')) return false
+  try {
+    const mx = await withTimeout(resolveMx(domain), 3000)
+    if (Array.isArray(mx) && mx.length > 0) return true
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code
+    if (code !== 'ENOTFOUND' && code !== 'ENODATA') return true // transient — allow
+  }
+  // No MX — fall back to an A record (RFC 5321 implicit MX)
+  try {
+    const a = await withTimeout(resolve4(domain), 3000)
+    return Array.isArray(a) && a.length > 0
+  } catch (err) {
+    const code = (err as NodeJS.ErrnoException)?.code
+    return code !== 'ENOTFOUND' && code !== 'ENODATA'
+  }
+}
 const TO   = 'marketing.ivy-group@rsunproperty.net'
 const FROM = 'The Ivy Group Website <onboarding@resend.dev>'
 
@@ -137,6 +167,16 @@ export async function POST(request: Request) {
     // Bot filters — honeypot field, and submissions faster than a human could fill the form.
     if ((typeof _hp === 'string' && _hp.trim()) || (typeof _elapsed === 'number' && _elapsed > 0 && _elapsed < 2500)) {
       return NextResponse.json({ success: true })
+    }
+
+    // Email deliverability — for the visitor-facing forms only.
+    if (['contact-form', 'brochure-download', 'chat-ticket'].includes(type) && rest.email) {
+      if (!(await emailDeliverable(rest.email))) {
+        return NextResponse.json(
+          { field: 'email', message: "This email address doesn't appear able to receive mail — please check it." },
+          { status: 422 },
+        )
+      }
     }
 
     let subject = 'New Enquiry — The Ivy Group Website'

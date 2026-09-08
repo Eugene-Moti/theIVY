@@ -4,39 +4,10 @@ import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
+import { isValidPhoneNumber, parsePhoneNumber, getCountryCallingCode, type CountryCode } from 'libphonenumber-js/min'
+import { COUNTRIES, EMAIL_RE, suggestEmail } from '@/lib/forms'
 
 /* ── Options ─────────────────────────────────────────────────────────────── */
-
-export const COUNTRY_CODES = [
-  { code: '+254', label: 'Kenya +254' },
-  { code: '+256', label: 'Uganda +256' },
-  { code: '+255', label: 'Tanzania +255' },
-  { code: '+250', label: 'Rwanda +250' },
-  { code: '+211', label: 'South Sudan +211' },
-  { code: '+251', label: 'Ethiopia +251' },
-  { code: '+252', label: 'Somalia +252' },
-  { code: '+27', label: 'South Africa +27' },
-  { code: '+234', label: 'Nigeria +234' },
-  { code: '+233', label: 'Ghana +233' },
-  { code: '+44', label: 'United Kingdom +44' },
-  { code: '+1', label: 'USA / Canada +1' },
-  { code: '+971', label: 'UAE +971' },
-  { code: '+974', label: 'Qatar +974' },
-  { code: '+966', label: 'Saudi Arabia +966' },
-  { code: '+91', label: 'India +91' },
-  { code: '+86', label: 'China +86' },
-  { code: '+61', label: 'Australia +61' },
-  { code: '+49', label: 'Germany +49' },
-  { code: '+33', label: 'France +33' },
-  { code: '+31', label: 'Netherlands +31' },
-  { code: '+41', label: 'Switzerland +41' },
-  { code: '+46', label: 'Sweden +46' },
-  { code: '+47', label: 'Norway +47' },
-  { code: '+353', label: 'Ireland +353' },
-  { code: '+64', label: 'New Zealand +64' },
-  { code: '+81', label: 'Japan +81' },
-  { code: '+65', label: 'Singapore +65' },
-]
 
 const INTERESTS = [
   'Blossom Ivy Residence',
@@ -107,7 +78,7 @@ export default function LeadForm({
   const [f, setF] = useState({
     name: '',
     email: '',
-    countryCode: '+254',
+    countryIso: 'KE',
     phone: '',
     interest: project ?? '',
     budget: '',
@@ -119,20 +90,57 @@ export default function LeadForm({
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
   const [error, setError] = useState<string | null>(null)
+  const [emailErr, setEmailErr] = useState<string | null>(null)
+  const [emailFix, setEmailFix] = useState<string | null>(null)
+  const [phoneErr, setPhoneErr] = useState<string | null>(null)
 
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setF((prev) => ({ ...prev, [k]: e.target.value }))
 
+  const countryName = (iso: string) => COUNTRIES.find((c) => c.iso === iso)?.name ?? iso
+
+  const checkEmail = () => {
+    const v = f.email.trim()
+    if (!v) return
+    if (!EMAIL_RE.test(v)) {
+      setEmailErr('Please enter a valid email address.')
+      setEmailFix(null)
+      return
+    }
+    setEmailErr(null)
+    setEmailFix(suggestEmail(v))
+  }
+
+  const checkPhone = () => {
+    const v = f.phone.trim()
+    if (!v) return
+    setPhoneErr(isValidPhoneNumber(v, f.countryIso as CountryCode) ? null : `That doesn't look like a valid ${countryName(f.countryIso)} number.`)
+  }
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    const email = f.email.trim()
+    if (!EMAIL_RE.test(email)) {
+      setEmailErr('Please enter a valid email address.')
+      return
+    }
+    if (!isValidPhoneNumber(f.phone.trim(), f.countryIso as CountryCode)) {
+      setPhoneErr(`That doesn't look like a valid ${countryName(f.countryIso)} number.`)
+      return
+    }
+
+    const e164 = parsePhoneNumber(f.phone.trim(), f.countryIso as CountryCode).number
+
     setStatus('loading')
     const payload = {
       type: leadType,
       name: f.name.trim(),
-      email: f.email.trim(),
-      phone: `${f.countryCode} ${f.phone.trim()}`.trim(),
-      country_code: f.countryCode,
+      email,
+      phone: e164,
+      country_code: `+${getCountryCallingCode(f.countryIso as CountryCode)}`,
+      country: countryName(f.countryIso),
       interest: showInterest ? f.interest : project ?? f.interest,
       project: project ?? (showInterest ? f.interest : undefined),
       budget: showBudget ? f.budget : undefined,
@@ -151,6 +159,16 @@ export default function LeadForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
+      if (res.status === 422) {
+        const body = await res.json().catch(() => null)
+        setStatus('idle')
+        if (body?.field === 'email') {
+          setEmailErr(body.message || 'That email address could not be verified — please check it.')
+        } else {
+          setError(body?.message || 'Please check your details and try again.')
+        }
+        return
+      }
       if (!res.ok) throw new Error('failed')
     } catch {
       setStatus('idle')
@@ -169,6 +187,8 @@ export default function LeadForm({
       : 'border-dark/15 text-dark placeholder:text-dark/30 focus:border-gold bg-white'
   }`
   const selectField = `${field} appearance-none`
+  const fieldErr = 'border-[#d14343] focus:border-[#d14343]'
+  const errText = 'text-[12px] font-sans mt-1.5'
 
   if (status === 'success') {
     return (
@@ -189,7 +209,7 @@ export default function LeadForm({
   }
 
   return (
-    <form onSubmit={submit} className={`space-y-5 ${className}`}>
+    <form onSubmit={submit} className={`space-y-5 ${className}`} noValidate>
       {/* Honeypot — hidden from real users */}
       <input
         type="text"
@@ -208,7 +228,29 @@ export default function LeadForm({
         </div>
         <div>
           <label className={label}>Email address *</label>
-          <input type="email" required value={f.email} onChange={set('email')} placeholder="your@email.com" className={field} />
+          <input
+            type="email"
+            required
+            value={f.email}
+            onChange={(e) => { setF((p) => ({ ...p, email: e.target.value })); setEmailErr(null); setEmailFix(null) }}
+            onBlur={checkEmail}
+            placeholder="your@email.com"
+            className={`${field} ${emailErr ? fieldErr : ''}`}
+          />
+          {emailErr && <p className={errText} style={{ color: '#d14343' }}>{emailErr}</p>}
+          {emailFix && !emailErr && (
+            <p className={`${errText} ${dark ? 'text-white/55' : 'text-dark/55'}`}>
+              Did you mean{' '}
+              <button
+                type="button"
+                onClick={() => { setF((p) => ({ ...p, email: emailFix })); setEmailFix(null) }}
+                className={dark ? 'text-gold-light underline' : 'text-gold-dark underline'}
+              >
+                {emailFix}
+              </button>
+              ?
+            </p>
+          )}
         </div>
       </div>
 
@@ -216,24 +258,26 @@ export default function LeadForm({
         <label className={label}>Phone number *</label>
         <div className="flex gap-2">
           <select
-            value={f.countryCode}
-            onChange={set('countryCode')}
-            className={`${selectField} w-[40%] sm:w-[38%] flex-shrink-0`}
-            aria-label="Country code"
+            value={f.countryIso}
+            onChange={(e) => { setF((p) => ({ ...p, countryIso: e.target.value })); setPhoneErr(null) }}
+            className={`${selectField} w-[46%] sm:w-[42%] flex-shrink-0`}
+            aria-label="Country"
           >
-            {COUNTRY_CODES.map((c) => (
-              <option key={c.code} value={c.code}>{c.label}</option>
+            {COUNTRIES.map((c) => (
+              <option key={c.iso} value={c.iso}>{c.name} (+{c.code})</option>
             ))}
           </select>
           <input
             type="tel"
             required
             value={f.phone}
-            onChange={set('phone')}
+            onChange={(e) => { setF((p) => ({ ...p, phone: e.target.value })); setPhoneErr(null) }}
+            onBlur={checkPhone}
             placeholder="712 345 678"
-            className={`${field} flex-1`}
+            className={`${field} flex-1 ${phoneErr ? fieldErr : ''}`}
           />
         </div>
+        {phoneErr && <p className={errText} style={{ color: '#d14343' }}>{phoneErr}</p>}
       </div>
 
       {showInterest && (

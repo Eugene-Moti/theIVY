@@ -197,6 +197,7 @@ export default function ChatWidget() {
   const [lead, setLead]            = useState<Lead | null>(null)
   const [gate, setGate]            = useState({ name: '', phone: '', email: '' })
   const [gateBusy, setGateBusy]    = useState(false)
+  const [gateErr, setGateErr]      = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
 
@@ -236,14 +237,24 @@ export default function ChatWidget() {
     e.preventDefault()
     const l: Lead = { name: gate.name.trim(), phone: gate.phone.trim(), email: gate.email.trim() }
     if (!l.name || !l.phone || !l.email) return
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(l.email)) {
+      setGateErr('Please enter a valid email address.')
+      return
+    }
+    setGateErr(null)
     setGateBusy(true)
     try {
-      await fetch('/api/enquiry', {
+      const res = await fetch('/api/enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'chat-ticket', name: l.name, phone: l.phone, email: l.email, consent: true, source: 'Chat assistant' }),
       })
-    } catch { /* fire-and-forget */ }
+      if (res.status === 422) {
+        setGateBusy(false)
+        setGateErr("That email address doesn't look right — please check it.")
+        return
+      }
+    } catch { /* fire-and-forget — still let them chat */ }
     try { localStorage.setItem(LEAD_KEY, JSON.stringify(l)) } catch { /* ignore */ }
     setLead(l)
     setGateBusy(false)
@@ -567,6 +578,9 @@ export default function ChatWidget() {
                       }}
                     />
                   ))}
+                  {gateErr && (
+                    <p style={{ fontFamily: 'var(--font-body)', color: '#d14343', fontSize: '10px', lineHeight: 1.5 }}>{gateErr}</p>
+                  )}
                   <button
                     type="submit"
                     disabled={gateBusy || !gate.name.trim() || !gate.phone.trim() || !gate.email.trim()}
