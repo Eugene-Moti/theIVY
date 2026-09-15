@@ -54,8 +54,8 @@ const BUYER_TYPES_BY_CONTEXT = {
     'Enquiring on behalf of someone else',
   ],
   rental: [
-    'Renting for myself / my family',
-    'Renting jointly with a partner',
+    'To live in — myself / my family',
+    'As an investment (sub-let, Airbnb, staff housing, etc.)',
     'I am a property agent / broker',
     'Enquiring on behalf of someone else (e.g. a company)',
   ],
@@ -235,6 +235,11 @@ export default function LeadForm({
   const selectField = `${field} appearance-none`
   const fieldErr = 'border-[#d14343] focus:border-[#d14343]'
   const errText = 'text-[12px] font-sans mt-1.5'
+  // Native <option> elements ignore most Tailwind text/bg utilities on the
+  // <select> — left unstyled they can render white-on-white (dark mode) and
+  // stay invisible until the OS hover highlight kicks in. Set colours
+  // explicitly so every option is readable from the moment the list opens.
+  const optionStyle = dark ? { backgroundColor: '#17191b', color: '#ffffff' } : { backgroundColor: '#ffffff', color: '#17191b' }
 
   if (status === 'success') {
     return (
@@ -310,7 +315,7 @@ export default function LeadForm({
             aria-label="Country"
           >
             {COUNTRIES.map((c) => (
-              <option key={c.iso} value={c.iso}>{c.name} (+{c.code})</option>
+              <option key={c.iso} value={c.iso} style={optionStyle}>{c.name} (+{c.code})</option>
             ))}
           </select>
           <input
@@ -330,8 +335,8 @@ export default function LeadForm({
         <div>
           <label className={label}>{isRental ? 'Which development interests you?' : 'What are you interested in?'} *</label>
           <select required value={f.interest} onChange={set('interest')} className={selectField}>
-            <option value="">Select a development</option>
-            {INTERESTS.map((o) => <option key={o} value={o}>{o}</option>)}
+            <option value="" style={optionStyle}>Select a development</option>
+            {INTERESTS.map((o) => <option key={o} value={o} style={optionStyle}>{o}</option>)}
           </select>
         </div>
       )}
@@ -342,8 +347,8 @@ export default function LeadForm({
             <div>
               <label className={label}>{isRental ? 'What is your monthly rental budget?' : 'What is your budget?'} *</label>
               <select required value={f.budget} onChange={set('budget')} className={selectField}>
-                <option value="">Select a range</option>
-                {BUDGETS.map((o) => <option key={o} value={o}>{o}</option>)}
+                <option value="" style={optionStyle}>Select a range</option>
+                {BUDGETS.map((o) => <option key={o} value={o} style={optionStyle}>{o}</option>)}
               </select>
             </div>
           )}
@@ -351,8 +356,8 @@ export default function LeadForm({
             <div>
               <label className={label}>{isRental ? 'When would you like to move in?' : 'How soon would you like to buy?'} *</label>
               <select required value={f.timeline} onChange={set('timeline')} className={selectField}>
-                <option value="">Select a timeframe</option>
-                {TIMELINES.map((o) => <option key={o} value={o}>{o}</option>)}
+                <option value="" style={optionStyle}>Select a timeframe</option>
+                {TIMELINES.map((o) => <option key={o} value={o} style={optionStyle}>{o}</option>)}
               </select>
             </div>
           )}
@@ -361,10 +366,10 @@ export default function LeadForm({
 
       {showBuyerType && (
         <div>
-          <label className={label}>{isRental ? 'Who is this enquiry for?' : 'Are you the decision maker?'} *</label>
+          <label className={label}>{isRental ? 'Is this to live in, or an investment?' : 'Are you the decision maker?'} *</label>
           <select required value={f.buyerType} onChange={set('buyerType')} className={selectField}>
-            <option value="">Select one</option>
-            {BUYER_TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
+            <option value="" style={optionStyle}>Select one</option>
+            {BUYER_TYPES.map((o) => <option key={o} value={o} style={optionStyle}>{o}</option>)}
           </select>
         </div>
       )}
