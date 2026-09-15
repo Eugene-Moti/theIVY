@@ -43,14 +43,14 @@ function isAgent(v?: string) {
   return !!v && /agent|broker/i.test(v)
 }
 
-function contactHtml(data: Record<string, string>) {
+function contactHtml(data: Record<string, string>, title = 'New Website Enquiry') {
   const agent = isAgent(data.buyer_type)
   const hot = /as soon as possible|1.3 months/i.test(data.timeline || '')
   return `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;">
       <div style="background:#0D0D0D;padding:28px 32px;">
         <p style="color:#C9A84C;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;">The Ivy Group</p>
-        <h1 style="color:#ffffff;font-size:22px;font-weight:300;margin:0;">New Website Enquiry</h1>
+        <h1 style="color:#ffffff;font-size:22px;font-weight:300;margin:0;">${title}</h1>
       </div>
       <div style="padding:32px;">
         ${agent
@@ -115,25 +115,6 @@ function chatLeadHtml(data: Record<string, string>, leadType: string) {
   `
 }
 
-function waitlistHtml(data: Record<string, string>) {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;">
-      <div style="background:#0D0D0D;padding:28px 32px;">
-        <p style="color:#C9A84C;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;">The Ivy Group</p>
-        <h1 style="color:#ffffff;font-size:22px;font-weight:300;margin:0;">New Rental Waitlist Sign-up</h1>
-      </div>
-      <div style="padding:32px;">
-        <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:10px 0;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;width:130px;">Email</td><td style="padding:10px 0;color:#111827;font-size:14px;"><a href="mailto:${data.email}" style="color:#C9A84C;">${data.email || '—'}</a></td></tr>
-        </table>
-      </div>
-      <div style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;">
-        <p style="margin:0;color:#9ca3af;font-size:11px;">Sent from ivygroup.ke</p>
-      </div>
-    </div>
-  `
-}
-
 // The site's own project names ("Ivy Park Residence", chat's short "Blossom
 // Ivy", ...) don't always match Ivy Group CRM's canonical project names
 // exactly (its /Settings > Projects table currently has 'Ivy Park', 'Ivy
@@ -172,14 +153,14 @@ const CRM_SOURCE_LABEL: Record<string, string> = {
   'chat-callback': 'Website — Chat callback request',
   'chat-brochure': 'Website — Chat brochure request',
   'chat-ticket': 'Website — Chat assistant',
+  'rental-waitlist': 'Website — Rental waitlist',
 }
 
 /**
  * Mirrors every real enquiry into Ivy Group CRM as a lead, alongside the
- * existing email notification and this site's own Supabase leads table —
- * rental-waitlist is skipped (email only, nothing a CRM lead needs a name
- * or phone for). Fire-and-forget, same shape as saveLead: a CRM outage
- * should never block or fail a visitor's submission.
+ * existing email notification and this site's own Supabase leads table.
+ * Fire-and-forget, same shape as saveLead: a CRM outage should never block
+ * or fail a visitor's submission.
  */
 async function pushToCrm(data: Record<string, string>, type: string) {
   const url = process.env.CRM_WEBHOOK_URL
@@ -259,7 +240,7 @@ export async function POST(request: Request) {
     }
 
     // Email deliverability — for the visitor-facing forms only.
-    if (['contact-form', 'brochure-download', 'chat-ticket'].includes(type) && rest.email) {
+    if (['contact-form', 'brochure-download', 'chat-ticket', 'rental-waitlist'].includes(type) && rest.email) {
       if (!(await emailDeliverable(rest.email))) {
         return NextResponse.json(
           { field: 'email', message: "This email address doesn't appear able to receive mail — please check it." },
@@ -286,8 +267,8 @@ export async function POST(request: Request) {
       subject = `💬 New Chat Contact — ${rest.name || 'Unknown'}`
       html = contactHtml(rest)
     } else if (type === 'rental-waitlist') {
-      subject = 'New Rental Waitlist Sign-up — The Ivy Group'
-      html = waitlistHtml(rest)
+      subject = `🔔 Rental Waitlist — ${rest.interest || 'General'} · ${rest.name || rest.email || 'Unknown'}`
+      html = contactHtml(rest, 'New Rental Waitlist Sign-up')
     } else if (type === 'contact-form') {
       subject = `${tag}Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
     }
@@ -300,7 +281,7 @@ export async function POST(request: Request) {
     // finished before the email did.
     const sidePromise = Promise.allSettled([
       saveLead(rest, type),
-      type !== 'rental-waitlist' ? pushToCrm(rest, type) : Promise.resolve(),
+      pushToCrm(rest, type),
     ])
 
     await resend.emails.send({

@@ -4,25 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Bell, ArrowRight, MapPin, Maximize2, BedDouble, CheckCircle, Clock } from 'lucide-react'
-import { useState } from 'react'
 import type { RentalListing } from './page'
+import LeadForm from '@/components/shared/LeadForm'
 
 export default function RentContent({ listings }: { listings: RentalListing[] }) {
-  const [email, setEmail]       = useState('')
-  const [submitted, setSubmitted] = useState(false)
   const hasListings = listings.length > 0
-
-  const handleNotify = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      await fetch('/api/enquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, type: 'rental-waitlist' }),
-      })
-    } catch { /* continue */ }
-    setSubmitted(true)
-  }
 
   return (
     <>
@@ -63,36 +49,20 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
                   The Ivy Group is currently focused on owner-occupied and investment purchases.
                   We are actively developing a premium rental programme and will launch it shortly.
                 </p>
-                <p className="text-white/40 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-12">
-                  Register your email below and we will notify you the moment rental units become available.
+                <p className="text-white/40 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-10">
+                  Tell us what you&apos;re looking for and we&apos;ll be the first to reach out when a matching
+                  rental unit becomes available.
                 </p>
-                {submitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="border border-gold/30 bg-gold/10 px-8 py-6 max-w-sm mx-auto"
-                  >
-                    <p className="text-gold text-sm font-sans font-medium mb-1">You&apos;re on the list.</p>
-                    <p className="text-white/50 text-xs font-sans font-light">We&apos;ll be in touch the moment rentals are available.</p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
-                      className="flex-1 bg-white/8 border border-white/20 text-white placeholder:text-white/30 px-5 py-3.5 text-sm font-sans focus:outline-none focus:border-gold transition-colors"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-gold text-dark px-7 py-3.5 text-[10px] font-sans font-bold tracking-[0.2em] uppercase hover:bg-gold-light transition-colors whitespace-nowrap flex items-center gap-1.5"
-                    >
-                      NOTIFY ME <ArrowRight size={11} />
-                    </button>
-                  </form>
-                )}
+                <div className="max-w-xl mx-auto text-left">
+                  <LeadForm
+                    variant="full"
+                    context="rental"
+                    leadType="rental-waitlist"
+                    source="Rental waitlist"
+                    dark
+                    submitLabel="Join the waitlist"
+                  />
+                </div>
               </>
             )}
 

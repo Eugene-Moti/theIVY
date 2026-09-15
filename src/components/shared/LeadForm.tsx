@@ -8,44 +8,83 @@ import { isValidPhoneNumber, parsePhoneNumber, getCountryCallingCode, type Count
 import { COUNTRIES, EMAIL_RE, suggestEmail } from '@/lib/forms'
 
 /* ── Options ─────────────────────────────────────────────────────────────── */
+/* Purchase enquiries and the rental waitlist ask the same shape of question
+ * with different words and bands — keyed by `context` below. */
 
-const INTERESTS = [
-  'Blossom Ivy Residence',
-  'Luckinn Ivy Residence',
-  'Ivy Park Residence',
-  'Ivy Myst',
-  'Rental enquiry',
-  'General — not sure yet',
-]
-const BUDGETS = [
-  'Under KES 10M',
-  'KES 10M – 15M',
-  'KES 15M – 20M',
-  'KES 20M – 30M',
-  'Above KES 30M',
-  'Prefer not to say',
-]
-const BUYER_TYPES = [
-  'Buying for myself / my family',
-  'Buying with a partner (jointly)',
-  'Buying as an investment',
-  'I am a property agent / broker',
-  'Enquiring on behalf of someone else',
-]
-const TIMELINES = [
-  'As soon as possible',
-  'Within 1–3 months',
-  'Within 3–6 months',
-  'Within 6–12 months',
-  'Just exploring for now',
-]
+const INTERESTS_BY_CONTEXT = {
+  purchase: [
+    'Blossom Ivy Residence',
+    'Luckinn Ivy Residence',
+    'Ivy Park Residence',
+    'Ivy Myst',
+    'Rental enquiry',
+    'General — not sure yet',
+  ],
+  rental: [
+    'Blossom Ivy Residence',
+    'Luckinn Ivy Residence',
+    'Ivy Park Residence',
+    'Ivy Myst',
+    'Any / no preference',
+  ],
+}
+const BUDGETS_BY_CONTEXT = {
+  purchase: [
+    'Under KES 10M',
+    'KES 10M – 15M',
+    'KES 15M – 20M',
+    'KES 20M – 30M',
+    'Above KES 30M',
+    'Prefer not to say',
+  ],
+  rental: [
+    'Under KES 80,000 / month',
+    'KES 80,000 – 150,000 / month',
+    'KES 150,000 – 250,000 / month',
+    'Above KES 250,000 / month',
+    'Not sure yet',
+  ],
+}
+const BUYER_TYPES_BY_CONTEXT = {
+  purchase: [
+    'Buying for myself / my family',
+    'Buying with a partner (jointly)',
+    'Buying as an investment',
+    'I am a property agent / broker',
+    'Enquiring on behalf of someone else',
+  ],
+  rental: [
+    'Renting for myself / my family',
+    'Renting jointly with a partner',
+    'I am a property agent / broker',
+    'Enquiring on behalf of someone else (e.g. a company)',
+  ],
+}
+const TIMELINES_BY_CONTEXT = {
+  purchase: [
+    'As soon as possible',
+    'Within 1–3 months',
+    'Within 3–6 months',
+    'Within 6–12 months',
+    'Just exploring for now',
+  ],
+  rental: [
+    'As soon as possible',
+    'Within 1 month',
+    'Within 1–3 months',
+    'Just researching for now',
+  ],
+}
 
 /* ── Component ───────────────────────────────────────────────────────────── */
 
 type Variant = 'full' | 'standard' | 'compact'
+type Context = 'purchase' | 'rental'
 
 interface Props {
   variant?: Variant
+  /** Swaps labels, budget bands and timeframes between buying and renting language. */
+  context?: Context
   leadType: string
   /** When set, hides the "interested in" field and tags the lead to this project */
   project?: string
@@ -59,6 +98,7 @@ interface Props {
 
 export default function LeadForm({
   variant = 'full',
+  context = 'purchase',
   leadType,
   project,
   source,
@@ -72,6 +112,12 @@ export default function LeadForm({
   const showTimeline = variant !== 'compact'
   const showInterest = variant === 'full' && !project
   const showMessage = variant === 'full'
+
+  const isRental = context === 'rental'
+  const INTERESTS = INTERESTS_BY_CONTEXT[context]
+  const BUDGETS = BUDGETS_BY_CONTEXT[context]
+  const BUYER_TYPES = BUYER_TYPES_BY_CONTEXT[context]
+  const TIMELINES = TIMELINES_BY_CONTEXT[context]
 
   const mountedAt = useRef(Date.now())
 
@@ -282,7 +328,7 @@ export default function LeadForm({
 
       {showInterest && (
         <div>
-          <label className={label}>What are you interested in? *</label>
+          <label className={label}>{isRental ? 'Which development interests you?' : 'What are you interested in?'} *</label>
           <select required value={f.interest} onChange={set('interest')} className={selectField}>
             <option value="">Select a development</option>
             {INTERESTS.map((o) => <option key={o} value={o}>{o}</option>)}
@@ -294,7 +340,7 @@ export default function LeadForm({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {showBudget && (
             <div>
-              <label className={label}>What is your budget? *</label>
+              <label className={label}>{isRental ? 'What is your monthly rental budget?' : 'What is your budget?'} *</label>
               <select required value={f.budget} onChange={set('budget')} className={selectField}>
                 <option value="">Select a range</option>
                 {BUDGETS.map((o) => <option key={o} value={o}>{o}</option>)}
@@ -303,7 +349,7 @@ export default function LeadForm({
           )}
           {showTimeline && (
             <div>
-              <label className={label}>How soon would you like to buy? *</label>
+              <label className={label}>{isRental ? 'When would you like to move in?' : 'How soon would you like to buy?'} *</label>
               <select required value={f.timeline} onChange={set('timeline')} className={selectField}>
                 <option value="">Select a timeframe</option>
                 {TIMELINES.map((o) => <option key={o} value={o}>{o}</option>)}
@@ -315,7 +361,7 @@ export default function LeadForm({
 
       {showBuyerType && (
         <div>
-          <label className={label}>Are you the decision maker? *</label>
+          <label className={label}>{isRental ? 'Who is this enquiry for?' : 'Are you the decision maker?'} *</label>
           <select required value={f.buyerType} onChange={set('buyerType')} className={selectField}>
             <option value="">Select one</option>
             {BUYER_TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
