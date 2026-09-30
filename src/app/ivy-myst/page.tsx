@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png',
+        url: '/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg',
         width: 1200,
         height: 630,
         alt: 'Ivy Myst — Luxury Residences in Kileleshwa, Nairobi',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ivy Myst — Now Selling | Luxury Residences in Kileleshwa',
     description: 'Iconic curved architecture, rooftop Celestial Pool, and garden terraces. Now Selling in Kileleshwa, Nairobi.',
-    images: ['/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'],
+    images: ['/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'],
   },
 }
 

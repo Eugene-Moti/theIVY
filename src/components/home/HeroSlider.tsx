@@ -8,6 +8,7 @@ import { ArrowRight, Download, Phone, ChevronLeft, ChevronRight } from 'lucide-r
 import { projects } from '@/data/projects'
 import { PHONE_RAW, PHONE_PRETTY, waLink } from '@/lib/contact'
 import BrochureModal from '@/components/shared/BrochureModal'
+import { trackConversion } from '@/lib/analytics'
 
 // Curated running order — selling priority
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
@@ -15,7 +16,7 @@ const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 // Hero-carousel images — the lit entrance renders read best full-bleed.
 const HERO: Record<string, string> = {
   'ivy-myst': encodeURI('/Ivy Myst Assets/Entrance.jpg'),
-  'ivy-park': encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/Night_EXTERIOS_01.png'),
+  'ivy-park': encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/Night_EXTERIOS_01.jpg'),
   'luckinn-ivy': encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
   'blossom-ivy': encodeURI('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
 }
@@ -137,12 +138,14 @@ export default function HeroSlider() {
                   href={waLink(s.name)}
                   target="_blank"
                   rel="noreferrer"
+                  onClick={() => trackConversion('whatsapp', { project: s.name, source: 'home-hero' })}
                   className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 border border-white/35 text-white px-5 py-3.5 text-[11px] font-sans font-semibold tracking-[0.16em] uppercase hover:bg-white hover:text-dark transition-all duration-300"
                 >
                   WhatsApp
                 </a>
                 <a
                   href={`tel:${PHONE_RAW}`}
+                  onClick={() => trackConversion('call', { source: 'home-hero' })}
                   className="sm:hidden flex-1 inline-flex items-center justify-center gap-2 border border-white/35 text-white px-5 py-3.5 text-[11px] font-sans font-semibold tracking-[0.16em] uppercase"
                 >
                   <Phone size={13} /> Call
@@ -152,6 +155,7 @@ export default function HeroSlider() {
 
             <a
               href={`tel:${PHONE_RAW}`}
+              onClick={() => trackConversion('call', { source: 'home-hero' })}
               className="hidden sm:inline-flex items-center gap-2 mt-5 text-white/55 hover:text-white text-[12px] font-sans tracking-wide transition-colors"
             >
               <Phone size={12} /> {PHONE_PRETTY}

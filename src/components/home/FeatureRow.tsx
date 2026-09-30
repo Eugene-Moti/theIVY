@@ -12,7 +12,7 @@ const cards = [
     label: 'Now Selling',
     title: 'Ivy Myst, Kileleshwa',
     text: 'Curved architecture, garden terraces and a rooftop Celestial Pool. Groundbreaking complete — early-stage pricing.',
-    image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
+    image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
     href: '/ivy-myst',
     cta: 'Explore Ivy Myst',
   },

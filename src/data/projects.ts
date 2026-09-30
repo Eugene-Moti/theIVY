@@ -464,9 +464,9 @@ export const projects: ProjectData[] = [
     completion: 'August 2029',
     statusLabel: 'NOW SELLING',
     isLaunchingSoon: false,
-    heroImage: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
+    heroImage: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
     exteriorImages: [
-      p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'),
+      p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
       p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
       p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'),
       p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png'),
@@ -479,7 +479,7 @@ export const projects: ProjectData[] = [
     ],
     descriptionBlocks: [
       { type: 'text', content: "Ivy Myst is a landmark luxury residential development on Gatundu Road, Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — the opportunity to secure one of Nairobi's most architecturally distinctive addresses at early-stage pricing." },
-      { type: 'image', src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), caption: 'Ivy Myst — the sweeping curved façade on Gatundu Road' },
+      { type: 'image', src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'), caption: 'Ivy Myst — the sweeping curved façade on Gatundu Road' },
       { type: 'text', content: "Two wings — A and B — hold generously proportioned 1, 2 and 3 bedroom residences, many with private garden terraces. The sweeping curved architecture and planted balconies give the building a presence unlike anything else on the Kileleshwa skyline, while ceiling heights and window ratios are calibrated to carry natural light deep into every home." },
       { type: 'image-pair', images: [
         { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), caption: 'The illuminated façade after dark' },
@@ -546,7 +546,7 @@ export const projects: ProjectData[] = [
       p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (12).png'),
     ],
     gallerySlides: [
-      { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.png'), label: 'The Architecture', category: 'Exterior', description: "The sweeping curved façade of Ivy Myst rises above Gatundu Road, Kileleshwa — a landmark that redefines the neighbourhood's skyline." },
+      { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'), label: 'The Architecture', category: 'Exterior', description: "The sweeping curved façade of Ivy Myst rises above Gatundu Road, Kileleshwa — a landmark that redefines the neighbourhood's skyline." },
       { src: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'), label: 'Celestial Rooftop Pool', category: 'Amenity', description: 'An infinity pool with a signature waterfall, perched at the apex of Ivy Myst. Morning laps with a city-wide view; twilight drinks as Nairobi lights up below.' },
       { src: p('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (1).png'), label: 'Living & Dining', category: 'Interior', description: 'Premium marble floors, bespoke cabinetry and carefully curated joinery define every living space. Expansive openings frame the city beyond.' },
       { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), label: 'Above Nairobi', category: 'Rooftop', description: 'From the rooftop, Nairobi stretches in every direction — an uninterrupted panorama available to every resident.' },
