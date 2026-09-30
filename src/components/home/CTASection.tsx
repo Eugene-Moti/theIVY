@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MessageCircle, MapPin, ArrowRight } from 'lucide-react'
 import { PHONE_RAW, PHONE_PRETTY, EMAIL, waLink } from '@/lib/contact'
+import { trackConversion } from '@/lib/analytics'
 
 export default function CTASection() {
   return (
@@ -44,6 +45,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             <a
               href={`tel:${PHONE_RAW}`}
+              onClick={() => trackConversion('call', { source: 'home-cta' })}
               className="inline-flex items-center justify-center gap-2.5 bg-gold-dark text-white px-7 py-4 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold transition-colors duration-300"
             >
               <Phone size={13} /> {PHONE_PRETTY}
@@ -52,6 +54,7 @@ export default function CTASection() {
               href={waLink()}
               target="_blank"
               rel="noreferrer"
+              onClick={() => trackConversion('whatsapp', { source: 'home-cta' })}
               className="inline-flex items-center justify-center gap-2.5 border border-white/35 text-white px-7 py-4 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-white hover:text-dark transition-all duration-300"
             >
               <MessageCircle size={13} /> WhatsApp

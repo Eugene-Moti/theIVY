@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import ChatWidget from '@/components/shared/ChatWidget'
+import AttributionCapture from '@/components/shared/AttributionCapture'
 
 // Display — Jost: a geometric sans in the Futura lineage. Quiet, architectural,
 // upmarket; set light-to-medium at large sizes for the development titles.
@@ -55,6 +56,11 @@ export const metadata: Metadata = {
   },
 }
 
+// Google Ads conversion ID (e.g. "AW-123456789") — unset until it's added in
+// Vercel env vars, at which point this also starts configuring gtag for it.
+// See src/lib/analytics.ts for how individual conversion events are fired.
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -69,8 +75,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-G4MF7YCDPV');
+            ${GOOGLE_ADS_ID ? `gtag('config', '${GOOGLE_ADS_ID}');` : ''}
           `}
         </Script>
+        <AttributionCapture />
         <Navbar />
         <main>{children}</main>
         <Footer />

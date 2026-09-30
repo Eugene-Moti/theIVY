@@ -67,6 +67,7 @@ function contactHtml(data: Record<string, string>, title = 'New Website Enquiry'
           ${data.buyer_type ? ROW('Decision maker', `<strong>${data.buyer_type}</strong>`) : ''}
           ${data.timeline ? ROW('Timeframe', `<strong>${data.timeline}</strong>`) : ''}
           ${data.source ? ROW('Came from', data.source) : ''}
+          ${data.utm_campaign || data.utm_source ? ROW('Campaign', [data.utm_source, data.utm_medium, data.utm_campaign].filter(Boolean).join(' / ')) : ''}
           ${data.message ? ROW('Message', String(data.message).replace(/\n/g, '<br>')) : ''}
           ${String(data.consent) === 'true' ? ROW('Consent', 'Agreed to privacy policy &amp; contact') : ''}
         </table>
@@ -173,11 +174,13 @@ async function pushToCrm(data: Record<string, string>, type: string) {
   const { first, last } = splitName(name)
   const project = crmProjectName(data.project || data.interest || data.property_interest)
 
+  const campaign = [data.utm_source, data.utm_medium, data.utm_campaign].filter(Boolean).join('/')
   const extras = [
     data.budget ? `Budget: ${data.budget}` : null,
     data.timeline ? `Timeline: ${data.timeline}` : null,
     data.buyer_type ? `Decision maker: ${data.buyer_type}` : null,
     data.country ? `Country: ${data.country}` : null,
+    campaign ? `Campaign: ${campaign}` : null,
   ].filter(Boolean).join(' · ')
   const message = [extras, data.message].filter(Boolean).join('\n') || undefined
 
@@ -208,7 +211,10 @@ async function saveLead(data: Record<string, string>, type: string) {
   try {
     const supabase = createAdminClient()
     const meta: Record<string, string> = {}
-    for (const k of ['budget', 'buyer_type', 'timeline', 'country_code', 'message', 'source'] as const) {
+    for (const k of [
+      'budget', 'buyer_type', 'timeline', 'country_code', 'message', 'source',
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid',
+    ] as const) {
       if (data[k]) meta[k] = data[k]
     }
     if (String(data.consent) === 'true') meta.consent = `given ${new Date().toISOString()}`

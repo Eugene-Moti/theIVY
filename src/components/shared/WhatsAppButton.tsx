@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { trackConversion } from '@/lib/analytics'
 
 const HREF =
   'https://wa.me/254118266666?text=%5BWebsite%20Enquiry%5D%20Hello%2C%20I%20came%20across%20The%20Ivy%20Group%20website%20and%20I%27m%20interested%20in%20learning%20more%20about%20your%20developments.%20Please%20share%20more%20information.'
@@ -80,6 +81,7 @@ export default function WhatsAppButton() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with us on WhatsApp"
+          onClick={() => trackConversion('whatsapp', { source: 'floating-button' })}
           onHoverStart={() => { setHovered(true); setBubble(false) }}
           onHoverEnd={() => setHovered(false)}
           whileTap={{ scale: 0.95 }}

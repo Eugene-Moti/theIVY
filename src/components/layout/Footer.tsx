@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
+import TrackedLink from '@/components/shared/TrackedLink'
 
 const developments = [
   { label: 'Blossom Ivy Residence', href: '/blossom-ivy' },
@@ -142,9 +143,9 @@ export default function Footer() {
             <ul className="space-y-5 text-xs font-sans">
               <li>
                 <p className="text-white/25 text-[9px] tracking-[0.18em] uppercase mb-1">Phone &amp; WhatsApp</p>
-                <a href="tel:+254118266666" className="text-white/50 hover:text-gold transition-colors duration-300">
+                <TrackedLink kind="call" href="tel:+254118266666" extra={{ source: 'footer' }} className="text-white/50 hover:text-gold transition-colors duration-300">
                   +254 118 266 666
-                </a>
+                </TrackedLink>
               </li>
               <li>
                 <p className="text-white/25 text-[9px] tracking-[0.18em] uppercase mb-1">Email</p>

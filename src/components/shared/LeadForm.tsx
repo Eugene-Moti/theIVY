@@ -6,6 +6,8 @@ import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
 import { isValidPhoneNumber, parsePhoneNumber, getCountryCallingCode, type CountryCode } from 'libphonenumber-js/min'
 import { COUNTRIES, EMAIL_RE, suggestEmail } from '@/lib/forms'
+import { trackConversion } from '@/lib/analytics'
+import { getAttribution } from '@/lib/attribution'
 
 /* ── Options ─────────────────────────────────────────────────────────────── */
 /* Purchase enquiries and the rental waitlist ask the same shape of question
@@ -195,6 +197,7 @@ export default function LeadForm({
       message: showMessage ? f.message.trim() : undefined,
       consent: f.consent,
       source,
+      ...getAttribution(),
       _hp: f.website,
       _elapsed: Date.now() - mountedAt.current,
     }
@@ -222,6 +225,7 @@ export default function LeadForm({
       return
     }
     setStatus('success')
+    trackConversion('lead', { lead_type: leadType })
     onSuccess?.()
   }
 

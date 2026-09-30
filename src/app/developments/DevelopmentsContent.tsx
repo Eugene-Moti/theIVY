@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { MapPin, ArrowRight, MessageCircle, Check } from 'lucide-react'
 import { projects, ProjectUnit } from '@/data/projects'
 import { PHONE_RAW, PHONE_PRETTY, waLink } from '@/lib/contact'
+import { trackConversion } from '@/lib/analytics'
 
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 
@@ -130,6 +131,7 @@ export default function DevelopmentsContent() {
                         href={waLink(proj.name)}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => trackConversion('whatsapp', { project: proj.name, source: 'developments-listing' })}
                         aria-label={`WhatsApp about ${proj.name}`}
                         className="flex items-center justify-center border border-dark/20 text-dark/60 w-12 hover:border-gold hover:text-gold transition-colors"
                       >
@@ -209,6 +211,7 @@ export default function DevelopmentsContent() {
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <a
               href={`tel:${PHONE_RAW}`}
+              onClick={() => trackConversion('call', { source: 'developments-cta' })}
               className="inline-flex items-center justify-center gap-2 bg-gold-dark text-white px-8 py-4 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold transition-colors"
             >
               {PHONE_PRETTY}

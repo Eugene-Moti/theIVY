@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Navigation } from 'lucide-react'
+import { Phone, Mail, MapPin, Navigation, MessageCircle } from 'lucide-react'
 import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
 import LeadForm from '@/components/shared/LeadForm'
+import { PHONE_RAW, waLink } from '@/lib/contact'
+import { trackConversion } from '@/lib/analytics'
 
 export default function ContactContent() {
   return (
@@ -70,12 +72,32 @@ export default function ContactContent() {
               </p>
 
               <div className="space-y-6">
-                <a href="tel:+254118266666" className="flex items-start gap-4 group">
+                <a
+                  href={`tel:${PHONE_RAW}`}
+                  onClick={() => trackConversion('call', { source: 'contact-page' })}
+                  className="flex items-start gap-4 group"
+                >
                   <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
                     <Phone size={14} className="text-gold group-hover:text-dark transition-colors" />
                   </div>
                   <div>
-                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">Phone & WhatsApp</p>
+                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">Phone</p>
+                    <p className="text-dark text-sm font-sans">+254 118 266 666</p>
+                  </div>
+                </a>
+
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => trackConversion('whatsapp', { source: 'contact-page' })}
+                  className="flex items-start gap-4 group"
+                >
+                  <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
+                    <MessageCircle size={14} className="text-gold group-hover:text-dark transition-colors" />
+                  </div>
+                  <div>
+                    <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">WhatsApp</p>
                     <p className="text-dark text-sm font-sans">+254 118 266 666</p>
                   </div>
                 </a>

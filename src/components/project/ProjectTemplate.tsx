@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { ProjectData, ProjectUnit, FloorPlan, getOtherProjects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
+import { trackConversion } from '@/lib/analytics'
+import { approxUsd, kesStringToNumber } from '@/lib/currency'
 
 const PHONE_RAW = '+254118266666'
 const PHONE_PRETTY = '+254 118 266 666'
@@ -35,12 +37,13 @@ function waLink(project: string, unit?: string) {
   return `https://wa.me/254118266666?text=${encodeURIComponent(msg)}`
 }
 
-function priceFrom(units: ProjectUnit[]): string | null {
+function priceFrom(units: ProjectUnit[]): { label: string; usd: string } | null {
   const nums = units
     .map((u) => Number(String(u.price).replace(/[^0-9]/g, '')))
     .filter((n) => n > 100000)
   if (!nums.length) return null
-  return `From KES ${Math.min(...nums).toLocaleString('en-KE')}`
+  const min = Math.min(...nums)
+  return { label: `From KES ${min.toLocaleString('en-KE')}`, usd: approxUsd(min) }
 }
 
 function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
@@ -175,10 +178,23 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               <a href="#residences" className={btnGold}>
                 View Residences <ArrowRight size={13} />
               </a>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackConversion('whatsapp', { project: data.name })}
+                className={btnGhostLight}
+              >
+                <MessageCircle size={13} /> WhatsApp
+              </a>
               <button type="button" onClick={() => setBrochureOpen(true)} className={btnGhostLight}>
                 <Download size={13} /> Brochure
               </button>
-              {from && <span className="text-white/60 text-sm font-sans ml-1">{from}</span>}
+              {from && (
+                <span className="text-white/60 text-sm font-sans ml-1">
+                  {from.label} <span className="text-white/35">({from.usd})</span>
+                </span>
+              )}
             </div>
           </motion.div>
         </div>
@@ -192,6 +208,18 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               <p className="text-white/35 text-[9px] font-sans tracking-[0.22em] uppercase mb-1.5">{f.k}</p>
               <p className="text-white text-[13px] font-sans font-light leading-snug">{f.v}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─────────────── TRUST STRIP ─────────────── */}
+      <section className="bg-cream border-b border-dark/8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
+          {['The Ivy Group · Est. 2017', 'Sold direct — no agent commissions', '4 landmark developments across Nairobi'].map((t) => (
+            <span key={t} className="flex items-center gap-2 text-dark/55 text-[11px] font-sans tracking-wide">
+              <Check size={12} className="text-gold flex-shrink-0" strokeWidth={2.5} />
+              {t}
+            </span>
           ))}
         </div>
       </section>
@@ -282,6 +310,9 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   {u.note && <p className="text-dark/35 text-[11px] font-sans italic mt-1.5 leading-snug">{u.note}</p>}
 
                   <p className="font-serif text-dark text-[1.35rem] font-light mt-6">{u.priceRange ?? u.price}</p>
+                  {kesStringToNumber(u.price) && (
+                    <p className="text-dark/40 text-[11px] font-sans mt-0.5">{approxUsd(kesStringToNumber(u.price)!)}</p>
+                  )}
 
                   {u.roi && (
                     <div className="grid grid-cols-2 gap-2 mt-4">
@@ -300,6 +331,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     href={waLink(data.name, u.type)}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => trackConversion('whatsapp', { project: data.name, unit: u.type })}
                     className="mt-6 text-center bg-dark text-white py-3 text-[10px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-dark transition-colors"
                   >
                     Enquire
@@ -609,10 +641,10 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             Visit the Ivy Park sales suite on Kirichwa Road, Kilimani — or speak with a consultant about {shortName}.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a href={`tel:${PHONE_RAW}`} className={btnPrimary}>
+            <a href={`tel:${PHONE_RAW}`} onClick={() => trackConversion('call', { project: data.name })} className={btnPrimary}>
               <Phone size={13} /> {PHONE_PRETTY}
             </a>
-            <a href={wa} target="_blank" rel="noreferrer" className={btnGhost}>
+            <a href={wa} target="_blank" rel="noreferrer" onClick={() => trackConversion('whatsapp', { project: data.name })} className={btnGhost}>
               <MessageCircle size={13} /> WhatsApp
             </a>
             <button type="button" onClick={() => setBrochureOpen(true)} className={btnGhost}>
@@ -667,13 +699,14 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             {from ? 'Priced from' : data.name}
           </p>
           <p className="text-white text-[13px] font-sans font-medium truncate">
-            {from ?? 'Enquire for pricing'}
+            {from ? from.label : 'Enquire for pricing'}
           </p>
         </div>
         <a
           href={wa}
           target="_blank"
           rel="noreferrer"
+          onClick={() => trackConversion('whatsapp', { project: data.name, source: 'sticky-bar' })}
           className="flex-shrink-0 bg-gold-dark text-white px-4 py-2.5 text-[10px] font-sans font-semibold tracking-[0.16em] uppercase"
         >
           Enquire

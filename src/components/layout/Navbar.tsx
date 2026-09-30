@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import TrackedLink from '@/components/shared/TrackedLink'
 
 const devDropdown = [
   { name: 'Blossom Ivy Residence', location: 'Kileleshwa', status: 'Available', href: '/blossom-ivy', image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png') },
@@ -141,12 +142,14 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-5">
-            <a
+            <TrackedLink
+              kind="call"
               href="tel:+254118266666"
+              extra={{ source: 'navbar-desktop' }}
               className={`hidden lg:inline-flex border px-6 py-2.5 text-[11px] font-semibold tracking-[0.18em] uppercase transition-all duration-300 ${scrolled ? 'border-gold text-gold hover:bg-gold hover:text-white' : 'border-white/80 text-white hover:bg-white hover:text-dark'}`}
             >
               ENQUIRE NOW
-            </a>
+            </TrackedLink>
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -187,12 +190,14 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="w-px h-10 bg-white/20 my-1" />
-              <a
+              <TrackedLink
+                kind="call"
                 href="tel:+254118266666"
+                extra={{ source: 'navbar-mobile' }}
                 className="border border-gold text-gold px-10 py-3.5 text-[11px] font-semibold tracking-[0.22em] uppercase hover:bg-gold hover:text-dark transition-all duration-300"
               >
                 +254 118 266 666
-              </a>
+              </TrackedLink>
             </motion.div>
           </motion.div>
         )}
