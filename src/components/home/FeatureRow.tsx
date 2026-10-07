@@ -84,14 +84,14 @@ export default function FeatureRow() {
                   viewport={{ once: true, margin: '-100px' }}
                   transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link href={img.href} className="relative block aspect-[4/3] overflow-hidden bg-[#F5F2EE] group">
+                  <Link href={img.href} className="relative block aspect-[4/3] overflow-hidden bg-dark group">
                     <Image
                       src={img.image}
                       alt={img.caption}
                       fill
                       sizes="(max-width: 1024px) 50vw, 30vw"
                       quality={82}
-                      className="object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                     />
                   </Link>
                   <Link href={img.href}>
