@@ -7,78 +7,102 @@ import { ArrowRight } from 'lucide-react'
 
 const p = (path: string) => encodeURI(path)
 
-const cards = [
+const HERO = {
+  image: p('/Ivy Myst Assets/Courtyard 01_Night.jpg'),
+  href: '/ivy-myst',
+}
+
+const SIDE_IMAGES = [
   {
-    label: 'Now Selling',
-    title: 'Ivy Myst, Kileleshwa',
-    text: 'Curved architecture, garden terraces and a rooftop Celestial Pool. Groundbreaking complete — early-stage pricing.',
-    image: p('/Ivy Myst Assets/Courtyard 01_Night.jpg'),
-    href: '/ivy-myst',
-    cta: 'Explore Ivy Myst',
-  },
-  {
-    label: 'The Portfolio',
-    title: 'Four landmark developments',
-    text: 'Across Kileleshwa, Westlands and Kilimani — from ready-soon apartments to early-bird investment opportunities.',
     image: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'),
+    caption: 'Four landmark developments',
     href: '/developments',
-    cta: 'View all developments',
   },
   {
-    label: 'Journal',
-    title: 'Market notes & guides',
-    text: 'Neighbourhood guides, investment perspectives and construction updates from the Ivy Group team.',
     image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'),
+    caption: 'Market notes & guides',
     href: '/insights',
-    cta: 'Start reading',
   },
 ]
 
 export default function FeatureRow() {
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section className="bg-white py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {cards.map((c, i) => (
-            <motion.article
-              key={c.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="group flex flex-col"
+        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
+          {/* Text block — slides in from the left */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
+              Now Selling
+            </p>
+            <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-dark leading-[1.1] mb-6">
+              Ivy Myst, Kileleshwa
+            </h2>
+            <p className="text-dark/55 text-[14px] font-sans font-light leading-[1.85] mb-9 max-w-md">
+              Curved architecture, garden terraces and a rooftop Celestial Pool on Gatundu Road.
+              Groundbreaking is complete — now selling at early-stage pricing.
+            </p>
+            <Link
+              href={HERO.href}
+              className="inline-flex items-center gap-2.5 bg-dark text-white px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-dark transition-colors"
             >
-              <Link href={c.href} className="relative aspect-[4/3] overflow-hidden mb-6 block bg-[#F5F2EE]">
+              Explore Ivy Myst <ArrowRight size={13} />
+            </Link>
+          </motion.div>
+
+          {/* Image cluster — pieces converge from different directions */}
+          <div className="grid grid-cols-2 gap-4 lg:gap-5">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link href={HERO.href} className="relative block aspect-[3/4] overflow-hidden bg-dark group">
                 <Image
-                  src={c.image}
-                  alt={c.title}
+                  src={HERO.image}
+                  alt="Ivy Myst, Kileleshwa"
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  quality={82}
-                  className="object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                  sizes="(max-width: 1024px) 50vw, 30vw"
+                  quality={84}
+                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 />
               </Link>
-              <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.28em] uppercase mb-2.5">
-                {c.label}
-              </p>
-              <h3
-                className="font-serif text-xl text-dark font-light mb-3"
-                style={{ letterSpacing: '0.01em' }}
-              >
-                {c.title}
-              </h3>
-              <p className="text-dark/55 text-[13px] font-sans font-light leading-[1.8] mb-5 flex-1">
-                {c.text}
-              </p>
-              <Link
-                href={c.href}
-                className="inline-flex items-center gap-2 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase text-dark hover:text-gold transition-colors group/link"
-              >
-                {c.cta}
-                <ArrowRight size={11} className="group-hover/link:translate-x-0.5 transition-transform" />
-              </Link>
-            </motion.article>
-          ))}
+            </motion.div>
+
+            <div className="flex flex-col gap-4 lg:gap-5">
+              {SIDE_IMAGES.map((img, i) => (
+                <motion.div
+                  key={img.href}
+                  initial={{ opacity: 0, y: i === 0 ? -40 : 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Link href={img.href} className="relative block aspect-[4/3] overflow-hidden bg-[#F5F2EE] group">
+                    <Image
+                      src={img.image}
+                      alt={img.caption}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 30vw"
+                      quality={82}
+                      className="object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                    />
+                  </Link>
+                  <Link href={img.href}>
+                    <p className="text-dark/45 text-[10px] font-sans tracking-[0.14em] uppercase mt-3 hover:text-gold transition-colors">
+                      {img.caption}
+                    </p>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
