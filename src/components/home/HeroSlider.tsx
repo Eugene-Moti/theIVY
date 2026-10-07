@@ -21,6 +21,36 @@ const HERO: Record<string, string> = {
   'blossom-ivy': encodeURI('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
 }
 
+// Per-project lockup, swapped in for the name in the hero. `invert` flips
+// dark-on-transparent marks (Luckinn Ivy's is black, Ivy Myst's is navy) to
+// white so they read against the dark overlay — Ivy Park and Blossom Ivy
+// are already gold and stay as-is. `boxHeight` compensates for how much
+// transparent padding sits inside each source file (Luckinn Ivy's canvas is
+// mostly empty space around a small mark, so it needs a taller box to read
+// at the same visual size as the others).
+const LOGO: Record<string, { src: string; w: number; h: number; invert?: boolean; boxHeight: string }> = {
+  'ivy-myst': {
+    src: encodeURI('/Ivy Myst Assets/Ivy Myst Logo.png'),
+    w: 792, h: 173, invert: true,
+    boxHeight: 'clamp(2.2rem, 6vw, 4.4rem)',
+  },
+  'ivy-park': {
+    src: encodeURI('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'),
+    w: 1552, h: 782,
+    boxHeight: 'clamp(2.6rem, 7vw, 5.2rem)',
+  },
+  'luckinn-ivy': {
+    src: encodeURI('/Luckinn Ivy Assets/LUCKINN LOGO-blck02.png'),
+    w: 2481, h: 2494, invert: true,
+    boxHeight: 'clamp(4.4rem, 12vw, 8.4rem)',
+  },
+  'blossom-ivy': {
+    src: encodeURI('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'),
+    w: 1552, h: 782,
+    boxHeight: 'clamp(2.6rem, 7vw, 5.2rem)',
+  },
+}
+
 const slides = ORDER.map((slug) => {
   const p = projects.find((x) => x.slug === slug)!
   const img = HERO[p.slug] ?? p.heroImage
@@ -34,6 +64,7 @@ const slides = ORDER.map((slug) => {
     image: img,
     imageMobile: p.heroImageMobile ?? img,
     brochure: p.brochurePath,
+    logo: LOGO[p.slug],
   }
 })
 
@@ -92,7 +123,7 @@ export default function HeroSlider() {
       </AnimatePresence>
 
       <div className="absolute inset-0 bg-gradient-to-t from-dark/92 via-dark/35 to-dark/30" />
-      <div className="absolute inset-0 bg-gradient-to-r from-dark/55 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-dark/70 via-dark/30 to-transparent" />
 
       {/* Content */}
       <div className="relative h-full max-w-7xl mx-auto px-6 lg:px-10 flex flex-col justify-end pb-10 sm:pb-14 lg:pb-24">
@@ -105,16 +136,26 @@ export default function HeroSlider() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-2xl"
           >
-            <p className="text-gold-light text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
+            <p
+              className="text-gold-light text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4"
+              style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}
+            >
               {s.location} &nbsp;·&nbsp; {s.status}
             </p>
-            <h1
-              className="font-serif text-white font-light leading-[1.02] mb-4 sm:mb-5"
-              style={{ fontSize: 'clamp(2.1rem, 6.5vw, 5.6rem)', letterSpacing: '0.01em' }}
+            <div className="mb-4 sm:mb-5" style={{ height: s.logo.boxHeight }}>
+              <Image
+                src={s.logo.src}
+                alt={s.name}
+                width={s.logo.w}
+                height={s.logo.h}
+                priority={current === 0}
+                className={`h-full w-auto object-contain object-left drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] ${s.logo.invert ? 'brightness-0 invert' : ''}`}
+              />
+            </div>
+            <p
+              className="text-white/80 text-[13px] sm:text-base font-sans font-light leading-relaxed max-w-md mb-6 sm:mb-8 line-clamp-2 sm:line-clamp-none"
+              style={{ textShadow: '0 1px 10px rgba(0,0,0,0.75)' }}
             >
-              {s.name}
-            </h1>
-            <p className="text-white/70 text-[13px] sm:text-base font-sans font-light leading-relaxed max-w-md mb-6 sm:mb-8 line-clamp-2 sm:line-clamp-none">
               {s.tagline}
             </p>
 
