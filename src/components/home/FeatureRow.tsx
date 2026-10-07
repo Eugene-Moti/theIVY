@@ -8,7 +8,7 @@ import { ArrowRight } from 'lucide-react'
 const p = (path: string) => encodeURI(path)
 
 const HERO = {
-  image: p('/Ivy Myst Assets/Courtyard 01_Night.jpg'),
+  image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
   href: '/ivy-myst',
 }
 
@@ -30,11 +30,11 @@ export default function FeatureRow() {
     <section className="bg-white py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
-          {/* Text block — slides in from the left */}
+          {/* Text block — slides in from the left, replays every time it crosses into view */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ margin: '-100px' }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
@@ -55,15 +55,18 @@ export default function FeatureRow() {
             </Link>
           </motion.div>
 
-          {/* Image cluster — pieces converge from different directions */}
+          {/* Image cluster — pieces converge from different directions, every pass */}
           <div className="grid grid-cols-2 gap-4 lg:gap-5">
+            {/* Big image spans both rows, so its height is exactly the two
+                side images' combined height, not a guessed aspect ratio. */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ margin: '-100px' }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="row-span-2"
             >
-              <Link href={HERO.href} className="relative block aspect-[3/4] overflow-hidden bg-dark group">
+              <Link href={HERO.href} className="relative block h-full w-full overflow-hidden bg-dark group">
                 <Image
                   src={HERO.image}
                   alt="Ivy Myst, Kileleshwa"
@@ -75,33 +78,31 @@ export default function FeatureRow() {
               </Link>
             </motion.div>
 
-            <div className="flex flex-col gap-4 lg:gap-5">
-              {SIDE_IMAGES.map((img, i) => (
-                <motion.div
-                  key={img.href}
-                  initial={{ opacity: 0, y: i === 0 ? -40 : 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Link href={img.href} className="relative block aspect-[4/3] overflow-hidden bg-dark group">
-                    <Image
-                      src={img.image}
-                      alt={img.caption}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 30vw"
-                      quality={82}
-                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                    />
-                  </Link>
-                  <Link href={img.href}>
-                    <p className="text-dark/45 text-[10px] font-sans tracking-[0.14em] uppercase mt-3 hover:text-gold transition-colors">
-                      {img.caption}
-                    </p>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+            {SIDE_IMAGES.map((img, i) => (
+              <motion.div
+                key={img.href}
+                initial={{ opacity: 0, y: i === 0 ? -40 : 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ margin: '-100px' }}
+                transition={{ duration: 0.7, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Link href={img.href} className="relative block aspect-[4/3] overflow-hidden bg-dark group">
+                  <Image
+                    src={img.image}
+                    alt={img.caption}
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 30vw"
+                    quality={82}
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                  />
+                </Link>
+                <Link href={img.href}>
+                  <p className="text-dark/45 text-[10px] font-sans tracking-[0.14em] uppercase mt-3 hover:text-gold transition-colors">
+                    {img.caption}
+                  </p>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
