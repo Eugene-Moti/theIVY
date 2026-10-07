@@ -7,14 +7,39 @@ import { trackConversion } from '@/lib/analytics'
 const HREF =
   'https://wa.me/254118266666?text=%5BWebsite%20Enquiry%5D%20Hello%2C%20I%20came%20across%20The%20Ivy%20Group%20website%20and%20I%27m%20interested%20in%20learning%20more%20about%20your%20developments.%20Please%20share%20more%20information.'
 
+// Periodic expand/collapse so the label still catches mobile visitors
+// (who can't hover) — offset from ChatWidget's cycle so the two buttons
+// take turns rather than popping open together.
+const CYCLE_MS = 9000
+const OPEN_MS = 3200
+const START_DELAY_MS = 3000
+
 export default function WhatsAppButton() {
   const [hovered, setHovered] = useState(false)
+  const [autoOpen, setAutoOpen] = useState(false)
   const [bubble, setBubble] = useState(false)
 
   useEffect(() => {
     const show = setTimeout(() => setBubble(true), 3800)
     const hide = setTimeout(() => setBubble(false), 8400)
     return () => { clearTimeout(show); clearTimeout(hide) }
+  }, [])
+
+  useEffect(() => {
+    let openTimeout: ReturnType<typeof setTimeout>
+    let interval: ReturnType<typeof setInterval>
+
+    const pulse = () => {
+      setAutoOpen(true)
+      openTimeout = setTimeout(() => setAutoOpen(false), OPEN_MS)
+    }
+
+    const startDelay = setTimeout(() => {
+      pulse()
+      interval = setInterval(pulse, CYCLE_MS)
+    }, START_DELAY_MS)
+
+    return () => { clearTimeout(startDelay); clearTimeout(openTimeout); clearInterval(interval) }
   }, [])
 
   return (
@@ -56,7 +81,7 @@ export default function WhatsAppButton() {
       <div className="relative">
         {/* Pulse rings — only while idle */}
         <AnimatePresence>
-          {!hovered && (
+          {!hovered && !autoOpen && (
             <motion.div
               key="rings"
               className="absolute inset-0 rounded-full pointer-events-none"
@@ -86,13 +111,18 @@ export default function WhatsAppButton() {
           onHoverEnd={() => setHovered(false)}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
+          animate={{
+            maxWidth: hovered || autoOpen ? 220 : 56,
+            borderRadius: hovered || autoOpen ? 2 : 28,
+          }}
+          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
           className="relative flex items-center bg-dark shadow-2xl overflow-hidden"
-          style={{ height: 56, width: 220, borderRadius: 2 }}
+          style={{ height: 56, width: 220 }}
         >
-          {/* Gold inset border — revealed on hover */}
+          {/* Gold inset border — revealed on hover or auto-expand */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
-            animate={{ opacity: hovered ? 1 : 0 }}
+            animate={{ opacity: hovered || autoOpen ? 1 : 0 }}
             transition={{ duration: 0.2 }}
             style={{ boxShadow: 'inset 0 0 0 1px rgba(201,168,76,0.45)' }}
           />

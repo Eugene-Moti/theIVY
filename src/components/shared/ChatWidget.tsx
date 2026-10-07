@@ -184,8 +184,16 @@ async function submitLead(payload: {
   } catch { /* fire-and-forget */ }
 }
 
+// Offset from WhatsAppButton's cycle (START_DELAY_MS 3000, OPEN_MS 3200,
+// CYCLE_MS 9000 there) so the two floating buttons take turns popping open
+// instead of expanding together.
+const CYCLE_MS = 9000
+const OPEN_MS = 3200
+const START_DELAY_MS = 6200
+
 export default function ChatWidget() {
   const [open, setOpen]             = useState(false)
+  const [autoOpen, setAutoOpen]     = useState(false)
   const [dark, setDark]             = useState(false)   // light by default
   const [messages, setMessages]     = useState<Message[]>([{ role: 'model', text: GREETING }])
   const [input, setInput]           = useState('')
@@ -222,6 +230,26 @@ export default function ChatWidget() {
     localStorage.setItem('ivy-chat-theme', next ? 'dark' : 'light')
     return next
   })
+
+  // Periodic expand/collapse of the trigger's label, paused once the panel
+  // is actually open.
+  useEffect(() => {
+    if (open) { setAutoOpen(false); return }
+    let openTimeout: ReturnType<typeof setTimeout>
+    let interval: ReturnType<typeof setInterval>
+
+    const pulse = () => {
+      setAutoOpen(true)
+      openTimeout = setTimeout(() => setAutoOpen(false), OPEN_MS)
+    }
+
+    const startDelay = setTimeout(() => {
+      pulse()
+      interval = setInterval(pulse, CYCLE_MS)
+    }, START_DELAY_MS)
+
+    return () => { clearTimeout(startDelay); clearTimeout(openTimeout); clearInterval(interval) }
+  }, [open])
 
   const t = dark ? THEMES.dark : THEMES.light
 
@@ -679,7 +707,7 @@ export default function ChatWidget() {
       <div className="fixed bottom-28 right-7 z-50">
         <div className="relative" style={{ height: 56 }}>
           <AnimatePresence>
-            {!open && (
+            {!open && !autoOpen && (
               <motion.div
                 key="rings"
                 className="absolute rounded-full pointer-events-none"
@@ -697,7 +725,7 @@ export default function ChatWidget() {
           <motion.button
             onClick={() => setOpen(o => !o)}
             whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}
-            animate={{ width: open ? 56 : 190, borderRadius: open ? 28 : 2 }}
+            animate={{ width: open ? 56 : (autoOpen ? 190 : 56), borderRadius: open ? 28 : (autoOpen ? 2 : 28) }}
             transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             className="relative flex items-center overflow-hidden shadow-2xl"
             style={{
