@@ -40,10 +40,10 @@ const jsonLd = {
     '@type': 'OfferCatalog',
     name: 'Luxury Residential Apartments',
     itemListElement: [
-      { '@type': 'Offer', name: 'Blossom Ivy Residence — Kileleshwa' },
+      { '@type': 'Offer', name: 'Blossoms Ivy Residence — Kileleshwa' },
       { '@type': 'Offer', name: 'Luckinn Ivy Residence — Westlands' },
       { '@type': 'Offer', name: 'Ivy Park Residence — Kilimani' },
-      { '@type': 'Offer', name: 'Ivy Myst — Kileleshwa' },
+      { '@type': 'Offer', name: 'Ivy Myst Residence — Kileleshwa' },
     ],
   },
 }

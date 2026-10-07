@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',
   description: "Nairobi's premier luxury residential developer. Delivering landmark apartments in Kileleshwa, Westlands and Kilimani since 2017. Explore our portfolio.",
   keywords:
-    'luxury apartments Nairobi, Kileleshwa apartments, Westlands apartments, Kilimani apartments, The Ivy Group, Blossom Ivy, Luckinn Ivy, Ivy Park, Ivy Myst',
+    'luxury apartments Nairobi, Kileleshwa apartments, Westlands apartments, Kilimani apartments, The Ivy Group, Blossoms Ivy, Luckinn Ivy, Ivy Park, Ivy Myst',
   alternates: { canonical: '/' },
   openGraph: {
     title: 'The Ivy Group | Luxury Real Estate Developer in Nairobi',

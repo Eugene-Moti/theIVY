@@ -90,7 +90,7 @@ export const projects: ProjectData[] = [
   /* ─────────────────────── BLOSSOM IVY ─────────────────────── */
   {
     slug: 'blossom-ivy',
-    name: 'Blossom Ivy Residence',
+    name: 'Blossoms Ivy Residence',
     tagline: "Luxury Living in One of Nairobi's Most Prestigious Addresses",
     locationLabel: 'KILELESHWA, NAIROBI',
     locationFull: 'Gatundu Road, Kileleshwa, Nairobi',
@@ -108,13 +108,13 @@ export const projects: ProjectData[] = [
       p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 03.jpg'),
     ],
     descriptionParagraphs: [
-      "Blossom Ivy Residence is an exclusive residential development located along Gatundu Road in Kileleshwa — one of Nairobi's most sought-after residential neighbourhoods. Rising 22 floors across two elegant residential blocks, the project combines refined architecture, generous layouts, premium finishes, and world-class amenities.",
-      "Designed for discerning homeowners and savvy investors, Blossom Ivy Residence offers the perfect equilibrium between luxury, comfort, and long-term investment value. Every detail — from the heated indoor pool to the smart door lock systems — has been curated to elevate your everyday experience.",
+      "Blossoms Ivy Residence is an exclusive residential development located along Gatundu Road in Kileleshwa — one of Nairobi's most sought-after residential neighbourhoods. Rising 22 floors across two elegant residential blocks, the project combines refined architecture, generous layouts, premium finishes, and world-class amenities.",
+      "Designed for discerning homeowners and savvy investors, Blossoms Ivy Residence offers the perfect equilibrium between luxury, comfort, and long-term investment value. Every detail — from the heated indoor pool to the smart door lock systems — has been curated to elevate your everyday experience.",
     ],
     descriptionBlocks: [
-      { type: 'text', content: "Blossom Ivy Residence stands on Gatundu Road in Kileleshwa — one of Nairobi's most coveted residential addresses, known for its tree-lined streets, proximity to the CBD, and the calibre of residents it attracts. Rising 22 floors across two elegant residential blocks, the development was designed to deliver a standard of living that Nairobi's most discerning buyers have long sought in a locally built development." },
-      { type: 'image', src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), caption: 'Blossom Ivy Residence — Gatundu Road, Kileleshwa' },
-      { type: 'text', content: "The architecture is at once refined and welcoming. The façade's considered proportions and rich material palette set Blossom Ivy apart on the Kileleshwa skyline — a building that reads as significant from the street and reveals its finer details to those who live within. Every unit benefits from generous proportions, with ceiling heights and window ratios calibrated to maximise natural light throughout the day." },
+      { type: 'text', content: "Blossoms Ivy Residence stands on Gatundu Road in Kileleshwa — one of Nairobi's most coveted residential addresses, known for its tree-lined streets, proximity to the CBD, and the calibre of residents it attracts. Rising 22 floors across two elegant residential blocks, the development was designed to deliver a standard of living that Nairobi's most discerning buyers have long sought in a locally built development." },
+      { type: 'image', src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), caption: 'Blossoms Ivy Residence — Gatundu Road, Kileleshwa' },
+      { type: 'text', content: "The architecture is at once refined and welcoming. The façade's considered proportions and rich material palette set Blossoms Ivy apart on the Kileleshwa skyline — a building that reads as significant from the street and reveals its finer details to those who live within. Every unit benefits from generous proportions, with ceiling heights and window ratios calibrated to maximise natural light throughout the day." },
       { type: 'image-pair', images: [
         { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'), caption: 'Grand Lobby Arrival' },
         { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 03.jpg'), caption: 'Lobby Detail' },
@@ -123,7 +123,7 @@ export const projects: ProjectData[] = [
       { type: 'image', src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'), caption: 'The Lobby Reception — designed for arrival' },
     ],
     availableUnits: [
-      { type: '3 Bedroom + Study + DSQ', size: '180 – 236 SQM', price: 'From KES 18,000,000', available: true },
+      { type: '3 Bedroom + Study + DSQ', size: '180 – 236 SQM', price: 'From KES 19,000,000', available: true },
     ],
     soldOutUnits: [
       { type: '1 Bedroom', size: '78 – 90 SQM', price: 'SOLD OUT', available: false },
@@ -185,7 +185,7 @@ export const projects: ProjectData[] = [
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d451.6556133047034!2d36.78503743441678!3d-1.276938025382227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x182f170056423b43%3A0xac4d412392285ae0!2sBLOSSOMS%20IVY%20RESIDENCE%2C%20Nairobi!3m2!1d-1.2771432999999999!2d36.785353199999996!5e1!3m2!1sen!2ske!4v1781850935628!5m2!1sen!2ske',
     brochurePath: p('/Blossoms Ivy Residence Assets/BlossomsIvy Brochure.pdf'),
     gallerySlides: [
-      { src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), label: 'Blossom Ivy Residence', category: 'Architecture', description: 'Rising 22 floors across two elegant residential blocks on Gatundu Road — a landmark on the Kileleshwa skyline.' },
+      { src: p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'), label: 'Blossoms Ivy Residence', category: 'Architecture', description: 'Rising 22 floors across two elegant residential blocks on Gatundu Road — a landmark on the Kileleshwa skyline.' },
       { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'), label: 'Grand Lobby', category: 'Arrival Experience', description: 'Soaring ceilings, premium stone finishes, bespoke lighting, and 24-hour concierge — a transition from city to sanctuary.' },
       { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'), label: 'Lobby Reception', category: 'Architecture', description: 'Every return home is an intentional arrival experience — conceived to hotel-residences standards throughout.' },
       { src: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/13_KCGV_Blossom Ivy_R1 Pool 2.jpg'), label: 'Heated Indoor Pool', category: 'Aquatics', description: 'A temperature-controlled indoor pool delivering a resort-like experience year-round, exclusively for residents.' },
@@ -452,7 +452,7 @@ export const projects: ProjectData[] = [
   /* ─────────────────────── IVY MYST ─────────────────────── */
   {
     slug: 'ivy-myst',
-    name: 'Ivy Myst',
+    name: 'Ivy Myst Residence',
     tagline: '1, 2 & 3 bedroom luxury residences with private garden terraces, on Gatundu Road, Kileleshwa.',
     locationLabel: 'KILELESHWA, NAIROBI',
     locationFull: 'Gatundu Road, Kileleshwa, Nairobi',

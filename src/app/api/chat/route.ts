@@ -146,7 +146,7 @@ The Ivy Group Kenya
 Phone / WhatsApp: +254 118 266 666
 Website: www.ivygroup.ke
 Head Office: Ivy Park Sales Suite, Ivy Park Residence, Kirichwa Road, Kilimani (near Yaya Centre), Nairobi. Open Monday–Saturday, 8am–6pm.
-Blossom Ivy Residence (Gatundu Road, Kileleshwa) remains open for viewings by appointment.
+Blossoms Ivy Residence (Gatundu Road, Kileleshwa) remains open for viewings by appointment.
 
 Our consultants assist with: unit availability, pricing, payment plans, site visits, virtual presentations, diaspora purchases, mortgage guidance, and investment advice.
 

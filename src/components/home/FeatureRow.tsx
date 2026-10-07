@@ -41,7 +41,7 @@ export default function FeatureRow() {
               Now Selling
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-dark leading-[1.1] mb-6">
-              Ivy Myst, Kileleshwa
+              Ivy Myst Residence, Kileleshwa
             </h2>
             <p className="text-dark/55 text-[14px] font-sans font-light leading-[1.85] mb-9 max-w-md">
               Curved architecture, garden terraces and a rooftop Celestial Pool on Gatundu Road.
@@ -69,7 +69,7 @@ export default function FeatureRow() {
               <Link href={HERO.href} className="relative block h-full w-full overflow-hidden bg-dark group">
                 <Image
                   src={HERO.image}
-                  alt="Ivy Myst, Kileleshwa"
+                  alt="Ivy Myst Residence, Kileleshwa"
                   fill
                   sizes="(max-width: 1024px) 50vw, 30vw"
                   quality={84}

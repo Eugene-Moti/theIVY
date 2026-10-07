@@ -15,18 +15,18 @@ import { getAttribution } from '@/lib/attribution'
 
 const INTERESTS_BY_CONTEXT = {
   purchase: [
-    'Blossom Ivy Residence',
+    'Blossoms Ivy Residence',
     'Luckinn Ivy Residence',
     'Ivy Park Residence',
-    'Ivy Myst',
+    'Ivy Myst Residence',
     'Rental enquiry',
     'General — not sure yet',
   ],
   rental: [
-    'Blossom Ivy Residence',
+    'Blossoms Ivy Residence',
     'Luckinn Ivy Residence',
     'Ivy Park Residence',
-    'Ivy Myst',
+    'Ivy Myst Residence',
     'Any / no preference',
   ],
 }

@@ -39,7 +39,7 @@ export default function ContactContent() {
           </p>
           <p className="text-dark/70 text-sm font-sans font-light leading-relaxed">
             Our head office is now the {HEAD_OFFICE.name} at {HEAD_OFFICE.building}, {HEAD_OFFICE.street} ({HEAD_OFFICE.landmark}).
-            Blossom Ivy Residence in Kileleshwa remains open for viewings by appointment.
+            Blossoms Ivy Residence in Kileleshwa remains open for viewings by appointment.
           </p>
           <a
             href={HEAD_OFFICE.mapLink}

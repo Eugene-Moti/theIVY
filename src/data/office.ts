@@ -1,7 +1,7 @@
 /**
  * Canonical head-office details for The Ivy Group.
  *
- * The head office moved from Blossom Ivy Residence (Gatundu Road, Kileleshwa)
+ * The head office moved from Blossoms Ivy Residence (Gatundu Road, Kileleshwa)
  * to the Ivy Park sales suite on Kirichwa Road, Kilimani in 2026.
  * Update this file only — every address on the site reads from here.
  */
@@ -27,9 +27,9 @@ export const HEAD_OFFICE = {
     'https://www.google.com/maps/search/?api=1&query=Ivy%20Park%20Residence%20Kirichwa%20Road%20Kilimani%20Nairobi',
 } as const
 
-/** Previous head office — retained as a by-appointment sales point while Blossom Ivy sells out. */
+/** Previous head office — retained as a by-appointment sales point while Blossoms Ivy sells out. */
 export const FORMER_OFFICE = {
-  name: 'Blossom Ivy Residence',
+  name: 'Blossoms Ivy Residence',
   street: 'Gatundu Road, Kileleshwa',
   city: 'Nairobi',
   note: 'Site sales office — viewings by appointment',

@@ -4,10 +4,10 @@ import { HEAD_OFFICE, FORMER_OFFICE } from '@/data/office'
 import TrackedLink from '@/components/shared/TrackedLink'
 
 const developments = [
-  { label: 'Blossom Ivy Residence', href: '/blossom-ivy' },
+  { label: 'Blossoms Ivy Residence', href: '/blossom-ivy' },
   { label: 'Luckinn Ivy Residence', href: '/luckinn-ivy' },
   { label: 'Ivy Park Residence', href: '/ivy-park' },
-  { label: 'Ivy Myst', href: '/ivy-myst' },
+  { label: 'Ivy Myst Residence', href: '/ivy-myst' },
 ]
 
 const company = [

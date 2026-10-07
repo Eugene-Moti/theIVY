@@ -80,7 +80,7 @@ export const articles: Article[] = [
         body: "From an investment perspective, Kileleshwa property has delivered consistent capital growth and strong rental returns. Premium apartments in the neighbourhood command monthly rents of KES 80,000 to over KES 200,000 depending on size and specification, with occupancy rates rarely falling below 92 percent. For investors, this translates into reliable passive income alongside medium-to-long-term capital appreciation.",
       },
       {
-        body: "Blossom Ivy Residence, located on Gatundu Road, places its residents at the very heart of everything Kileleshwa offers. For buyers seeking the finest address in Nairobi — combined with the safety net of a proven developer — it represents an opportunity that is genuinely difficult to replicate.",
+        body: "Blossoms Ivy Residence, located on Gatundu Road, places its residents at the very heart of everything Kileleshwa offers. For buyers seeking the finest address in Nairobi — combined with the safety net of a proven developer — it represents an opportunity that is genuinely difficult to replicate.",
       },
     ],
   },

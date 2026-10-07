@@ -6,13 +6,16 @@ import { motion } from 'framer-motion'
 import { ArrowRight, MapPin, MessageCircle } from 'lucide-react'
 import { projects, ProjectUnit } from '@/data/projects'
 import { waLink } from '@/lib/contact'
+import { approxUsd } from '@/lib/currency'
 
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 
 // Per-card override for this section only (doesn't touch the shared
 // heroImage used elsewhere, e.g. OG tags, floor plan pages).
 const COVER_OVERRIDE: Record<string, string> = {
-  'ivy-myst': encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
+  'ivy-myst': encodeURI('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'),
+  'ivy-park': encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/Night_EXTERIOS_01.jpg'),
+  'luckinn-ivy': encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
 }
 
 const blurbs: Record<string, string> = {
@@ -22,12 +25,13 @@ const blurbs: Record<string, string> = {
   'ivy-myst': '1, 2 & 3-bedroom residences with private garden terraces and the rooftop Celestial Pool. Now selling in Kileleshwa.',
 }
 
-function priceFrom(units: ProjectUnit[]): string | null {
+function priceFrom(units: ProjectUnit[]): { kes: string; usd: string } | null {
   const nums = units
     .map((u) => Number(String(u.price).replace(/[^0-9]/g, '')))
     .filter((n) => n > 100000)
   if (!nums.length) return null
-  return `From KES ${Math.min(...nums).toLocaleString('en-KE')}`
+  const min = Math.min(...nums)
+  return { kes: `From KES ${min.toLocaleString('en-KE')}`, usd: approxUsd(min) }
 }
 
 const list = ORDER.map((slug) => projects.find((p) => p.slug === slug)!)
@@ -39,7 +43,7 @@ export default function ProjectsSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
+          viewport={{ margin: '-60px' }}
           transition={{ duration: 0.6 }}
           className="flex items-end justify-between gap-6 mb-16"
         >
@@ -63,42 +67,26 @@ export default function ProjectsSection() {
           {list.map((proj, i) => {
             const from = priceFrom(proj.availableUnits)
             const cover = COVER_OVERRIDE[proj.slug] ?? proj.heroImage
-            // The Ivy Myst override is a portrait render — a plain crop would
-            // lose most of it in this landscape box, so it gets a blurred
-            // fill behind a fully-visible, uncropped copy on top instead of
-            // a hard crop.
-            const showFull = proj.slug in COVER_OVERRIDE
+            // Alternate columns slide in from opposite sides, and replay on
+            // every scroll pass rather than once.
+            const fromLeft = i % 2 === 0
             return (
               <motion.article
                 key={proj.slug}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.7, delay: (i % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, x: fromLeft ? -50 : 50, y: 20 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ margin: '-80px' }}
+                transition={{ duration: 0.75, delay: (i % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="group bg-white border border-dark/8 hover:border-gold/40 transition-colors flex flex-col"
               >
                 <Link href={`/${proj.slug}`} className="relative aspect-[16/10] overflow-hidden block bg-dark">
-                  {showFull && (
-                    <Image
-                      src={cover}
-                      alt=""
-                      aria-hidden="true"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      quality={55}
-                      className="object-cover scale-110 blur-2xl opacity-50"
-                    />
-                  )}
                   <Image
                     src={cover}
                     alt={proj.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     quality={84}
-                    className={showFull
-                      ? 'object-contain'
-                      : 'object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]'
-                    }
+                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   />
                   <span className="absolute top-4 left-4 bg-dark/75 backdrop-blur-sm px-3 py-[6px] text-white text-[8px] font-sans font-semibold tracking-[0.2em]">
                     {proj.statusLabel}
@@ -130,7 +118,11 @@ export default function ProjectsSection() {
                     {proj.floors > 0 && <span>{proj.floors} floors</span>}
                     {proj.totalUnits > 0 && <span>{proj.totalUnits.toLocaleString()} residences</span>}
                     <span>{proj.completion}</span>
-                    {from && <span className="text-dark/70 font-medium">{from}</span>}
+                    {from && (
+                      <span className="text-dark/70 font-medium">
+                        {from.kes} <span className="text-dark/40 font-normal">({from.usd})</span>
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex gap-2.5">

@@ -174,10 +174,10 @@ export default function AboutContent() {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { name: 'Blossom Ivy Residence', location: 'Kileleshwa', image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'), href: '/blossom-ivy' },
+              { name: 'Blossoms Ivy Residence', location: 'Kileleshwa', image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'), href: '/blossom-ivy' },
               { name: 'Luckinn Ivy Residence', location: 'Westlands', image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'), href: '/luckinn-ivy' },
               { name: 'Ivy Park Residence', location: 'Kilimani', image: encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), href: '/ivy-park' },
-              { name: 'Ivy Myst', location: 'Kileleshwa', image: encodeURI('/Ivy Myst Assets/Entrance.jpg'), href: '/ivy-myst' },
+              { name: 'Ivy Myst Residence', location: 'Kileleshwa', image: encodeURI('/Ivy Myst Assets/Entrance.jpg'), href: '/ivy-myst' },
             ].map((proj, i) => (
               <Link key={proj.href} href={proj.href} className="group block relative aspect-[3/4] overflow-hidden">
                 <Image src={proj.image} alt={proj.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="25vw" />

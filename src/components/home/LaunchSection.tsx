@@ -18,7 +18,7 @@ export default function LaunchSection() {
       <div className="absolute inset-0">
         <Image
           src={encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png')}
-          alt="Ivy Myst — Now Selling"
+          alt="Ivy Myst Residence — Now Selling"
           fill
           className="object-cover object-center"
           sizes="100vw"
@@ -51,7 +51,7 @@ export default function LaunchSection() {
             </p>
 
             <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-white font-semibold leading-[0.95] mb-5" style={{ letterSpacing: '-0.035em' }}>
-              Ivy Myst
+              Ivy Myst Residence
             </h2>
 
             <p className="text-white/65 text-sm font-sans font-light tracking-wide leading-relaxed max-w-sm mb-8">

@@ -128,9 +128,11 @@ const CRM_PROJECT_MAP: Record<string, string> = {
   'ivy park': 'Ivy Park',
   'ivy park residence': 'Ivy Park',
   'ivy myst': 'Ivy Myst',
+  'ivy myst residence': 'Ivy Myst',
   'blossom ivy': 'Blossoms Ivy',
   'blossom ivy residence': 'Blossoms Ivy',
   'blossoms ivy': 'Blossoms Ivy',
+  'blossoms ivy residence': 'Blossoms Ivy',
   'luckinn ivy': 'Luckinn Ivy',
   'luckinn ivy residence': 'Luckinn Ivy',
 }
