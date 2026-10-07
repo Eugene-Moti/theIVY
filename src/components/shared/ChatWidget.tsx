@@ -677,35 +677,61 @@ export default function ChatWidget() {
 
       {/* ── Trigger button ── */}
       <div className="fixed bottom-28 right-7 z-50">
-        <AnimatePresence>
-          {!open && (
-            <motion.div key="rings" className="absolute inset-0 rounded-full pointer-events-none" exit={{ opacity: 0, transition: { duration: 0.15 } }}>
-              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.25)' }}
-                animate={{ scale: [1, 1.9], opacity: [0.6, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.9 }} />
-              <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.15)' }}
-                animate={{ scale: [1, 2.4], opacity: [0.4, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', delay: 0.55, repeatDelay: 0.9 }} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <motion.button
-          onClick={() => setOpen(o => !o)}
-          whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.93 }}
-          className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
-          style={{ background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)', border: '1px solid rgba(201,168,76,0.4)', boxShadow: '0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(201,168,76,0.08)' }}
-          aria-label="Chat with Ivy"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            {open
-              ? <motion.div key="close" initial={{ opacity: 0, rotate: -80 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X size={17} style={{ color: 'rgba(255,255,255,0.55)' }} />
-                </motion.div>
-              : <motion.div key="logo" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <IvyMark size={28} color="#C9A84C" />
-                </motion.div>
-            }
+        <div className="relative" style={{ height: 56 }}>
+          <AnimatePresence>
+            {!open && (
+              <motion.div
+                key="rings"
+                className="absolute rounded-full pointer-events-none"
+                style={{ left: 0, top: 0, width: 56, height: 56 }}
+                exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              >
+                <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.25)' }}
+                  animate={{ scale: [1, 1.9], opacity: [0.6, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', repeatDelay: 0.9 }} />
+                <motion.span className="absolute inset-0 rounded-full" style={{ background: 'rgba(201,168,76,0.15)' }}
+                  animate={{ scale: [1, 2.4], opacity: [0.4, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeOut', delay: 0.55, repeatDelay: 0.9 }} />
+              </motion.div>
+            )}
           </AnimatePresence>
-        </motion.button>
+
+          <motion.button
+            onClick={() => setOpen(o => !o)}
+            whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}
+            animate={{ width: open ? 56 : 190, borderRadius: open ? 28 : 2 }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex items-center overflow-hidden shadow-2xl"
+            style={{
+              height: 56,
+              background: 'linear-gradient(145deg, #141414 0%, #0a0a0a 100%)',
+              border: '1px solid rgba(201,168,76,0.4)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(201,168,76,0.08)',
+            }}
+            aria-label="Chat with Ivy"
+          >
+            <div className="flex-shrink-0 flex items-center justify-center" style={{ width: 56, height: 56 }}>
+              <AnimatePresence mode="wait" initial={false}>
+                {open
+                  ? <motion.div key="close" initial={{ opacity: 0, rotate: -80 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <X size={17} style={{ color: 'rgba(255,255,255,0.55)' }} />
+                    </motion.div>
+                  : <motion.div key="logo" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <IvyMark size={24} color="#C9A84C" />
+                    </motion.div>
+                }
+              </AnimatePresence>
+            </div>
+            {!open && (
+              <div className="pr-5 whitespace-nowrap text-left">
+                <p style={{ fontFamily: 'var(--font-body)', color: 'rgba(255,255,255,0.4)', fontSize: '8px', letterSpacing: '0.25em', textTransform: 'uppercase', lineHeight: 1, marginBottom: 3 }}>
+                  Need help?
+                </p>
+                <p style={{ fontFamily: 'var(--font-body)', color: '#C9A84C', fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', lineHeight: 1 }}>
+                  Chat with Ivy
+                </p>
+              </div>
+            )}
+          </motion.button>
+        </div>
       </div>
     </>
   )

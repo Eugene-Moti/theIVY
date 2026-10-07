@@ -84,14 +84,10 @@ export default function WhatsAppButton() {
           onClick={() => trackConversion('whatsapp', { source: 'floating-button' })}
           onHoverStart={() => { setHovered(true); setBubble(false) }}
           onHoverEnd={() => setHovered(false)}
+          whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
           className="relative flex items-center bg-dark shadow-2xl overflow-hidden"
-          animate={{
-            maxWidth: hovered ? 220 : 56,
-            borderRadius: hovered ? 2 : 28,
-          }}
-          style={{ height: 56, width: 220 }}
-          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+          style={{ height: 56, width: 220, borderRadius: 2 }}
         >
           {/* Gold inset border — revealed on hover */}
           <motion.div

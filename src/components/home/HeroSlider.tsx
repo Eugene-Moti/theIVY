@@ -40,9 +40,9 @@ const LOGO: Record<string, { src: string; w: number; h: number; invert?: boolean
     boxHeight: 'clamp(3rem, 7.5vw, 5.8rem)',
   },
   'luckinn-ivy': {
-    src: encodeURI('/Luckinn Ivy Assets/LUCKINN LOGO-blck02.png'),
-    w: 2481, h: 2494, invert: true,
-    boxHeight: 'clamp(5rem, 12.5vw, 9.2rem)',
+    src: encodeURI('/Luckinn Ivy Assets/luckinn_logo.png'),
+    w: 5760, h: 1868,
+    boxHeight: 'clamp(3rem, 7.5vw, 5.8rem)',
   },
   'blossom-ivy': {
     src: encodeURI('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'),
