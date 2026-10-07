@@ -32,22 +32,22 @@ const LOGO: Record<string, { src: string; w: number; h: number; invert?: boolean
   'ivy-myst': {
     src: encodeURI('/Ivy Myst Assets/Ivy Myst Logo.png'),
     w: 792, h: 173, invert: true,
-    boxHeight: 'clamp(2.2rem, 6vw, 4.4rem)',
+    boxHeight: 'clamp(2.6rem, 6.5vw, 5rem)',
   },
   'ivy-park': {
     src: encodeURI('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'),
     w: 1552, h: 782,
-    boxHeight: 'clamp(2.6rem, 7vw, 5.2rem)',
+    boxHeight: 'clamp(3rem, 7.5vw, 5.8rem)',
   },
   'luckinn-ivy': {
     src: encodeURI('/Luckinn Ivy Assets/LUCKINN LOGO-blck02.png'),
     w: 2481, h: 2494, invert: true,
-    boxHeight: 'clamp(4.4rem, 12vw, 8.4rem)',
+    boxHeight: 'clamp(5rem, 12.5vw, 9.2rem)',
   },
   'blossom-ivy': {
     src: encodeURI('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'),
     w: 1552, h: 782,
-    boxHeight: 'clamp(2.6rem, 7vw, 5.2rem)',
+    boxHeight: 'clamp(3rem, 7.5vw, 5.8rem)',
   },
 }
 
@@ -142,16 +142,22 @@ export default function HeroSlider() {
             >
               {s.location} &nbsp;·&nbsp; {s.status}
             </p>
-            <div className="mb-4 sm:mb-5" style={{ height: s.logo.boxHeight }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center mb-5 sm:mb-6 px-5 sm:px-7 py-3.5 sm:py-4 bg-dark/55 backdrop-blur-md border border-gold/25 shadow-[0_8px_30px_rgba(0,0,0,0.45)] rounded-sm"
+            >
               <Image
                 src={s.logo.src}
                 alt={s.name}
                 width={s.logo.w}
                 height={s.logo.h}
                 priority={current === 0}
-                className={`h-full w-auto object-contain object-left drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] ${s.logo.invert ? 'brightness-0 invert' : ''}`}
+                className={`w-auto object-contain ${s.logo.invert ? 'brightness-0 invert' : ''}`}
+                style={{ height: s.logo.boxHeight }}
               />
-            </div>
+            </motion.div>
             <p
               className="text-white/80 text-[13px] sm:text-base font-sans font-light leading-relaxed max-w-md mb-6 sm:mb-8 line-clamp-2 sm:line-clamp-none"
               style={{ textShadow: '0 1px 10px rgba(0,0,0,0.75)' }}
