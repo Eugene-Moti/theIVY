@@ -9,6 +9,12 @@ import { waLink } from '@/lib/contact'
 
 const ORDER = ['ivy-myst', 'ivy-park', 'blossom-ivy', 'luckinn-ivy']
 
+// Per-card override for this section only (doesn't touch the shared
+// heroImage used elsewhere, e.g. OG tags, floor plan pages).
+const COVER_OVERRIDE: Record<string, string> = {
+  'ivy-myst': encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
+}
+
 const blurbs: Record<string, string> = {
   'blossom-ivy': 'Heated indoor pool, spa, yoga studio and a grand lobby across 22 floors — nearing completion in Kileleshwa.',
   'luckinn-ivy': 'Premium 2 & 3-bedroom apartments with a heated pool, co-working spaces and a business lounge in the heart of Westlands.',
@@ -56,6 +62,12 @@ export default function ProjectsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {list.map((proj, i) => {
             const from = priceFrom(proj.availableUnits)
+            const cover = COVER_OVERRIDE[proj.slug] ?? proj.heroImage
+            // The Ivy Myst override is a portrait render — a plain crop would
+            // lose most of it in this landscape box, so it gets a blurred
+            // fill behind a fully-visible, uncropped copy on top instead of
+            // a hard crop.
+            const showFull = proj.slug in COVER_OVERRIDE
             return (
               <motion.article
                 key={proj.slug}
@@ -65,14 +77,28 @@ export default function ProjectsSection() {
                 transition={{ duration: 0.7, delay: (i % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="group bg-white border border-dark/8 hover:border-gold/40 transition-colors flex flex-col"
               >
-                <Link href={`/${proj.slug}`} className="relative aspect-[16/10] overflow-hidden block">
+                <Link href={`/${proj.slug}`} className="relative aspect-[16/10] overflow-hidden block bg-dark">
+                  {showFull && (
+                    <Image
+                      src={cover}
+                      alt=""
+                      aria-hidden="true"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      quality={55}
+                      className="object-cover scale-110 blur-2xl opacity-50"
+                    />
+                  )}
                   <Image
-                    src={proj.heroImage}
+                    src={cover}
                     alt={proj.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     quality={84}
-                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                    className={showFull
+                      ? 'object-contain'
+                      : 'object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]'
+                    }
                   />
                   <span className="absolute top-4 left-4 bg-dark/75 backdrop-blur-sm px-3 py-[6px] text-white text-[8px] font-sans font-semibold tracking-[0.2em]">
                     {proj.statusLabel}

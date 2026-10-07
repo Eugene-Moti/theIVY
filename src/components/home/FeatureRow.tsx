@@ -12,7 +12,7 @@ const cards = [
     label: 'Now Selling',
     title: 'Ivy Myst, Kileleshwa',
     text: 'Curved architecture, garden terraces and a rooftop Celestial Pool. Groundbreaking complete — early-stage pricing.',
-    image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
+    image: p('/Ivy Myst Assets/Courtyard 01_Night.jpg'),
     href: '/ivy-myst',
     cta: 'Explore Ivy Myst',
   },
@@ -20,7 +20,7 @@ const cards = [
     label: 'The Portfolio',
     title: 'Four landmark developments',
     text: 'Across Kileleshwa, Westlands and Kilimani — from ready-soon apartments to early-bird investment opportunities.',
-    image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Day_Ivy Park.jpg'),
+    image: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'),
     href: '/developments',
     cta: 'View all developments',
   },
@@ -28,7 +28,7 @@ const cards = [
     label: 'Journal',
     title: 'Market notes & guides',
     text: 'Neighbourhood guides, investment perspectives and construction updates from the Ivy Group team.',
-    image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 05.jpg'),
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'),
     href: '/insights',
     cta: 'Start reading',
   },
@@ -48,14 +48,14 @@ export default function FeatureRow() {
               transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="group flex flex-col"
             >
-              <Link href={c.href} className="relative aspect-[4/3] overflow-hidden mb-6 block">
+              <Link href={c.href} className="relative aspect-[4/3] overflow-hidden mb-6 block bg-[#F5F2EE]">
                 <Image
                   src={c.image}
                   alt={c.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   quality={82}
-                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                  className="object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 />
               </Link>
               <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.28em] uppercase mb-2.5">
