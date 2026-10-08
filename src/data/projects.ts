@@ -488,7 +488,7 @@ export const projects: ProjectData[] = [
       { type: 'text', content: "The rooftop is the development's signature: the Celestial Pool with its waterfall feature, a rooftop restaurant and bar, and an uninterrupted panorama across the city. Below, a sculptural garden stream runs through the landscaped grounds and the grand reception lobby sets the tone from arrival. Estimated completion is August 2029." },
     ],
     availableUnits: [
-      { type: '1 Bedroom', size: '79 – 84 SQM', price: 'From KES 8,800,000', priceRange: 'KES 8.8M – 10.5M', roi: { furnished: '19.75%', unfurnished: '13.67%' }, note: 'Garden terrace on select units', available: true },
+      { type: '1 Bedroom', size: '78 – 84 SQM', price: 'From KES 8,800,000', priceRange: 'KES 8.8M – 10.5M', roi: { furnished: '19.75%', unfurnished: '13.67%' }, note: 'Garden terrace on select units', available: true },
       { type: '2 Bedroom', size: '121 – 159 SQM', price: 'From KES 14,200,000', priceRange: 'KES 14.2M – 20.4M', roi: { furnished: '15.17%', unfurnished: '10.95%' }, note: 'Garden terrace options available', available: true },
       { type: '3 Bedroom + DSQ', size: '169 – 231 SQM', price: 'From KES 19,800,000', priceRange: 'KES 19.8M – 29.6M', roi: { furnished: '18.09%', unfurnished: '12.06%' }, note: 'DSQ & garden terrace on select units', available: true },
     ],

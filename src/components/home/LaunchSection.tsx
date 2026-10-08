@@ -5,11 +5,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Sun, Moon } from 'lucide-react'
+import { approxUsd } from '@/lib/currency'
+
+const LOGO = {
+  src: encodeURI('/Ivy Myst Assets/Ivy Myst Logo.png'),
+  w: 792,
+  h: 173,
+}
 
 const units = [
-  { bed: '1 BED', size: '79–84 SQM', price: 'From KES 8.8M' },
-  { bed: '2 BED', size: '121–159 SQM', price: 'From KES 14.2M' },
-  { bed: '3 BED', size: '169–231 SQM', price: 'From KES 19.8M' },
+  { bed: '1 BED', size: '78–84 SQM', price: 'From KES 8.8M', usd: approxUsd(8_800_000) },
+  { bed: '2 BED', size: '121–159 SQM', price: 'From KES 14.2M', usd: approxUsd(14_200_000) },
+  { bed: '3 BED', size: '169–231 SQM', price: 'From KES 19.8M', usd: approxUsd(19_800_000) },
 ]
 
 const DAY_IMAGE = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2001_Day_AZURE%20IVY.jpg'
@@ -93,9 +100,14 @@ export default function LaunchSection() {
               Kileleshwa, Nairobi
             </p>
 
-            <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-white font-semibold leading-[0.95] mb-5" style={{ letterSpacing: '-0.035em' }}>
-              Ivy Myst Residence
-            </h2>
+            <Image
+              src={LOGO.src}
+              alt="Ivy Myst Residence"
+              width={LOGO.w}
+              height={LOGO.h}
+              className="w-auto object-contain brightness-0 invert mb-6 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              style={{ height: 'clamp(3.5rem, 8vw, 6.5rem)' }}
+            />
 
             <p className="text-white/65 text-sm font-sans font-light tracking-wide leading-relaxed max-w-sm mb-8">
               1, 2 &amp; 3 bedroom luxury residences with garden terraces in the heart
@@ -133,21 +145,24 @@ export default function LaunchSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
-                className="border border-white/15 bg-white/5 backdrop-blur-sm p-5 text-center hover:border-gold/50 transition-colors duration-300"
+                className="border border-white/15 bg-dark/70 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.35)] p-5 text-center hover:border-gold/50 transition-colors duration-300"
               >
                 <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.2em] uppercase mb-2">
                   {unit.bed}
                 </p>
-                <p className="text-white/80 text-xs font-sans mb-1">{unit.size}</p>
+                <p className="text-white/85 text-xs font-sans mb-1">{unit.size}</p>
                 <div className="h-px w-8 bg-white/15 mx-auto my-2.5" />
                 <p className="text-white text-[11px] font-sans font-light leading-snug">
                   {unit.price}
+                </p>
+                <p className="text-white/55 text-[10px] font-sans font-light mt-0.5">
+                  ({unit.usd})
                 </p>
               </motion.div>
             ))}
 
             <div className="col-span-3 text-center mt-2">
-              <p className="text-white/30 text-[10px] font-sans tracking-wider">
+              <p className="inline-block text-white/70 text-[10px] font-sans tracking-wider bg-dark/60 backdrop-blur-sm px-3 py-1.5">
                 Now selling · Flexible payment plans available
               </p>
             </div>
