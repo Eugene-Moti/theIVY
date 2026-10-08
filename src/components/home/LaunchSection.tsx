@@ -26,8 +26,11 @@ export default function LaunchSection() {
   const [isDay, setIsDay] = useState(false)
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Background — crossfades between the day and night courtyard renders */}
+    <section className="relative overflow-hidden min-h-screen flex items-center">
+      {/* Background — crossfades between the day and night courtyard renders.
+          The section is min-h-screen so this image always covers the full
+          viewport the moment it scrolls into view, with no sliver of the
+          section above or below showing through. */}
       <div className="absolute inset-0">
         <AnimatePresence initial={false}>
           <motion.div
@@ -78,7 +81,7 @@ export default function LaunchSection() {
       </div>
 
       {/* Content */}
-      <div className="relative py-28 lg:py-36 max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="relative w-full py-28 lg:py-36 max-w-7xl mx-auto px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
           {/* Left — text */}
