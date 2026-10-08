@@ -1,9 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowRight, Sun, Moon } from 'lucide-react'
 
 const units = [
   { bed: '1 BED', size: '79–84 SQM', price: 'From KES 8.8M' },
@@ -11,20 +12,62 @@ const units = [
   { bed: '3 BED', size: '169–231 SQM', price: 'From KES 19.8M' },
 ]
 
+const DAY_IMAGE = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2001_Day_AZURE%20IVY.jpg'
+const NIGHT_IMAGE = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2001_Night_AZURE%20IVY.jpg'
+
 export default function LaunchSection() {
+  const [isDay, setIsDay] = useState(false)
+
   return (
     <section className="relative overflow-hidden">
-      {/* Background */}
+      {/* Background — crossfades between the day and night courtyard renders */}
       <div className="absolute inset-0">
-        <Image
-          src={encodeURI('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png')}
-          alt="Ivy Myst Residence — Now Selling"
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={isDay ? 'day' : 'night'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={isDay ? DAY_IMAGE : NIGHT_IMAGE}
+              alt={`Ivy Myst Residence — Courtyard, ${isDay ? 'day' : 'night'} view`}
+              fill
+              priority
+              quality={82}
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </motion.div>
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-r from-dark/92 via-dark/72 to-dark/40" />
         <div className="absolute inset-0 bg-dark/25" />
+      </div>
+
+      {/* Day / Night toggle */}
+      <div className="absolute top-6 right-6 lg:top-8 lg:right-10 z-10 inline-flex border border-white/20 bg-dark/50 backdrop-blur-sm overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setIsDay(true)}
+          aria-pressed={isDay}
+          className={`flex items-center gap-1.5 px-4 py-2.5 text-[10px] font-sans font-semibold tracking-[0.16em] uppercase transition-colors duration-300 ${
+            isDay ? 'bg-gold text-dark' : 'text-white/60 hover:text-white'
+          }`}
+        >
+          <Sun size={12} /> Day
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsDay(false)}
+          aria-pressed={!isDay}
+          className={`flex items-center gap-1.5 px-4 py-2.5 text-[10px] font-sans font-semibold tracking-[0.16em] uppercase transition-colors duration-300 ${
+            !isDay ? 'bg-gold text-dark' : 'text-white/60 hover:text-white'
+          }`}
+        >
+          <Moon size={12} /> Night
+        </button>
       </div>
 
       {/* Content */}
