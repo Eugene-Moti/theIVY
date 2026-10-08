@@ -9,7 +9,7 @@ export interface Article {
   excerpt: string
   image: string
   featured: boolean
-  content: { heading?: string; body: string }[]
+  content: { heading?: string; body: string; image?: string; imageAlt?: string; imageCaption?: string }[]
 }
 
 export const articles: Article[] = [
@@ -30,6 +30,9 @@ export const articles: Article[] = [
       {
         heading: 'Strong Fundamentals Drive Demand',
         body: "Several structural factors underpin the city's property market strength. A rapidly expanding middle and upper-middle class is driving demand for quality housing, while urbanisation continues to bring professionals into Nairobi's most desirable neighbourhoods. Kileleshwa, Westlands, and Kilimani — Nairobi's so-called 'golden triangle' — have seen consistent price appreciation of between 8 and 14 percent per annum over the last five years.",
+        image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Day_Ivy Park.jpg'),
+        imageAlt: 'Nairobi skyline from above',
+        imageCaption: "Nairobi's skyline keeps rising across Kileleshwa, Westlands and Kilimani.",
       },
       {
         heading: 'Rental Yields Remain Compelling',
@@ -38,6 +41,9 @@ export const articles: Article[] = [
       {
         heading: "The Off-Plan Advantage",
         body: "For investors with a medium-term horizon, off-plan purchases offer a particularly compelling entry point. Buying during the construction phase — especially at pre-launch — provides pricing that is typically 15 to 25 percent below the completed value, with the full appreciation gap captured between contract signing and project handover. Developments by established players such as The Ivy Group, with a verified track record of delivery, offer a reduced risk profile compared to first-time developers.",
+        image: p('/IVY PARK RESIDENCE Assests/INTERIOR/Living room.png'),
+        imageAlt: 'Living room interior',
+        imageCaption: "Buying off-plan locks in today's price against tomorrow's finish.",
       },
       {
         heading: 'Mortgage Financing Expanding',
@@ -66,6 +72,9 @@ export const articles: Article[] = [
       {
         heading: 'A Neighbourhood Defined by Greenery',
         body: "Unlike the dense commercial corridors that characterise much of central Nairobi, Kileleshwa is defined by wide, tree-lined avenues, generous setbacks, and a genuine sense of space. The neighbourhood's lower plot density — a product of its original residential zoning — means that even as high-rise development takes hold, residents enjoy a quality of environment that is simply unavailable in more congested parts of the city.",
+        image: p('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'),
+        imageAlt: 'Blossoms Ivy Residence exterior',
+        imageCaption: "Blossoms Ivy Residence rises above Kileleshwa's tree-lined streets.",
       },
       {
         heading: 'Infrastructure and Connectivity',
@@ -74,6 +83,9 @@ export const articles: Article[] = [
       {
         heading: 'Education, Health, and Lifestyle',
         body: "Kileleshwa's amenity profile is unmatched. The area is home to, or adjacent to, several of Nairobi's most respected schools — both local and international — as well as major private hospitals and specialist clinics. Upscale shopping, gourmet dining, and leisure facilities are all within a short radius, making Kileleshwa a genuinely self-contained lifestyle destination.",
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg'),
+        imageAlt: 'Blossoms Ivy Residence lobby',
+        imageCaption: 'A grand arrival lobby sets the tone from the moment you step in.',
       },
       {
         heading: 'Investment Performance',
@@ -114,6 +126,9 @@ export const articles: Article[] = [
       {
         heading: '4. Brand-New Finishes and Modern Design',
         body: "Off-plan buyers receive a property with the latest specifications — modern kitchen fittings, smart-home technology, contemporary aesthetics — without the premium typically attached to a turnkey ready unit. There are no hidden maintenance costs or unfashionable finishes to contend with.",
+        image: p('/Ivy Myst Assets/New Renders/Myst amenities/gym and yoga space.jpg'),
+        imageAlt: 'Ivy Myst gym and yoga space',
+        imageCaption: "Ivy Myst's amenities set a new benchmark for Kileleshwa living.",
       },
       {
         heading: '5. Wide Unit Selection',
@@ -122,6 +137,9 @@ export const articles: Article[] = [
       {
         heading: '6. Strong Rental Demand on Completion',
         body: "A newly completed luxury development in a prime Nairobi location attracts premium tenants immediately. Corporate occupiers, expatriates, and high-net-worth individuals actively seek new-build product, and early investors benefit from this demand without the depreciation associated with older stock.",
+        image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop bar area.png'),
+        imageAlt: 'Ivy Myst rooftop bar area',
+        imageCaption: 'Rooftop social spaces keep demand high even before handover.',
       },
       {
         heading: '7. Developer Track Record Matters',
@@ -151,6 +169,9 @@ export const articles: Article[] = [
       {
         heading: 'Retail and Lifestyle Infrastructure',
         body: "Few Nairobi neighbourhoods can match Westlands for lifestyle amenities. Sarit Centre, Westgate Mall, and The Village Market are all within easy reach, complemented by a dense restaurant and entertainment scene that makes the area genuinely self-contained. For young professionals and families who value convenience, Westlands is simply without peer.",
+        image: p('/Luckinn Ivy Assets/Amenities/Lounge Area.jpeg'),
+        imageAlt: 'Luckinn Ivy Residence lounge area',
+        imageCaption: "Luckinn Ivy's lounge brings Westlands' social energy home.",
       },
       {
         heading: 'Connectivity at the Crossroads',
@@ -159,6 +180,9 @@ export const articles: Article[] = [
       {
         heading: 'Rental Yields Among the Highest in Nairobi',
         body: "Gross rental yields for quality apartments in Westlands currently average 7.5 to 9.5 percent — among the highest in the city. Corporate lets to verified tenants, often with multinational employers underwriting the lease, provide income security that property investors in many other markets can only envy.",
+        image: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'),
+        imageAlt: 'Luckinn Ivy Residence indoor heated swimming pool',
+        imageCaption: "A heated indoor pool is among Luckinn Ivy's signature amenities.",
       },
       {
         body: "Luckinn Ivy Residence, positioned on Mogotio Road in the heart of Westlands, captures all of these advantages in a single premium development. For investors seeking high-quality tenants, reliable yields, and long-term appreciation in one of Africa's most dynamic cities, Westlands — and Luckinn Ivy specifically — represents a compelling proposition.",
