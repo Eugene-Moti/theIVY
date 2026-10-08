@@ -21,7 +21,7 @@ export const articles: Article[] = [
     readTime: '6 min read',
     excerpt:
       "Nairobi's premium residential sector continues to outperform expectations. Here's a comprehensive look at why 2026 represents a golden window for property investors.",
-    image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'),
+    image: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'),
     featured: true,
     content: [
       {
@@ -57,7 +57,7 @@ export const articles: Article[] = [
     readTime: '5 min read',
     excerpt:
       "From tree-lined avenues to world-class amenities, Kileleshwa has consistently attracted Nairobi's most discerning homeowners. Here's what makes it special.",
-    image: p('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'),
+    image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
     featured: false,
     content: [
       {
@@ -93,7 +93,7 @@ export const articles: Article[] = [
     readTime: '4 min read',
     excerpt:
       "Buying off-plan remains one of the most effective wealth-creation strategies in Nairobi real estate. Here are the seven most compelling reasons to invest before a project completes.",
-    image: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png'),
+    image: p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png'),
     featured: false,
     content: [
       {
