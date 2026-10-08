@@ -16,9 +16,10 @@ export default function AboutSection() {
   return (
     <section className="py-24 lg:py-36 bg-cream">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-center">
 
-          {/* Image column */}
+          {/* Image column — wider than the text column, and a landscape
+              crop so it reads full and doesn't leave dead space beside it */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -26,15 +27,23 @@ export default function AboutSection() {
             transition={{ duration: 0.9, ease: 'easeOut' }}
             className="relative"
           >
-            {/* Main image */}
-            <div className="relative aspect-[4/5] overflow-hidden">
-              <Image
-                src={encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 1_IVY PARK.jpg')}
-                alt="The Ivy Group Development"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+            {/* Main image — slow Ken Burns zoom every time it scrolls into view */}
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <motion.div
+                initial={{ scale: 1.1 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ duration: 6, ease: 'linear' }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2005_Day_AZURE%20IVY.jpg"
+                  alt="Ivy Myst Residence — Courtyard"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                />
+              </motion.div>
             </div>
 
             {/* Floating "Since 2017" card — bottom-right */}
