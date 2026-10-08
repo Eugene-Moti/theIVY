@@ -9,7 +9,9 @@ import { articles } from '@/data/insights'
 import ArticleCard from '@/components/shared/ArticleCard'
 
 const featured = articles.find((a) => a.featured)!
-const rest = articles.filter((a) => !a.featured)
+const rest = articles
+  .filter((a) => !a.featured)
+  .sort((a, b) => +new Date(b.date) - +new Date(a.date))
 const CATEGORIES = ['All', ...Array.from(new Set(rest.map((a) => a.category)))]
 
 export default function InsightsPage() {

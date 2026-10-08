@@ -63,7 +63,7 @@ export const articles: Article[] = [
     readTime: '5 min read',
     excerpt:
       "From tree-lined avenues to world-class amenities, Kileleshwa has consistently attracted Nairobi's most discerning homeowners. Here's what makes it special.",
-    image: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
+    image: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll2_IVY%20MYST.jpg',
     featured: false,
     content: [
       {
@@ -189,6 +189,148 @@ export const articles: Article[] = [
       },
     ],
   },
+
+  {
+    slug: 'inside-ivy-myst-residence-kileleshwa',
+    title: "Inside Ivy Myst Residence: Kileleshwa's New Address for Rooftop Living",
+    category: 'PROJECT SPOTLIGHT',
+    date: 'April 2, 2026',
+    readTime: '5 min read',
+    excerpt:
+      "Groundbreaking is complete and sales are open. Here's a closer look at the development, the rooftop Celestial Pool, and what's still available across its two wings.",
+    image: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior night view.png'),
+    featured: false,
+    content: [
+      {
+        body: "Ivy Myst Residence sits on Gatundu Road in Kileleshwa, a short walk from where Blossoms Ivy Residence is nearing completion. Spread across 22 residential floors and two wings, the development will hold 448 apartments — 190 one-bedroom, 168 two-bedroom, and 90 three-bedroom units — with an estimated completion of August 2029. Groundbreaking is complete, and the development is now selling at early-stage pricing.",
+      },
+      {
+        heading: 'The Celestial Pool & Rooftop Deck',
+        body: "The signature amenity sits on the roof: the Celestial Pool, framed by a waterfall feature, alongside a rooftop restaurant, bar, water lounge and fireplace, with an uninterrupted view across Kileleshwa and the city skyline beyond. A separate first-floor amenity level adds an indoor garden, heated pool, gym, sauna and massage room — amenities most Nairobi developments spread thinly across a single floor, here given room to breathe.",
+        image: p('/Ivy Myst Assets/New Renders/Myst amenities/rooftop restaurant.png'),
+        imageAlt: 'Ivy Myst Residence rooftop restaurant',
+        imageCaption: 'The rooftop restaurant opens onto the Celestial Pool deck.',
+      },
+      {
+        heading: 'Garden Terraces on Select Units',
+        body: "A sculptural garden stream runs through the landscaped grounds at ground level, and select one and two-bedroom units carry their own garden terrace — a feature that's becoming a signature of Ivy Group's newer developments, and one that's hard to find elsewhere in Kileleshwa's high-rise stock.",
+        image: p('/Ivy Myst Assets/New Renders/Myst amenities/garden stream.png'),
+        imageAlt: 'Ivy Myst Residence garden stream',
+        imageCaption: 'A landscaped stream runs through the ground-floor gardens.',
+      },
+      {
+        heading: 'Unit Mix & Pricing',
+        body: "One-bedroom units run 78–84 SQM from KES 8.8 million (≈$68K), two-bedrooms 121–159 SQM from KES 14.2 million (≈$109K), and three-bedroom + DSQ units 169–231 SQM from KES 19.8 million (≈$152K) — with garden terraces and DSQ available on select units in each wing.",
+      },
+      {
+        body: "For buyers weighing Kileleshwa's established addresses against something newer, Ivy Myst offers the same postcode with rooftop amenities few existing buildings can match, at pricing that still reflects its early stage of construction.",
+      },
+    ],
+  },
+
+  {
+    slug: 'ivy-park-residence-kilimani-living',
+    title: 'Ivy Park Residence: Modern Living Minutes From Yaya Centre',
+    category: 'PROJECT SPOTLIGHT',
+    date: 'March 18, 2026',
+    readTime: '4 min read',
+    excerpt:
+      "Three towers, 660 apartments, and a rooftop built for both families and entertaining — here's where construction stands at Ivy Park Residence in Kilimani.",
+    image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Drone 2_IVY PARK.jpg'),
+    featured: false,
+    content: [
+      {
+        body: "Ivy Park Residence occupies a prime Kirichwa Road plot in Kilimani, minutes from Yaya Centre. At full build-out the development will comprise three residential towers across 22 floors with 660 apartments, ground-floor retail, and two basement parking levels — the largest of The Ivy Group's current developments by unit count.",
+      },
+      {
+        heading: 'Scale & Construction Progress',
+        body: "Structural works are currently underway on the fourth floor, with completion targeted for December 2028. The scale of the project means amenities are generous even by Ivy Group standards: a heated pool, rooftop garden and lounge, gym, yoga studio, coffee bar, co-working spaces and an indoor children's play area are all included, alongside a rooftop cinema — a feature unique to Ivy Park among the group's developments.",
+        image: p('/IVY PARK RESIDENCE Assests/AMENITIES/ROOFTOP/251027_FINAL_Cinema-View 3_IVY PARK.jpg'),
+        imageAlt: 'Ivy Park Residence rooftop cinema',
+        imageCaption: "A rooftop cinema sets Ivy Park's amenity offer apart.",
+      },
+      {
+        heading: 'A Courtyard Built for Community',
+        body: "Between the towers, a landscaped courtyard gives residents a shared outdoor space at ground level — somewhere for children to play and neighbours to meet without leaving the development. It's a deliberate counterpoint to the density of 660 units, designed to keep the development feeling like a neighbourhood rather than a block.",
+        image: p('/IVY PARK RESIDENCE Assests/COURTYARD/05_Courtyard 5K.png'),
+        imageAlt: 'Ivy Park Residence courtyard',
+        imageCaption: "The landscaped courtyard sits at the development's centre.",
+      },
+      {
+        heading: 'Unit Mix & Pricing',
+        body: "One-bedroom units start from KES 6.82 million (62–69 SQM), two-bedrooms from KES 10.78 million (73–128 SQM), and three-bedroom + DSQ units from KES 15.62 million (142 SQM) — pricing that reflects the project's early construction stage and its position in the KES 6–20 million band most diaspora and first-time buyers target.",
+      },
+    ],
+  },
+
+  {
+    slug: 'blossoms-ivy-residence-near-completion',
+    title: 'Blossoms Ivy Residence: Nearing Completion in Kileleshwa',
+    category: 'PROJECT SPOTLIGHT',
+    date: 'February 22, 2026',
+    readTime: '4 min read',
+    excerpt:
+      "Most of Blossoms Ivy Residence has already sold. Here's what's left, what's finished, and why buyers are moving quickly on the remaining three-bedroom units.",
+    image: p('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
+    featured: false,
+    content: [
+      {
+        body: "Blossoms Ivy Residence, on Gatundu Road in Kileleshwa, is one of the closest Ivy Group developments to handover, with completion targeted for December 2026. Two residential towers rise 22 floors above four basement parking levels, holding 220 apartments in total — the large majority of which are already sold.",
+      },
+      {
+        heading: 'Final Stretch of Construction',
+        body: "With the building substantially complete, the focus has shifted to interior finishing and amenity fit-out. The grand ground-floor lobby, dual backup generators, smart door locks and 24-hour security are already in place, giving buyers a rare chance to walk a near-finished Kileleshwa development rather than buy from renders alone.",
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Restaurant 5.jpg'),
+        imageAlt: 'Blossoms Ivy Residence restaurant',
+        imageCaption: "The development's restaurant space nears completion.",
+      },
+      {
+        heading: 'Spa, Gym & Leisure Garden',
+        body: "Amenities are concentrated on the basement's fourth level and include a heated indoor pool, fully equipped gym, yoga studio, spa, coffee bar and a leisure garden with both indoor and outdoor children's play areas — a full lifestyle floor rather than a single shared pool.",
+        image: p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/KCGV_Blossom Ivy_R2_Spa 1.jpg'),
+        imageAlt: 'Blossoms Ivy Residence spa',
+        imageCaption: 'A dedicated spa sits alongside the gym and yoga studio.',
+      },
+      {
+        heading: "What's Still Available",
+        body: "The one, two, and four-bedroom + study + DSQ lines are sold out. What remains is the three-bedroom + DSQ line — 180–236 SQM, from KES 19,000,000 — spacious units with dual-access bathrooms and a study room in selected apartments, for buyers who want Kileleshwa's finest address with the risk of an unfinished building largely removed.",
+      },
+    ],
+  },
+
+  {
+    slug: 'luckinn-ivy-residence-westlands-launch',
+    title: 'Luckinn Ivy Residence: The Final Units Remaining in Westlands',
+    category: 'PROJECT SPOTLIGHT',
+    date: 'January 20, 2026',
+    readTime: '4 min read',
+    excerpt:
+      "Luckinn Ivy's one and two-bedroom lines have already sold out. Here's what's driving demand for the three-bedroom + DSQ units still available on Mogotio Road.",
+    image: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
+    featured: false,
+    content: [
+      {
+        body: "Luckinn Ivy Residence sits on Mogotio Road in the heart of Westlands — a single 20-floor tower holding 120 apartments, with two basement parking levels plus ground and first-floor parking. Completion is targeted for December 2026, putting the building among the nearest-to-handover in The Ivy Group's current portfolio.",
+      },
+      {
+        heading: 'A Tower Nearing Handover',
+        body: "With structural and finishing works well advanced, Luckinn Ivy is at the stage where buyers can assess real finishes rather than renders alone. The building's amenities — a heated indoor pool, fully equipped gym, co-working space, yoga room and children's play area — are largely complete, backed by smart door locks, backup power, a borehole and 24-hour CCTV security.",
+        image: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'),
+        imageAlt: 'Luckinn Ivy Residence gym',
+        imageCaption: "The gym is among the amenities already fitted out.",
+      },
+      {
+        heading: 'Only 3-Bedroom + DSQ Units Remain',
+        body: "Both the one-bedroom and two-bedroom + DSQ lines are sold out. The three-bedroom + DSQ units that remain run 170–172 SQM — generously sized for Westlands, where most new stock skews toward smaller one and two-bedroom layouts aimed at renters rather than families.",
+        image: p('/Luckinn Ivy Assets/Amenities/Kids Play Area.jpeg'),
+        imageAlt: 'Luckinn Ivy Residence kids play area',
+        imageCaption: "A dedicated play area suits the larger, family-sized units left.",
+      },
+      {
+        body: "For buyers who want a near-complete Westlands address with family-sized units still on the table, Luckinn Ivy's remaining inventory is a narrowing window — contact our sales team for current pricing on the three-bedroom + DSQ line.",
+      },
+    ],
+  },
 ]
 
 export function getArticle(slug: string): Article | undefined {
@@ -196,5 +338,12 @@ export function getArticle(slug: string): Article | undefined {
 }
 
 export function getRelatedArticles(slug: string): Article[] {
-  return articles.filter((a) => a.slug !== slug).slice(0, 3)
+  const current = getArticle(slug)
+  const others = articles.filter((a) => a.slug !== slug)
+  if (!current) return others.slice(0, 3)
+  // Prefer articles in the same category (e.g. other Project Spotlights, or
+  // other Kileleshwa/Westlands guides) before falling back to the rest.
+  const sameCategory = others.filter((a) => a.category === current.category)
+  const remainder = others.filter((a) => a.category !== current.category)
+  return [...sameCategory, ...remainder].slice(0, 3)
 }

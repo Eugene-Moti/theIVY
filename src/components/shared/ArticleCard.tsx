@@ -6,21 +6,32 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, Clock } from 'lucide-react'
 import { Article } from '@/data/insights'
 
-const DIRECTIONS = [
-  { x: -50, y: 20 },
-  { x: 0, y: 50 },
-  { x: 50, y: 20 },
+// Each card spins in from a different point on the compass and a different
+// angle, like debris settling out of a whirlwind — and with a delay chained
+// off its position in the grid, they lock into place one after another
+// rather than all at once.
+const WHIRL = [
+  { x: -90, y: -60, rotate: -55 },
+  { x: 95, y: 70, rotate: 50 },
+  { x: -80, y: 75, rotate: 45 },
+  { x: 90, y: -65, rotate: -48 },
+  { x: -70, y: -85, rotate: 60 },
+  { x: 85, y: 55, rotate: -42 },
 ]
 
 export default function ArticleCard({ article, index }: { article: Article; index: number }) {
-  const dir = DIRECTIONS[index % DIRECTIONS.length]
+  const w = WHIRL[index % WHIRL.length]
+  const delay = (index % WHIRL.length) * 0.14
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: dir.x, y: dir.y }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      initial={{ opacity: 0, x: w.x, y: w.y, rotate: w.rotate, scale: 0.6 }}
+      whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
       viewport={{ margin: '-80px' }}
-      transition={{ duration: 0.75, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        type: 'spring', stiffness: 110, damping: 15, mass: 0.8, delay,
+        opacity: { duration: 0.5, delay },
+      }}
     >
       <Link href={`/insights/${article.slug}`} className="group block">
         <div className="relative aspect-[4/3] overflow-hidden mb-6 bg-dark">
