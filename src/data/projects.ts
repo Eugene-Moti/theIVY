@@ -209,7 +209,7 @@ export const projects: ProjectData[] = [
     parking: 'Basement, Ground & First Floor',
     completion: 'December 2026',
     statusLabel: 'LIMITED UNITS',
-    heroImage: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'),
+    heroImage: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
     exteriorImages: [
       p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
       p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'),
@@ -289,8 +289,7 @@ export const projects: ProjectData[] = [
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d2148.455932025552!2d36.810185702436065!3d-1.2677446121873845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE%20Nairobi%2C%20Mogotio%20Rd%2C%20KE!3m2!1d-1.2670761!2d36.8102079!5e1!3m2!1sen!2ske!4v1781851024052!5m2!1sen!2ske',
     brochurePath: p('/Luckinn Ivy Assets/Luckinn Brochure.pdf'),
     gallerySlides: [
-      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'), label: 'Tower Exterior', category: 'Architecture', description: 'A 20-floor tower on Mogotio Road in Westlands — at the precise intersection of professional convenience and cosmopolitan lifestyle.' },
-      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), label: 'Arrival Entrance', category: 'Architecture', description: 'An arrival experience that sets the tone for the calibre of lifestyle that awaits within.' },
+      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), label: 'Arrival Entrance', category: 'Architecture', description: 'An arrival experience that sets the tone for the calibre of lifestyle that awaits within, on a 20-floor tower on Mogotio Road in Westlands.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'), label: 'Heated Indoor Pool', category: 'Aquatics', description: 'An elegantly designed indoor heated swimming pool conceived as a private resort, available year-round regardless of the weather.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'), label: 'Fully Equipped Gym', category: 'Fitness', description: 'A fully kitted-out fitness suite delivering the performance of a boutique fitness club without leaving the building.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'), label: 'Yoga Studio', category: 'Wellness', description: 'A dedicated yoga and meditation studio bathed in considered light — a quiet counterpoint to the energy of Westlands outside.' },

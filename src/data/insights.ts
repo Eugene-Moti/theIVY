@@ -156,7 +156,7 @@ export const articles: Article[] = [
     readTime: '5 min read',
     excerpt:
       "Westlands combines commercial dynamism with residential appeal in a way that no other Nairobi neighbourhood can match — and that makes it perpetually attractive to property investors.",
-    image: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'),
+    image: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'),
     featured: false,
     content: [
       {

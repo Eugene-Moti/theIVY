@@ -9,7 +9,7 @@ import TrackedLink from '@/components/shared/TrackedLink'
 
 const devDropdown = [
   { name: 'Blossoms Ivy Residence', location: 'Kileleshwa', status: 'Available', href: '/blossom-ivy', image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png') },
-  { name: 'Luckinn Ivy Residence', location: 'Westlands', status: 'Limited Units', href: '/luckinn-ivy', image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png') },
+  { name: 'Luckinn Ivy Residence', location: 'Westlands', status: 'Limited Units', href: '/luckinn-ivy', image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png') },
   { name: 'Ivy Park Residence', location: 'Kilimani', status: 'Early Bird', href: '/ivy-park', image: encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Day_Ivy Park.jpg') },
   { name: 'Ivy Myst Residence', location: 'Kileleshwa', status: 'Now Selling', href: '/ivy-myst', image: encodeURI('/Ivy Myst Assets/Entrance.jpg') },
 ]

@@ -175,7 +175,7 @@ export default function AboutContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { name: 'Blossoms Ivy Residence', location: 'Kileleshwa', image: encodeURI('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'), href: '/blossom-ivy' },
-              { name: 'Luckinn Ivy Residence', location: 'Westlands', image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Exterior.png'), href: '/luckinn-ivy' },
+              { name: 'Luckinn Ivy Residence', location: 'Westlands', image: encodeURI('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), href: '/luckinn-ivy' },
               { name: 'Ivy Park Residence', location: 'Kilimani', image: encodeURI('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), href: '/ivy-park' },
               { name: 'Ivy Myst Residence', location: 'Kileleshwa', image: encodeURI('/Ivy Myst Assets/Entrance.jpg'), href: '/ivy-myst' },
             ].map((proj, i) => (
