@@ -1,8 +1,9 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Check } from 'lucide-react'
 
 const highlights = [
@@ -12,11 +13,42 @@ const highlights = [
   'A record of on-time delivery and flexible payment plans',
 ]
 
+// Ivy Myst amenity renders — cycle through these in succession behind the
+// "About" copy so the section keeps showing off more of the development.
+const BUCKET = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/'
+const AMENITY_IMAGES = [
+  BUCKET + '260901_FINAL-Rooftop%2025%20Pool%2005_AZURE%20IVY.jpg',
+  BUCKET + '260831_Final_Gym%20Floor%2025th_Creative%20View%204_AZURE%20IVY.jpg',
+  BUCKET + '260901_Final-ShotArt%2001_AZURE%20IVY.jpg',
+  BUCKET + '260901_Final-ShotArt%2002_AZURE%20IVY.jpg',
+  BUCKET + '260901_FINAL_Massage%20room_Creaitive%20Shot_View%201_AZURE%20IVY.jpg',
+  BUCKET + '260901_FINAL_Pool%20And%20Pood%20Deck-Creative%204_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Restaurant%20Garden_Creat%20shot_View%201_Floor%2025th_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Water%20Lounge%2023rd%20Floor_Creative%20View%204_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Water%20Lounge%2023rd%20Floor_View%203_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Yoga_Creat%20shot%20View%201_Floor%2025th_IVY%20MYST.jpg.jpg',
+  BUCKET + '260901_FINAL_Yoga_Creat%20shot%20View%202_Floor%2025th_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Gym%20Weight_Creative%20shot_View%201_IVY%20MYST.jpg',
+  BUCKET + '260901_FINAL_Kids%20Play-Creative%201_IVY%20MYST.jpg',
+  BUCKET + '260910_FINAL-RooftopAll3_IVY%20MYST.jpg',
+  BUCKET + '260910_FINAL_Main%20Reception_Creative_View%2001_IVY%20MYST.jpg',
+  BUCKET + 'IVY%20MYST%20MAPPED%20AMMENITIES.jpg.jpeg',
+]
+
+const DWELL = 4500
+
 export default function AboutSection() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const t = setInterval(() => setIndex((i) => (i + 1) % AMENITY_IMAGES.length), DWELL)
+    return () => clearInterval(t)
+  }, [])
+
   return (
     <section className="py-24 lg:py-36 bg-cream">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-12 lg:gap-16 items-center">
 
           {/* Image column — wider than the text column, and a landscape
               crop so it reads full and doesn't leave dead space beside it */}
@@ -27,23 +59,27 @@ export default function AboutSection() {
             transition={{ duration: 0.9, ease: 'easeOut' }}
             className="relative"
           >
-            {/* Main image — slow Ken Burns zoom every time it scrolls into view */}
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <motion.div
-                initial={{ scale: 1.1 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: false }}
-                transition={{ duration: 6, ease: 'linear' }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2005_Day_AZURE%20IVY.jpg"
-                  alt="Ivy Myst Residence — Courtyard"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 58vw"
-                />
-              </motion.div>
+            {/* Amenity renders cycle through in succession, each with a slow
+                Ken Burns zoom, behind the "About" copy */}
+            <div className="relative aspect-[4/3] overflow-hidden bg-dark">
+              <AnimatePresence>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 1.08 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ opacity: { duration: 1 }, scale: { duration: DWELL / 1000 + 1.5, ease: 'linear' } }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={AMENITY_IMAGES[index]}
+                    alt="Ivy Myst Residence — Amenities"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 64vw"
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Floating "Since 2017" card — bottom-right */}
