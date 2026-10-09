@@ -50,9 +50,8 @@ const BUDGETS_BY_CONTEXT = {
 const BUYER_TYPES_BY_CONTEXT = {
   purchase: [
     'Buying for myself / my family',
-    'Buying with a partner (jointly)',
     'Buying as an investment',
-    'I am a property agent / broker',
+    'I am a property agent',
     'Enquiring on behalf of someone else',
   ],
   rental: [
