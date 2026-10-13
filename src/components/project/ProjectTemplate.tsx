@@ -228,27 +228,25 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </div>
       </section>
 
-      {/* ─────────────── QUICK FACTS ─────────────── */}
+      {/* ─────────────── QUICK FACTS + TRUST ─────────────── */}
       <section className="bg-dark border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-7 gap-x-4">
-          {facts.map((f) => (
-            <div key={f.k}>
-              <p className="text-white/35 text-[9px] font-sans tracking-[0.22em] uppercase mb-1.5">{f.k}</p>
-              <p className="text-white text-[13px] font-sans font-light leading-snug">{f.v}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─────────────── TRUST STRIP ─────────────── */}
-      <section className="bg-cream border-b border-dark/8">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
-          {['The Ivy Group · Est. 2017', 'Sold direct — no agent commissions', '4 landmark developments across Nairobi'].map((t) => (
-            <span key={t} className="flex items-center gap-2 text-dark/55 text-[11px] font-sans tracking-wide">
-              <Check size={12} className="text-gold flex-shrink-0" strokeWidth={2.5} />
-              {t}
-            </span>
-          ))}
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-9">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-7 gap-x-4">
+            {facts.map((f) => (
+              <div key={f.k}>
+                <p className="text-white/35 text-[9px] font-sans tracking-[0.22em] uppercase mb-1.5">{f.k}</p>
+                <p className="text-white text-[13px] font-sans font-light leading-snug">{f.v}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center gap-x-10 gap-y-2.5">
+            {['The Ivy Group · Est. 2017', 'Sold direct — no agent commissions', '4 landmark developments across Nairobi'].map((t) => (
+              <span key={t} className="flex items-center gap-2 text-white/50 text-[11px] font-sans tracking-wide">
+                <Check size={12} className="text-gold flex-shrink-0" strokeWidth={2.5} />
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -328,8 +326,16 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
 
           {data.availableUnits.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {data.availableUnits.map((u) => (
-                <div key={u.type} className="bg-white border border-dark/10 p-7 flex flex-col hover:border-gold/40 transition-colors">
+              {data.availableUnits.map((u, i) => (
+                <motion.div
+                  key={u.type}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ margin: '-60px' }}
+                  transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6 }}
+                  className="bg-white border border-dark/10 p-7 flex flex-col hover:border-gold/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-[border-color,box-shadow] duration-300"
+                >
                   <p className="text-gold text-[9px] font-sans font-semibold tracking-[0.22em] uppercase mb-4">Available</p>
                   <h3 className="font-serif text-lg text-dark font-normal" style={{ letterSpacing: '0.01em' }}>
                     {u.type}
@@ -364,7 +370,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   >
                     Enquire
                   </a>
-                </div>
+                </motion.div>
               ))}
             </div>
           ) : (
@@ -408,19 +414,29 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             {data.amenities.map((a, i) => (
               <motion.div
                 key={a.label}
-                {...fade}
-                transition={{ ...fade.transition, delay: (i % 3) * 0.06 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ margin: '-80px' }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className="group"
               >
-                <div className="relative aspect-[4/3] overflow-hidden mb-5">
-                  <Image
-                    src={a.image}
-                    alt={a.label}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    quality={85}
-                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                  />
+                <div className="relative aspect-[4/3] overflow-hidden mb-5 bg-dark">
+                  <motion.div
+                    initial={{ scale: 1.1 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ margin: '-80px' }}
+                    transition={{ duration: 2.2, ease: 'easeOut' }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={a.image}
+                      alt={a.label}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      quality={85}
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                    />
+                  </motion.div>
                 </div>
                 <h3 className="font-serif text-lg text-dark font-normal mb-2" style={{ letterSpacing: '0.01em' }}>
                   {a.label}
@@ -452,10 +468,14 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             <Heading className="mt-3 mb-12">A Closer Look</Heading>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {galleryImages.map((img, i) => (
-                <button
+                <motion.button
                   key={i}
                   type="button"
                   onClick={() => openLb(galleryImages, i)}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
                   className={`relative overflow-hidden group ${i % 5 === 0 ? 'col-span-2 aspect-[16/10]' : 'aspect-[4/3]'}`}
                 >
                   <Image
@@ -467,7 +487,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   />
                   <span className="absolute inset-0 bg-dark/0 group-hover:bg-dark/15 transition-colors duration-300" />
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -613,7 +633,11 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
           <Heading light className="mt-3 mb-10">Why Invest Here</Heading>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-14">
             {data.investmentPoints.map((p, i) => (
-              <motion.div key={i} {...fade} className="flex gap-3.5 py-5 border-b border-white/10">
+              <motion.div
+                key={i}
+                {...fade}
+                className="flex gap-3.5 py-5 px-3 -mx-3 border-b border-white/10 hover:bg-white/[0.03] transition-colors duration-300"
+              >
                 <Check size={14} className="text-gold-light shrink-0 mt-1" strokeWidth={2.5} />
                 <p className="text-white/70 text-[13.5px] font-sans font-light leading-relaxed">{p}</p>
               </motion.div>
@@ -689,31 +713,53 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             <Eyebrow>Explore More</Eyebrow>
             <Heading className="mt-3 mb-12">Other Developments</Heading>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-              {others.map((proj) => (
-                <Link key={proj.slug} href={`/${proj.slug}`} className="group block">
-                  <div className="relative aspect-[4/3] overflow-hidden mb-5">
-                    <Image
-                      src={proj.heroImage}
-                      alt={proj.name}
-                      fill
-                      sizes="33vw"
-                      quality={80}
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
-                    <span className="absolute top-3 left-3 bg-dark/60 backdrop-blur-sm px-2.5 py-1 text-white text-[8px] font-sans font-semibold tracking-[0.18em]">
-                      {proj.statusLabel}
-                    </span>
-                  </div>
-                  <p className="text-gold text-[8.5px] font-sans font-semibold tracking-[0.22em] uppercase mb-2">
-                    {proj.locationLabel}
-                  </p>
-                  <h3 className="font-serif text-lg text-dark font-normal leading-tight mb-3 group-hover:text-gold transition-colors" style={{ letterSpacing: '0.01em' }}>
-                    {proj.name}
-                  </h3>
-                  <span className="inline-flex items-center gap-1.5 text-[9px] font-sans font-semibold tracking-[0.2em] uppercase text-dark/40 group-hover:text-gold transition-colors">
-                    Explore <ArrowRight size={9} />
-                  </span>
-                </Link>
+              {others.map((proj, i) => (
+                <motion.div
+                  key={proj.slug}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ margin: '-60px' }}
+                  transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Link href={`/${proj.slug}`} className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden mb-5 bg-dark">
+                      <motion.div
+                        initial={{ scale: 1.1 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ margin: '-60px' }}
+                        transition={{ duration: 2.2, ease: 'easeOut' }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={proj.heroImage}
+                          alt={proj.name}
+                          fill
+                          sizes="33vw"
+                          quality={80}
+                          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                        />
+                      </motion.div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 pb-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        <span className="text-white text-[10px] font-sans font-semibold tracking-[0.18em] uppercase">
+                          Explore
+                        </span>
+                        <span className="flex items-center justify-center w-7 h-7 rounded-full bg-gold text-dark">
+                          <ArrowUpRight size={13} />
+                        </span>
+                      </div>
+                      <span className="absolute top-3 left-3 bg-dark/60 backdrop-blur-sm px-2.5 py-1 text-white text-[8px] font-sans font-semibold tracking-[0.18em]">
+                        {proj.statusLabel}
+                      </span>
+                    </div>
+                    <p className="text-gold text-[8.5px] font-sans font-semibold tracking-[0.22em] uppercase mb-2">
+                      {proj.locationLabel}
+                    </p>
+                    <h3 className="font-serif text-lg text-dark font-normal leading-tight group-hover:text-gold transition-colors" style={{ letterSpacing: '0.01em' }}>
+                      {proj.name}
+                    </h3>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </div>
