@@ -257,65 +257,78 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
 
       {/* ─────────────── OVERVIEW ─────────────── */}
       <section className="bg-white py-20 lg:py-28">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <Eyebrow>Overview</Eyebrow>
-          <Heading className="mt-3">{shortName}</Heading>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-10 lg:gap-16">
+            {/* Sticky label column — stays in view while the narrative scrolls past */}
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <Eyebrow>Overview</Eyebrow>
+              <Heading className="mt-3 mb-6">{shortName}</Heading>
+              <p className="text-dark/50 text-[13.5px] font-sans font-light italic leading-relaxed border-l-2 border-gold pl-4 mb-8">
+                {data.tagline}
+              </p>
+              <a
+                href="#residences"
+                className="inline-flex items-center gap-2 text-[10px] font-sans font-semibold tracking-[0.2em] uppercase text-dark hover:text-gold transition-colors"
+              >
+                View Residences <ArrowRight size={11} />
+              </a>
+            </div>
 
-          {data.descriptionBlocks ? (
-            <div className="mt-12 space-y-12">
-              {data.descriptionBlocks.map((block, i) => {
-                if (block.type === 'text')
-                  return (
-                    <motion.p
-                      key={i}
-                      {...fade}
-                      className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]"
-                    >
-                      {block.content}
-                    </motion.p>
-                  )
-                if (block.type === 'image')
-                  return (
-                    <motion.figure key={i} {...fade} className="lg:-mx-24">
-                      <div className="relative aspect-[16/9] overflow-hidden">
-                        <Image src={block.src!} alt={block.caption || ''} fill className="object-cover" sizes="90vw" quality={86} />
-                      </div>
-                      {block.caption && (
-                        <figcaption className="mt-3 lg:mx-24 text-dark/40 text-[10px] font-sans tracking-[0.16em] uppercase">
-                          {block.caption}
-                        </figcaption>
-                      )}
-                    </motion.figure>
-                  )
-                if (block.type === 'image-pair')
-                  return (
-                    <motion.div key={i} {...fade} className="lg:-mx-24 grid grid-cols-2 gap-3">
-                      {block.images?.map((img, j) => (
-                        <figure key={j}>
-                          <div className="relative aspect-[4/3] overflow-hidden">
-                            <Image src={img.src} alt={img.caption || ''} fill className="object-cover" sizes="45vw" quality={84} />
-                          </div>
-                          {img.caption && (
-                            <figcaption className="mt-2 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">
-                              {img.caption}
-                            </figcaption>
-                          )}
-                        </figure>
-                      ))}
-                    </motion.div>
-                  )
-                return null
-              })}
+            {/* Flowing narrative */}
+            <div className="max-w-2xl space-y-10">
+              {data.descriptionBlocks ? (
+                data.descriptionBlocks.map((block, i) => {
+                  if (block.type === 'text')
+                    return (
+                      <motion.p
+                        key={i}
+                        {...fade}
+                        className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]"
+                      >
+                        {block.content}
+                      </motion.p>
+                    )
+                  if (block.type === 'image')
+                    return (
+                      <motion.figure key={i} {...fade}>
+                        <div className="relative aspect-[16/9] overflow-hidden">
+                          <Image src={block.src!} alt={block.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 55vw" quality={86} />
+                        </div>
+                        {block.caption && (
+                          <figcaption className="mt-3 text-dark/40 text-[10px] font-sans tracking-[0.16em] uppercase">
+                            {block.caption}
+                          </figcaption>
+                        )}
+                      </motion.figure>
+                    )
+                  if (block.type === 'image-pair')
+                    return (
+                      <motion.div key={i} {...fade} className="grid grid-cols-2 gap-3">
+                        {block.images?.map((img, j) => (
+                          <figure key={j}>
+                            <div className="relative aspect-[4/3] overflow-hidden">
+                              <Image src={img.src} alt={img.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 27vw" quality={84} />
+                            </div>
+                            {img.caption && (
+                              <figcaption className="mt-2 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">
+                                {img.caption}
+                              </figcaption>
+                            )}
+                          </figure>
+                        ))}
+                      </motion.div>
+                    )
+                  return null
+                })
+              ) : (
+                data.descriptionParagraphs.map((para, i) => (
+                  <motion.p key={i} {...fade} className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]">
+                    {para}
+                  </motion.p>
+                ))
+              )}
             </div>
-          ) : (
-            <div className="mt-10 space-y-6">
-              {data.descriptionParagraphs.map((para, i) => (
-                <motion.p key={i} {...fade} className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]">
-                  {para}
-                </motion.p>
-              ))}
-            </div>
-          )}
+          </div>
         </div>
       </section>
 
@@ -409,64 +422,34 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </div>
       </section>
 
-      {/* ─────────────── AMENITIES ─────────────── */}
-      <section className="bg-white py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <Eyebrow>Amenities</Eyebrow>
-          <Heading className="mt-3 mb-12">Life at {shortName}</Heading>
+      {/* ─────────────── AMENITY SHOWCASE ─────────────── */}
+      <AmenityShowcase amenities={data.amenities} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-11">
-            {data.amenities.map((a, i) => (
+      {/* ─────────────── EVERY RESIDENCE INCLUDES ─────────────── */}
+      <section className="bg-white py-20 lg:py-28">
+        <div className="max-w-5xl mx-auto px-6 lg:px-10">
+          <Eyebrow>Amenities</Eyebrow>
+          <Heading className="mt-3 mb-3">Every Residence Includes</Heading>
+          <p className="text-dark/50 text-sm font-sans font-light max-w-lg leading-relaxed mb-12">
+            A quick reference of what comes standard — see them in full in the gallery above.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3">
+            {data.amenityList.map((item, i) => (
               <motion.div
-                key={a.label}
-                initial={{ opacity: 0, y: 24 }}
+                key={item}
+                initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ margin: '-80px' }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="group"
+                viewport={{ margin: '-60px' }}
+                transition={{ duration: 0.5, delay: (i % 9) * 0.04 }}
+                className="flex items-start gap-3 py-3 border-b border-dark/8 text-[13.5px] text-dark/65 font-sans font-light leading-snug"
               >
-                <div className="relative aspect-[4/3] overflow-hidden mb-5 bg-dark">
-                  <motion.div
-                    initial={{ scale: 1.1 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ margin: '-80px' }}
-                    transition={{ duration: 2.2, ease: 'easeOut' }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={a.image}
-                      alt={a.label}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      quality={85}
-                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                    />
-                  </motion.div>
-                </div>
-                <h3 className="font-serif text-lg text-dark font-normal mb-2" style={{ letterSpacing: '0.01em' }}>
-                  {a.label}
-                </h3>
-                <p className="text-dark/55 text-[13px] font-sans font-light leading-[1.8]">{a.description}</p>
+                <Check size={13} className="text-gold shrink-0 mt-1" strokeWidth={2.5} />
+                {item}
               </motion.div>
             ))}
           </div>
-
-          <div className="mt-16 border-t border-dark/10 pt-10">
-            <p className="text-dark/35 text-[10px] font-sans tracking-[0.24em] uppercase mb-6">Every Residence Includes</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-3">
-              {data.amenityList.map((item) => (
-                <div key={item} className="flex items-start gap-2.5 text-[13px] text-dark/65 font-sans font-light leading-snug">
-                  <Check size={13} className="text-gold shrink-0 mt-1" strokeWidth={2.5} />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* ─────────────── AMENITY SHOWCASE ─────────────── */}
-      <AmenityShowcase amenities={data.amenities} />
 
       {/* ─────────────── FLOOR PLANS ─────────────── */}
       <section className="bg-white py-20 lg:py-28">
