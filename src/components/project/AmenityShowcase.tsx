@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -11,6 +11,8 @@ const DWELL = 5500
 export default function AmenityShowcase({ amenities }: { amenities: ProjectAmenity[] }) {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const btnRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   const go = (i: number) => setActive((i + amenities.length) % amenities.length)
 
@@ -19,6 +21,11 @@ export default function AmenityShowcase({ amenities }: { amenities: ProjectAmeni
     const t = setTimeout(() => setActive((a) => (a + 1) % amenities.length), DWELL)
     return () => clearTimeout(t)
   }, [active, paused, amenities.length])
+
+  // Keep the active tab in view as it auto-advances through a long list.
+  useEffect(() => {
+    btnRefs.current[active]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [active])
 
   if (amenities.length === 0) return null
   const current = amenities[active]
@@ -108,16 +115,19 @@ export default function AmenityShowcase({ amenities }: { amenities: ProjectAmeni
           </AnimatePresence>
 
           {/* Horizontal amenity menu — auto-advances with the background,
-              click any item to jump straight to it */}
+              click any item to jump straight to it. Always scrollable
+              (never force-fit via flex-1) so a long amenity list never
+              gets clipped, however many items there are. */}
           {amenities.length > 1 && (
-            <div className="border border-white/15 bg-dark/45 backdrop-blur-md overflow-x-auto no-scrollbar">
-              <div className="flex w-max sm:w-full divide-x divide-white/10">
+            <div ref={menuRef} className="border border-white/15 bg-dark/45 backdrop-blur-md overflow-x-auto no-scrollbar">
+              <div className="flex w-max divide-x divide-white/10">
                 {amenities.map((a, i) => (
                   <button
                     key={a.label}
+                    ref={(el) => { btnRefs.current[i] = el }}
                     type="button"
                     onClick={() => setActive(i)}
-                    className={`relative flex-shrink-0 sm:flex-1 text-left px-4 sm:px-5 py-3.5 transition-colors duration-300 ${
+                    className={`relative flex-shrink-0 w-[128px] sm:w-[150px] text-left px-4 sm:px-5 py-3.5 transition-colors duration-300 ${
                       active === i ? 'bg-white/10' : 'hover:bg-white/5'
                     }`}
                   >
@@ -129,7 +139,7 @@ export default function AmenityShowcase({ amenities }: { amenities: ProjectAmeni
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span
-                      className={`block text-[10.5px] font-sans font-semibold tracking-[0.08em] uppercase whitespace-nowrap transition-colors duration-300 ${
+                      className={`block text-[10.5px] font-sans font-semibold tracking-[0.08em] uppercase leading-tight transition-colors duration-300 ${
                         active === i ? 'text-white' : 'text-white/45'
                       }`}
                     >
