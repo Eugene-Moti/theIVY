@@ -23,8 +23,18 @@ export default function AmenityShowcase({ amenities }: { amenities: ProjectAmeni
   }, [active, paused, amenities.length])
 
   // Keep the active tab in view as it auto-advances through a long list.
+  // Deliberately NOT scrollIntoView — it walks every scrollable ancestor,
+  // including the page itself, and was dragging the whole viewport back
+  // down to this section every time the tab changed, even if the visitor
+  // had scrolled away to read Floor Plans. Scrolling the menu strip's own
+  // scrollLeft directly leaves the page scroll position untouched.
   useEffect(() => {
-    btnRefs.current[active]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    const container = menuRef.current
+    const btn = btnRefs.current[active]
+    if (!container || !btn) return
+    const btnLeft = btn.getBoundingClientRect().left - container.getBoundingClientRect().left + container.scrollLeft
+    const target = btnLeft - (container.clientWidth - btn.clientWidth) / 2
+    container.scrollTo({ left: Math.max(0, target), behavior: 'smooth' })
   }, [active])
 
   if (amenities.length === 0) return null
