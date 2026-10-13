@@ -92,48 +92,45 @@ export default function FeatureRow() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
-
-        {/* Milestone banner — the brand stats, blended into a real render
-            instead of sitting on a flat block */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.75 }}
-          className="relative overflow-hidden mb-16 lg:mb-24 min-h-[280px] sm:min-h-[260px] flex items-center"
-        >
-          <div className="absolute inset-0">
-            <Image
-              src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png')}
-              alt=""
-              fill
-              sizes="100vw"
-              quality={72}
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/75 to-dark/55" />
+      {/* Milestone banner — full-bleed, the brand stats blended into a real
+          render instead of sitting on a flat block */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.75 }}
+        className="relative overflow-hidden min-h-[280px] sm:min-h-[260px] mb-3 lg:mb-4 flex items-center"
+      >
+        <div className="absolute inset-0">
+          <Image
+            src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png')}
+            alt=""
+            fill
+            sizes="100vw"
+            quality={72}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/75 to-dark/55" />
+        </div>
+        <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 py-10 sm:py-12 lg:py-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div>
+            <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
+              The Ivy Group · Est. 2017
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium tracking-tight leading-[1.1] max-w-sm">
+              Landmark addresses across Nairobi.
+            </h2>
           </div>
-          <div className="relative w-full px-7 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-            <div>
-              <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
-                The Ivy Group · Est. 2017
-              </p>
-              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-medium tracking-tight leading-[1.1] max-w-sm">
-                Landmark addresses across Nairobi.
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6 flex-shrink-0">
-              {STATS.map((s) => (
-                <div key={s.label} className="border-l border-white/20 pl-4">
-                  <p className="font-serif text-2xl sm:text-3xl text-white font-light mb-1 tabular-nums">{s.value}</p>
-                  <p className="text-white/45 text-[9px] sm:text-[10px] font-sans tracking-[0.18em] uppercase">{s.label}</p>
-                </div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6 flex-shrink-0">
+            {STATS.map((s) => (
+              <div key={s.label} className="border-l border-white/20 pl-4">
+                <p className="font-serif text-2xl sm:text-3xl text-white font-light mb-1 tabular-nums">{s.value}</p>
+                <p className="text-white/45 text-[9px] sm:text-[10px] font-sans tracking-[0.18em] uppercase">{s.label}</p>
+              </div>
+            ))}
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Full-bleed rotating video showcase — Ivy Myst / Ivy Park toggle
           top-right, content bottom-left, crossfading on every change. */}
