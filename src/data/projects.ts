@@ -12,7 +12,14 @@ export interface DescriptionBlock {
   content?: string
   src?: string
   caption?: string
-  images?: Array<{ src: string; caption?: string }>
+  /** CSS aspect-ratio for a single `image` block, e.g. '21 / 10'. Defaults to a wide 16:9. */
+  aspect?: string
+  images?: Array<{
+    src: string
+    caption?: string
+    /** CSS aspect-ratio for this image in an `image-pair`, e.g. '3 / 4'. Defaults to 4:3. */
+    aspect?: string
+  }>
 }
 
 export interface ProjectUnit {
@@ -484,11 +491,11 @@ export const projects: ProjectData[] = [
     ],
     descriptionBlocks: [
       { type: 'text', content: "Ivy Myst is a landmark luxury residential development on Gatundu Road, Kileleshwa. Following a celebrated groundbreaking ceremony, sales are now officially open — the opportunity to secure one of Nairobi's most architecturally distinctive addresses at early-stage pricing." },
-      { type: 'image', src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'), caption: 'Ivy Myst — the sweeping curved façade on Gatundu Road' },
+      { type: 'image', src: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-Entrance02_IVY%20MYST.jpg', caption: 'Ivy Myst — arrival on Gatundu Road' },
       { type: 'text', content: "Two wings — A and B — hold generously proportioned 1, 2 and 3 bedroom residences, many with private garden terraces. The sweeping curved architecture and planted balconies give the building a presence unlike anything else on the Kileleshwa skyline, while ceiling heights and window ratios are calibrated to carry natural light deep into every home." },
       { type: 'image-pair', images: [
-        { src: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'), caption: 'The illuminated façade after dark' },
-        { src: p('/Ivy Myst Assets/New Renders/Exterior/Rooftop view to the city.png'), caption: 'The rooftop, above Nairobi' },
+        { src: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll2_IVY%20MYST.jpg', caption: 'The tower at dusk', aspect: '3 / 4' },
+        { src: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll1_IVY%20MYST.jpg', caption: 'The rooftop, after dark', aspect: '4 / 5' },
       ]},
       { type: 'text', content: "The rooftop is the development's signature: the Celestial Pool with its waterfall feature, a rooftop restaurant and bar, and an uninterrupted panorama across the city. Below, a sculptural garden stream runs through the landscaped grounds and the grand reception lobby sets the tone from arrival. Estimated completion is August 2029." },
     ],

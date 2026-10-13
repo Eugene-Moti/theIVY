@@ -274,8 +274,10 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
               </a>
             </div>
 
-            {/* Flowing narrative */}
-            <div className="max-w-2xl space-y-10">
+            {/* Flowing narrative — text stays a comfortable reading width,
+                images run the full column so they read as large as the
+                page allows rather than being boxed to the same measure. */}
+            <div className="space-y-10">
               {data.descriptionBlocks ? (
                 data.descriptionBlocks.map((block, i) => {
                   if (block.type === 'text')
@@ -283,7 +285,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                       <motion.p
                         key={i}
                         {...fade}
-                        className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]"
+                        className="max-w-2xl text-dark/65 font-sans font-light text-[15px] leading-[1.95]"
                       >
                         {block.content}
                       </motion.p>
@@ -291,8 +293,16 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                   if (block.type === 'image')
                     return (
                       <motion.figure key={i} {...fade}>
-                        <div className="relative aspect-[16/9] overflow-hidden">
-                          <Image src={block.src!} alt={block.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 55vw" quality={86} />
+                        <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: block.aspect || '16 / 9' }}>
+                          <motion.div
+                            initial={{ scale: 1.08 }}
+                            whileInView={{ scale: 1 }}
+                            viewport={{ once: true, margin: '-60px' }}
+                            transition={{ duration: 2.4, ease: 'easeOut' }}
+                            className="absolute inset-0"
+                          >
+                            <Image src={block.src!} alt={block.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 70vw" quality={86} />
+                          </motion.div>
                         </div>
                         {block.caption && (
                           <figcaption className="mt-3 text-dark/40 text-[10px] font-sans tracking-[0.16em] uppercase">
@@ -303,14 +313,28 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                     )
                   if (block.type === 'image-pair')
                     return (
-                      <motion.div key={i} {...fade} className="grid grid-cols-2 gap-3">
+                      // Staggered collage — the second image sits offset
+                      // below the first instead of lining up evenly, so the
+                      // pair reads as composed rather than a plain two-up
+                      // grid. Each image's aspect ratio is set in the data
+                      // (defaulting to a safe 4:3) so a portrait source
+                      // doesn't get cropped the same as a landscape one.
+                      <motion.div key={i} {...fade} className="grid grid-cols-2 gap-4 lg:gap-6 items-start">
                         {block.images?.map((img, j) => (
-                          <figure key={j}>
-                            <div className="relative aspect-[4/3] overflow-hidden">
-                              <Image src={img.src} alt={img.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 27vw" quality={84} />
+                          <figure key={j} className={j === 1 ? 'mt-10 lg:mt-16' : ''}>
+                            <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: img.aspect || '4 / 3' }}>
+                              <motion.div
+                                initial={{ scale: 1.1 }}
+                                whileInView={{ scale: 1 }}
+                                viewport={{ once: true, margin: '-60px' }}
+                                transition={{ duration: 2.4, delay: j * 0.1, ease: 'easeOut' }}
+                                className="absolute inset-0"
+                              >
+                                <Image src={img.src} alt={img.caption || ''} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
+                              </motion.div>
                             </div>
                             {img.caption && (
-                              <figcaption className="mt-2 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">
+                              <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">
                                 {img.caption}
                               </figcaption>
                             )}
@@ -322,7 +346,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
                 })
               ) : (
                 data.descriptionParagraphs.map((para, i) => (
-                  <motion.p key={i} {...fade} className="text-dark/65 font-sans font-light text-[15px] leading-[1.95]">
+                  <motion.p key={i} {...fade} className="max-w-2xl text-dark/65 font-sans font-light text-[15px] leading-[1.95]">
                     {para}
                   </motion.p>
                 ))
