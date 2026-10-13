@@ -56,22 +56,14 @@ const DWELL = 9000
 export default function FeatureRow() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [narrow, setNarrow] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
-    const mqNarrow = window.matchMedia('(max-width: 768px)')
     const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const onNarrow = () => setNarrow(mqNarrow.matches)
     const onMotion = () => setReducedMotion(mqMotion.matches)
-    onNarrow()
     onMotion()
-    mqNarrow.addEventListener('change', onNarrow)
     mqMotion.addEventListener('change', onMotion)
-    return () => {
-      mqNarrow.removeEventListener('change', onNarrow)
-      mqMotion.removeEventListener('change', onMotion)
-    }
+    return () => mqMotion.removeEventListener('change', onMotion)
   }, [])
 
   useEffect(() => {
@@ -81,10 +73,9 @@ export default function FeatureRow() {
   }, [active, paused])
 
   const slide = SLIDES[active]
-  // Autoplaying ~45MB background video is only worth it on larger screens
-  // with motion enabled — phones (likely cellular) and reduced-motion
+  // Autoplay everywhere, including mobile — only reduced-motion
   // visitors get the poster frame instead.
-  const showVideo = !narrow && !reducedMotion
+  const showVideo = !reducedMotion
 
   return (
     <section

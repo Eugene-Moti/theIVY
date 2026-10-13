@@ -98,10 +98,9 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
     return () => mq.removeEventListener('change', on)
   }, [])
 
-  // Autoplay the hero video only where it's cheap to — larger screens,
-  // motion not disabled. Phones (likely cellular) and reduced-motion
-  // visitors get the static hero image instead.
-  const showHeroVideo = Boolean(data.heroVideo) && !narrow && !reducedMotion
+  // Autoplay the hero video everywhere, including mobile — only
+  // reduced-motion visitors get the static hero image instead.
+  const showHeroVideo = Boolean(data.heroVideo) && !reducedMotion
 
   const others = getOtherProjects(data.slug)
   const from = priceFrom(data.availableUnits)
