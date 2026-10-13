@@ -80,6 +80,7 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
   const [lb, setLb] = useState<{ imgs: LBImg[]; i: number } | null>(null)
   const [planTab, setPlanTab] = useState(0)
   const [narrow, setNarrow] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 640px)')
@@ -88,6 +89,19 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
     mq.addEventListener('change', on)
     return () => mq.removeEventListener('change', on)
   }, [])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const on = () => setReducedMotion(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+
+  // Autoplay the hero video only where it's cheap to — larger screens,
+  // motion not disabled. Phones (likely cellular) and reduced-motion
+  // visitors get the static hero image instead.
+  const showHeroVideo = Boolean(data.heroVideo) && !narrow && !reducedMotion
 
   const others = getOtherProjects(data.slug)
   const from = priceFrom(data.availableUnits)
@@ -142,15 +156,29 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
     <>
       {/* ─────────────── HERO ─────────────── */}
       <section className="relative min-h-[74vh] sm:min-h-[82vh] lg:min-h-[86vh] flex items-end bg-dark overflow-hidden">
-        <Image
-          src={(narrow && data.heroImageMobile) || data.heroImage}
-          alt={data.name}
-          fill
-          priority
-          quality={88}
-          sizes="100vw"
-          className="object-cover object-[50%_32%] sm:object-center"
-        />
+        {showHeroVideo ? (
+          <video
+            key={data.heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={data.heroImage}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          >
+            <source src={data.heroVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={(narrow && data.heroImageMobile) || data.heroImage}
+            alt={data.name}
+            fill
+            priority
+            quality={88}
+            sizes="100vw"
+            className="object-cover object-[50%_32%] sm:object-center"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/25 to-dark/45" />
 
         <div className="absolute top-24 right-6 lg:right-10 z-10 flex items-center gap-2 border border-white/25 bg-dark/40 backdrop-blur-md px-4 py-2">

@@ -22,9 +22,8 @@ interface Slide {
   description: string
   href: string
   cta: string
-  big: string
-  side1: { src: string; caption: string }
-  side2: { src: string; caption: string }
+  video: string
+  poster: string
 }
 
 const SLIDES: Slide[] = [
@@ -36,9 +35,8 @@ const SLIDES: Slide[] = [
       'Curved architecture, garden terraces and a rooftop Celestial Pool on Gatundu Road. Groundbreaking is complete — now selling at early-stage pricing.',
     href: '/ivy-myst',
     cta: 'Explore Ivy Myst',
-    big: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
-    side1: { src: p('/Ivy Myst Assets/New Renders/Exterior/Gate Front View.png'), caption: 'Arrival Gate' },
-    side2: { src: p('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png'), caption: 'Reception & Lobby' },
+    video: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/ivy%20myst%20landscape_1_squished.mp4',
+    poster: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
   },
   {
     status: 'Under Construction',
@@ -48,17 +46,33 @@ const SLIDES: Slide[] = [
       'Three residential towers with a rooftop cinema, lounge and bar — 660 homes minutes from Yaya Centre. Structural works are underway, with completion targeted for December 2028.',
     href: '/ivy-park',
     cta: 'Explore Ivy Park',
-    big: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Night new_Ivy Park.jpg'),
-    side1: { src: p('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png'), caption: 'Pool & Bar' },
-    side2: { src: p('/IVY PARK RESIDENCE Assests/COURTYARD/05_Courtyard 5K.png'), caption: 'Landscaped Courtyard' },
+    video: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/IVY%20PARK%20WIDE_squished.mp4',
+    poster: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Night new_Ivy Park.jpg'),
   },
 ]
 
-const DWELL = 6500
+const DWELL = 9000
 
 export default function FeatureRow() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [narrow, setNarrow] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mqNarrow = window.matchMedia('(max-width: 768px)')
+    const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onNarrow = () => setNarrow(mqNarrow.matches)
+    const onMotion = () => setReducedMotion(mqMotion.matches)
+    onNarrow()
+    onMotion()
+    mqNarrow.addEventListener('change', onNarrow)
+    mqMotion.addEventListener('change', onMotion)
+    return () => {
+      mqNarrow.removeEventListener('change', onNarrow)
+      mqMotion.removeEventListener('change', onMotion)
+    }
+  }, [])
 
   useEffect(() => {
     if (paused) return
@@ -67,14 +81,18 @@ export default function FeatureRow() {
   }, [active, paused])
 
   const slide = SLIDES[active]
+  // Autoplaying ~45MB background video is only worth it on larger screens
+  // with motion enabled — phones (likely cellular) and reduced-motion
+  // visitors get the poster frame instead.
+  const showVideo = !narrow && !reducedMotion
 
   return (
     <section
-      className="bg-white py-20 lg:py-28 overflow-hidden"
+      className="bg-white overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
 
         {/* Milestone banner — the brand stats, blended into a real render
             instead of sitting on a flat block */}
@@ -115,16 +133,57 @@ export default function FeatureRow() {
             </div>
           </div>
         </motion.div>
+      </div>
 
-        {/* Project tabs */}
-        <div className="flex items-center gap-7 mb-10">
+      {/* Full-bleed rotating video showcase — Ivy Myst / Ivy Park toggle
+          top-right, content bottom-left, crossfading on every change. */}
+      <div className="relative h-[72vh] sm:h-[78vh] lg:h-[84vh] bg-dark">
+        <AnimatePresence>
+          <motion.div
+            key={slide.name}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            {showVideo ? (
+              <video
+                key={slide.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={slide.poster}
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={slide.video} type="video/mp4" />
+              </video>
+            ) : (
+              <Image
+                src={slide.poster}
+                alt={`${slide.name}, ${slide.location}`}
+                fill
+                sizes="100vw"
+                quality={80}
+                className="object-cover"
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/92 via-dark/25 to-dark/10" />
+
+        {/* Toggle */}
+        <div className="absolute top-6 right-6 lg:top-8 lg:right-10 z-10 inline-flex border border-white/20 bg-dark/50 backdrop-blur-sm overflow-hidden">
           {SLIDES.map((s, i) => (
             <button
               key={s.name}
               type="button"
               onClick={() => setActive(i)}
-              className={`text-[11px] font-sans font-semibold tracking-[0.18em] uppercase pb-2.5 border-b-2 transition-colors duration-300 ${
-                active === i ? 'text-dark border-gold' : 'text-dark/35 border-transparent hover:text-dark/60'
+              aria-pressed={active === i}
+              className={`px-4 py-2.5 text-[10px] font-sans font-semibold tracking-[0.16em] uppercase transition-colors duration-300 ${
+                active === i ? 'bg-gold text-dark' : 'text-white/60 hover:text-white'
               }`}
             >
               {s.name.replace(' Residence', '')}
@@ -132,11 +191,9 @@ export default function FeatureRow() {
           ))}
         </div>
 
-        {/* Rotating project showcase — images scatter out / converge in,
-            text fades, on every slide change */}
-        <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
-          {/* Text column */}
-          <div className="relative min-h-[280px] sm:min-h-[260px]">
+        {/* Content */}
+        <div className="relative h-full flex items-end">
+          <div className="w-full max-w-7xl mx-auto px-6 lg:px-10 pb-12 sm:pb-16 lg:pb-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.name}
@@ -148,99 +205,20 @@ export default function FeatureRow() {
                 <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
                   {slide.status}
                 </p>
-                <h3 className="font-serif text-3xl md:text-4xl font-medium tracking-tight text-dark leading-[1.1] mb-6">
+                <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-[1.05] mb-6 max-w-2xl">
                   {slide.name}, {slide.location}
                 </h3>
-                <p className="text-dark/55 text-[14px] font-sans font-light leading-[1.85] mb-9 max-w-md">
+                <p className="text-white/65 text-[14px] font-sans font-light leading-[1.85] mb-9 max-w-lg">
                   {slide.description}
                 </p>
                 <Link
                   href={slide.href}
-                  className="inline-flex items-center gap-2.5 bg-dark text-white px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-dark transition-colors"
+                  className="inline-flex items-center gap-2.5 bg-gold text-dark px-7 py-3.5 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase hover:bg-gold-light transition-colors"
                 >
                   {slide.cta} <ArrowRight size={13} />
                 </Link>
               </motion.div>
             </AnimatePresence>
-          </div>
-
-          {/* Image cluster */}
-          <div className="grid grid-cols-2 gap-4 lg:gap-5">
-            {/* Big image spans both rows — row height comes from the two
-                side images below, not from this one's own content. */}
-            <div className="row-span-2 relative">
-              <AnimatePresence>
-                <motion.div
-                  key={slide.name}
-                  initial={{ opacity: 0, x: -90, y: 60, rotate: -9, scale: 0.92 }}
-                  animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: 90, y: -60, rotate: 9, scale: 0.92 }}
-                  transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0"
-                >
-                  <Link href={slide.href} className="relative block h-full w-full bg-dark group">
-                    <Image
-                      src={slide.big}
-                      alt={`${slide.name}, ${slide.location}`}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 30vw"
-                      quality={84}
-                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                    />
-                  </Link>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {[slide.side1, slide.side2].map((img, i) => (
-              <div key={i}>
-                <div className="relative aspect-[4/3] bg-dark">
-                  <AnimatePresence>
-                    <motion.div
-                      key={slide.name}
-                      initial={{
-                        opacity: 0,
-                        x: i === 0 ? 70 : -70,
-                        y: i === 0 ? -70 : 70,
-                        rotate: i === 0 ? 12 : -12,
-                      }}
-                      animate={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                      exit={{
-                        opacity: 0,
-                        x: i === 0 ? -70 : 70,
-                        y: i === 0 ? 70 : -70,
-                        rotate: i === 0 ? -12 : 12,
-                      }}
-                      transition={{ duration: 0.65, delay: 0.18 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.caption}
-                        fill
-                        sizes="(max-width: 1024px) 50vw, 30vw"
-                        quality={82}
-                        className="object-cover"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-                <div className="relative h-4 mt-3">
-                  <AnimatePresence mode="wait">
-                    <motion.p
-                      key={slide.name}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 text-dark/45 text-[10px] font-sans tracking-[0.14em] uppercase"
-                    >
-                      {img.caption}
-                    </motion.p>
-                  </AnimatePresence>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
