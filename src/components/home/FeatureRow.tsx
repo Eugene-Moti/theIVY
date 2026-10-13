@@ -83,20 +83,20 @@ export default function FeatureRow() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.75 }}
-          className="relative overflow-hidden mb-16 lg:mb-24"
+          className="relative overflow-hidden mb-16 lg:mb-24 min-h-[280px] sm:min-h-[260px] flex items-center"
         >
           <div className="absolute inset-0">
             <Image
-              src={p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg')}
+              src={p('/Ivy Myst Assets/New Renders/Exterior/Rooftop Deck Exterior day view.png')}
               alt=""
               fill
               sizes="100vw"
-              quality={70}
+              quality={72}
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-dark/92 via-dark/75 to-dark/45" />
+            <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/75 to-dark/55" />
           </div>
-          <div className="relative px-7 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div className="relative w-full px-7 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-14 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             <div>
               <p className="text-gold text-[10px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">
                 The Ivy Group · Est. 2017
