@@ -6,10 +6,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, ArrowUpRight, MapPin, Download, Phone, Check,
-  ChevronLeft, ChevronRight, X, MessageCircle, ExternalLink, ZoomIn,
+  ChevronLeft, ChevronRight, X, MessageCircle, ExternalLink, ZoomIn, Lock,
 } from 'lucide-react'
 import { ProjectData, ProjectUnit, FloorPlan, getOtherProjects } from '@/data/projects'
 import BrochureModal from '@/components/shared/BrochureModal'
+import LeadForm from '@/components/shared/LeadForm'
+import AmenityShowcase from '@/components/project/AmenityShowcase'
+import FloatingReserveBar from '@/components/project/FloatingReserveBar'
 import { trackConversion } from '@/lib/analytics'
 import { approxUsd, kesStringToNumber } from '@/lib/currency'
 
@@ -81,6 +84,14 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
   const [planTab, setPlanTab] = useState(0)
   const [narrow, setNarrow] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
+  const [plansUnlocked, setPlansUnlocked] = useState(false)
+  const [callbackSent, setCallbackSent] = useState(false)
+
+  // Floor plans stay gated behind a quick lead form — once submitted for
+  // this project, remember it so a returning visitor isn't asked again.
+  useEffect(() => {
+    if (localStorage.getItem(`floorplans-unlocked-${data.slug}`) === '1') setPlansUnlocked(true)
+  }, [data.slug])
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 640px)')
@@ -107,11 +118,6 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
   const shortName = data.name.replace(/\s+Residence$/, '')
   const wa = waLink(data.name)
   const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.locationFull)}`
-
-  const galleryImages: LBImg[] = [
-    ...(data.gallerySlides?.map((g) => ({ src: g.src, label: g.label })) ?? []),
-    ...(data.interiorImages?.map((src, i) => ({ src, label: `Interior ${i + 1}` })) ?? []),
-  ]
 
   const planTabs: { label: string; plans: FloorPlan[] }[] = [
     ...(data.floorPlanOverview ? [{ label: 'Overview', plans: [data.floorPlanOverview] }] : []),
@@ -459,51 +465,110 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </div>
       </section>
 
-      {/* ─────────────── GALLERY ─────────────── */}
-      {galleryImages.length > 0 && (
-        <section className="bg-cream py-20 lg:py-28">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <Eyebrow>Gallery</Eyebrow>
-            <Heading className="mt-3 mb-12">A Closer Look</Heading>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-              {galleryImages.map((img, i) => (
-                <motion.button
-                  key={i}
-                  type="button"
-                  onClick={() => openLb(galleryImages, i)}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
-                  className={`relative overflow-hidden group ${i % 5 === 0 ? 'col-span-2 aspect-[16/10]' : 'aspect-[4/3]'}`}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.label}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 33vw"
-                    quality={80}
-                    className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                  />
-                  <span className="absolute inset-0 bg-dark/0 group-hover:bg-dark/15 transition-colors duration-300" />
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ─────────────── AMENITY SHOWCASE ─────────────── */}
+      <AmenityShowcase amenities={data.amenities} />
 
       {/* ─────────────── FLOOR PLANS ─────────────── */}
-      {planTabs.length > 0 && (
-        <section className="bg-white py-20 lg:py-28">
-          <div className="max-w-6xl mx-auto px-6 lg:px-10">
-            <Eyebrow>Floor Plans</Eyebrow>
-            <Heading className="mt-3 mb-3">Unit Layouts</Heading>
-            <p className="text-dark/45 text-[11px] font-sans tracking-wide flex items-center gap-1.5 mb-9">
-              <ZoomIn size={12} className="text-gold" /> Tap any plan to view it full-screen.
-            </p>
+      <section className="bg-white py-20 lg:py-28">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10">
+          <Eyebrow>Floor Plans</Eyebrow>
+          <Heading className="mt-3 mb-3">Unit Layouts</Heading>
 
-            {planTabs.length > 1 && (
+          {planTabs.length === 0 ? (
+            /* ── No floor plans published for this project yet ── */
+            <div className="max-w-lg mt-7">
+              <p className="text-dark/55 text-sm font-sans font-light leading-relaxed mb-8">
+                Detailed floor plans for {shortName} aren&apos;t published online yet. Request a callback,
+                or message our property advisor directly on WhatsApp, and we&apos;ll share them with you.
+              </p>
+              {callbackSent ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="border border-gold/30 bg-gold/5 p-6 flex items-start gap-3"
+                >
+                  <Check size={16} className="text-gold shrink-0 mt-0.5" strokeWidth={2.5} />
+                  <p className="text-dark/70 text-sm font-sans font-light leading-relaxed">
+                    Thank you — a property advisor will call you shortly with floor plans for {shortName}.
+                  </p>
+                </motion.div>
+              ) : (
+                <div className="bg-cream border border-dark/10 p-6 sm:p-7">
+                  <LeadForm
+                    variant="compact"
+                    leadType="floor-plan-callback"
+                    project={data.name}
+                    source={`Floor plan callback — ${data.name}`}
+                    submitLabel="Request a callback"
+                    onSuccess={() => setCallbackSent(true)}
+                  />
+                </div>
+              )}
+              <a
+                href={waLink(data.name, 'floor plans')}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackConversion('whatsapp', { project: data.name, source: 'floor-plans' })}
+                className="mt-5 inline-flex items-center gap-2 text-[11px] font-sans font-semibold tracking-[0.18em] uppercase text-gold hover:text-gold-dark transition-colors"
+              >
+                <MessageCircle size={13} /> Or WhatsApp us directly
+              </a>
+            </div>
+          ) : !plansUnlocked ? (
+            /* ── Floor plans exist but are gated behind a quick form ── */
+            <div className="mt-7">
+              <p className="text-dark/55 text-sm font-sans font-light max-w-lg leading-relaxed mb-8">
+                Detailed floor plans for every unit type at {shortName} are ready to view — share a few
+                details and we&apos;ll unlock them instantly.
+              </p>
+              <div className="relative border border-dark/10 overflow-hidden">
+                <div className="relative w-full" style={{ aspectRatio: '7/5' }}>
+                  <Image
+                    src={(planTabs[0].plans[0] ?? activePlans[0]).src}
+                    alt=""
+                    fill
+                    quality={60}
+                    sizes="100vw"
+                    className="object-contain p-10 blur-lg scale-105 opacity-40 select-none pointer-events-none"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-white/30 flex items-center justify-center p-5 sm:p-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.6 }}
+                    className="w-full max-w-sm bg-white border border-dark/10 shadow-[0_24px_60px_rgba(0,0,0,0.12)] p-6 sm:p-7"
+                  >
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lock size={13} className="text-gold" />
+                      <p className="text-dark text-[10px] font-sans font-semibold tracking-[0.2em] uppercase">
+                        Unlock Floor Plans
+                      </p>
+                    </div>
+                    <LeadForm
+                      variant="compact"
+                      leadType="floor-plan-request"
+                      project={data.name}
+                      source={`Floor plan gate — ${data.name}`}
+                      submitLabel="View floor plans"
+                      onSuccess={() => {
+                        localStorage.setItem(`floorplans-unlocked-${data.slug}`, '1')
+                        setPlansUnlocked(true)
+                      }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* ── Unlocked — the full floor-plan browser ── */
+            <>
+              <p className="text-dark/45 text-[11px] font-sans tracking-wide flex items-center gap-1.5 mb-9 mt-3">
+                <ZoomIn size={12} className="text-gold" /> Tap any plan to view it full-screen.
+              </p>
+
+              {planTabs.length > 1 && (
               <div className="flex flex-wrap border border-dark/15 w-fit mb-9">
                 {planTabs.map((t, i) => (
                   <button
@@ -580,9 +645,10 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
             >
               <Download size={13} /> Brochure with all plans
             </button>
-          </div>
-        </section>
-      )}
+            </>
+          )}
+        </div>
+      </section>
 
       {/* ─────────────── VIRTUAL TOURS ─────────────── */}
       {data.vrTours && data.vrTours.length > 0 && (
@@ -765,26 +831,13 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </section>
       )}
 
-      {/* ─────────────── MOBILE STICKY CTA ─────────────── */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-dark/95 backdrop-blur border-t border-white/10 px-4 py-2.5 flex items-center gap-3 pr-[92px]">
-        <div className="min-w-0 flex-1">
-          <p className="text-white/40 text-[8px] font-sans tracking-[0.22em] uppercase">
-            {from ? 'Priced from' : data.name}
-          </p>
-          <p className="text-white text-[13px] font-sans font-medium truncate">
-            {from ? from.label : 'Enquire for pricing'}
-          </p>
-        </div>
-        <a
-          href={wa}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => trackConversion('whatsapp', { project: data.name, source: 'sticky-bar' })}
-          className="flex-shrink-0 bg-gold-dark text-white px-4 py-2.5 text-[10px] font-sans font-semibold tracking-[0.16em] uppercase"
-        >
-          Enquire
-        </a>
-      </div>
+      {/* ─────────────── FLOATING RESERVE BAR ─────────────── */}
+      <FloatingReserveBar
+        shortName={shortName}
+        priceLabel={from?.label ?? null}
+        units={[...data.availableUnits, ...data.soldOutUnits]}
+        locationLabel={data.locationLabel}
+      />
 
       {/* ─────────────── LIGHTBOX ─────────────── */}
       <AnimatePresence>

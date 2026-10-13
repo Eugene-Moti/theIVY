@@ -279,6 +279,10 @@ export async function POST(request: Request) {
       html = contactHtml(rest, 'New Rental Waitlist Sign-up')
     } else if (type === 'contact-form') {
       subject = `${tag}Website Enquiry${rest.interest ? ` — ${rest.interest}` : ''} — ${rest.name || 'Unknown'}`
+    } else if (type === 'floor-plan-request') {
+      subject = `📐 Floor Plans Unlocked — ${rest.project || 'General'} · ${rest.name || 'Unknown'}`
+    } else if (type === 'floor-plan-callback') {
+      subject = `🔴 Floor Plan Callback — ${rest.project || 'General'} · ${rest.name || 'Unknown'}`
     }
 
     // Save to Supabase and push into Ivy Group CRM in parallel with the

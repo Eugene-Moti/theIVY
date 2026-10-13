@@ -46,6 +46,15 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* Hides the scrollbar on horizontally-scrollable rows (e.g. the amenity
+     menu) while keeping them scrollable by touch/drag/wheel. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ── Legal / policy pages ─────────────────────────────────────────────── */
