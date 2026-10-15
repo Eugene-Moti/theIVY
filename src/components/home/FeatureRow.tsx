@@ -10,7 +10,8 @@ const p = (path: string) => encodeURI(path)
 
 const STATS = [
   { value: '2017', label: 'Established' },
-  { value: '4', label: 'Developments' },
+  { value: '4', label: 'Active Developments' },
+  { value: '3', label: 'Completed Projects' },
   { value: '3', label: 'Neighbourhoods' },
   { value: '1,400+', label: 'Residences' },
 ]
@@ -112,11 +113,11 @@ export default function FeatureRow() {
               Landmark addresses across Nairobi.
             </h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6 flex-shrink-0">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 lg:gap-x-7 gap-y-6 flex-shrink-0">
             {STATS.map((s) => (
-              <div key={s.label} className="border-l border-white/20 pl-4">
+              <div key={s.label} className="border-l border-white/20 pl-4 max-w-[110px]">
                 <p className="font-serif text-2xl sm:text-3xl text-white font-light mb-1 tabular-nums">{s.value}</p>
-                <p className="text-white/45 text-[9px] sm:text-[10px] font-sans tracking-[0.18em] uppercase">{s.label}</p>
+                <p className="text-white/45 text-[9px] sm:text-[10px] font-sans tracking-[0.14em] uppercase leading-tight">{s.label}</p>
               </div>
             ))}
           </div>
