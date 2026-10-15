@@ -14,23 +14,36 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
     <>
       {/* Hero */}
       <section className="relative min-h-screen bg-dark flex items-center overflow-hidden">
-        <Image
-          src={encodeURI('/IVY PARK RESIDENCE Assests/AMENITIES/BAR POOL SPA/enhanced_Cam_Pool_002 Day.png')}
-          alt="Luxury Rentals"
-          fill
-          className="object-cover object-center opacity-25 scale-105"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark" />
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 9, ease: 'linear' }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={encodeURI('/Ivy Myst Assets/New Renders/Interior/Interior Renders 2026-07-27 (7).png')}
+            alt="Luxury Rentals"
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+          />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-b from-dark/85 via-dark/65 to-dark" />
 
         <div className="relative w-full max-w-3xl mx-auto px-6 lg:px-10 text-center py-32">
           <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: 'easeOut' }}>
-            <div className="flex justify-center mb-8">
-              <div className="border border-gold/30 p-5">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex justify-center mb-8"
+            >
+              <div className="relative border border-gold/30 p-5">
+                <span className="absolute inset-0 border border-gold/30 animate-ping" style={{ animationDuration: '2.5s' }} />
                 <Bell size={24} className="text-gold" strokeWidth={1.5} />
               </div>
-            </div>
+            </motion.div>
 
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.4em] uppercase mb-5">Rentals</p>
             <h1 className="font-serif text-5xl md:text-7xl text-white font-semibold tracking-tight leading-[1.02] mb-4">
@@ -108,18 +121,27 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="bg-white border border-dark/8 group flex flex-col"
+                  whileHover={{ y: -6 }}
+                  className="bg-white border border-dark/8 hover:border-gold/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-[border-color,box-shadow] duration-300 group flex flex-col"
                 >
                   {/* Image */}
-                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                  <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: '4/3' }}>
                     {l.featured_image ? (
-                      <Image
-                        src={l.featured_image}
-                        alt={`${l.property} — ${l.unit_type}`}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      />
+                      <motion.div
+                        initial={{ scale: 1.1 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true, margin: '-60px' }}
+                        transition={{ duration: 2.4, ease: 'easeOut' }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={l.featured_image}
+                          alt={`${l.property} — ${l.unit_type}`}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        />
+                      </motion.div>
                     ) : (
                       <div className="absolute inset-0 bg-dark/10 flex items-center justify-center">
                         <BedDouble size={28} className="text-dark/20" />

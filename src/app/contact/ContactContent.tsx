@@ -13,14 +13,21 @@ export default function ContactContent() {
     <>
       {/* Hero */}
       <section className="relative h-[46vh] min-h-[380px] bg-dark overflow-hidden">
-        <Image
-          src={encodeURI('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg')}
-          alt="Contact The Ivy Group"
-          fill
-          className="object-cover opacity-35"
-          priority
-          sizes="100vw"
-        />
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 8, ease: 'linear' }}
+          className="absolute inset-0"
+        >
+          <Image
+            src={encodeURI('/Ivy Myst Assets/New Renders/Myst amenities/reception area.png')}
+            alt="Contact The Ivy Group"
+            fill
+            className="object-cover opacity-40"
+            priority
+            sizes="100vw"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-6 pt-20">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -72,7 +79,11 @@ export default function ContactContent() {
               </p>
 
               <div className="space-y-6">
-                <a
+                <motion.a
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0 }}
                   href={`tel:${PHONE_RAW}`}
                   onClick={() => trackConversion('call', { source: 'contact-page' })}
                   className="flex items-start gap-4 group"
@@ -80,13 +91,17 @@ export default function ContactContent() {
                   <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
                     <Phone size={14} className="text-gold group-hover:text-dark transition-colors" />
                   </div>
-                  <div>
+                  <div className="transition-transform duration-300 group-hover:translate-x-1">
                     <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">Phone</p>
                     <p className="text-dark text-sm font-sans">+254 118 266 666</p>
                   </div>
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.08 }}
                   href={waLink()}
                   target="_blank"
                   rel="noreferrer"
@@ -96,23 +111,36 @@ export default function ContactContent() {
                   <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
                     <MessageCircle size={14} className="text-gold group-hover:text-dark transition-colors" />
                   </div>
-                  <div>
+                  <div className="transition-transform duration-300 group-hover:translate-x-1">
                     <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">WhatsApp</p>
                     <p className="text-dark text-sm font-sans">+254 118 266 666</p>
                   </div>
-                </a>
+                </motion.a>
 
-                <a href="mailto:marketing.ivy-group@rsunproperty.net" className="flex items-start gap-4 group">
+                <motion.a
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.16 }}
+                  href="mailto:marketing.ivy-group@rsunproperty.net"
+                  className="flex items-start gap-4 group"
+                >
                   <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0 group-hover:bg-gold group-hover:border-gold transition-all duration-300">
                     <Mail size={14} className="text-gold group-hover:text-dark transition-colors" />
                   </div>
-                  <div>
+                  <div className="transition-transform duration-300 group-hover:translate-x-1">
                     <p className="text-dark/35 text-[9px] font-sans tracking-[0.2em] uppercase mb-0.5">Email</p>
                     <p className="text-dark text-sm font-sans">marketing.ivy-group@rsunproperty.net</p>
                   </div>
-                </a>
+                </motion.a>
 
-                <div className="flex items-start gap-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.24 }}
+                  className="flex items-start gap-4"
+                >
                   <div className="w-10 h-10 border border-gold/30 flex items-center justify-center flex-shrink-0">
                     <MapPin size={14} className="text-gold" />
                   </div>
@@ -129,9 +157,15 @@ export default function ContactContent() {
                       <Navigation size={11} /> Get Directions
                     </a>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start gap-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.32 }}
+                  className="flex items-start gap-4"
+                >
                   <div className="w-10 h-10 border border-dark/15 flex items-center justify-center flex-shrink-0">
                     <MapPin size={14} className="text-dark/40" />
                   </div>
@@ -140,7 +174,7 @@ export default function ContactContent() {
                     <p className="text-dark text-sm font-sans">{FORMER_OFFICE.name}</p>
                     <p className="text-dark/50 text-xs font-sans">{FORMER_OFFICE.street}, {FORMER_OFFICE.city} — {FORMER_OFFICE.note}</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Social Links */}
@@ -184,19 +218,26 @@ export default function ContactContent() {
       {/* Map */}
       <section className="bg-cream">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 pb-16">
-          <p className="text-dark/35 text-[10px] font-sans tracking-[0.25em] uppercase mb-5">FIND US</p>
-          <div className="w-full h-[400px] overflow-hidden border border-dark/8">
-            <iframe
-              src={HEAD_OFFICE.mapEmbed}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={`The Ivy Group Head Office — ${HEAD_OFFICE.building}, Kirichwa Road, Kilimani`}
-            />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7 }}
+          >
+            <p className="text-dark/35 text-[10px] font-sans tracking-[0.25em] uppercase mb-5">FIND US</p>
+            <div className="w-full h-[400px] overflow-hidden border border-dark/8 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
+              <iframe
+                src={HEAD_OFFICE.mapEmbed}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`The Ivy Group Head Office — ${HEAD_OFFICE.building}, Kirichwa Road, Kilimani`}
+              />
+            </div>
+          </motion.div>
         </div>
       </section>
     </>
