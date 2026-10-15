@@ -10,61 +10,71 @@ const p = (path: string) => encodeURI(path)
 interface Portfolio {
   name: string
   status: string
+  start: string
+  end: string
   href?: string
   logo: { src: string; w: number; h: number; invert?: boolean }
 }
 
-// Currently selling or under construction — each links to its project page.
-// Ordered chronologically by (target) completion date.
-const CURRENT: Portfolio[] = [
+// Our full history, first project to current — one continuous timeline
+// from Diamond Homes (2019–2022) through to Ivy Myst (2026–2029).
+// Legacy entries have no href (no live page); current ones link out.
+const PORTFOLIO: Portfolio[] = [
+  {
+    name: 'Diamond Homes',
+    status: 'Completed',
+    start: '2019',
+    end: '2022',
+    logo: { src: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png'), w: 4320, h: 1854 },
+  },
+  {
+    name: 'Nandwa Ivy Residence',
+    status: 'Completed',
+    start: '2022',
+    end: '2024',
+    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png'), w: 1897, h: 2382 },
+  },
+  {
+    name: 'Diamond Ivy Residence',
+    status: 'Completed',
+    start: '2023',
+    end: '2025',
+    logo: { src: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png'), w: 4320, h: 2849 },
+  },
   {
     name: 'Blossoms Ivy Residence',
     status: 'Nearing Completion',
+    start: '2024',
+    end: '2026',
     href: '/blossom-ivy',
     logo: { src: p('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'), w: 1552, h: 782 },
   },
   {
     name: 'Luckinn Ivy Residence',
     status: 'Limited Units',
+    start: '2025',
+    end: '2026',
     href: '/luckinn-ivy',
     logo: { src: p('/Luckinn Ivy Assets/luckinn_logo.png'), w: 5760, h: 1868 },
   },
   {
     name: 'Ivy Park Residence',
     status: 'Under Construction',
+    start: '2026',
+    end: '2028',
     href: '/ivy-park',
     logo: { src: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), w: 1552, h: 782 },
   },
   {
     name: 'Ivy Myst Residence',
     status: 'Now Selling',
+    start: '2026',
+    end: '2029',
     href: '/ivy-myst',
     logo: { src: p('/Ivy Myst Assets/Ivy Myst Logo.png'), w: 792, h: 173, invert: true },
   },
 ]
 
-// Delivered developments from before the current portfolio — no live page,
-// shown for legacy / track-record credibility. Ordered chronologically by
-// completion date.
-const LEGACY: Portfolio[] = [
-  {
-    name: 'Diamond Homes',
-    status: 'Completed',
-    logo: { src: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png'), w: 4320, h: 1854 },
-  },
-  {
-    name: 'Nandwa Ivy Residence',
-    status: 'Completed',
-    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png'), w: 1897, h: 2382 },
-  },
-  {
-    name: 'Diamond Ivy Residence',
-    status: 'Completed',
-    logo: { src: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png'), w: 4320, h: 2849 },
-  },
-]
-
-const PORTFOLIO = [...CURRENT, ...LEGACY]
 const DWELL = 2800
 
 export default function ManifestoStrip() {
@@ -154,7 +164,7 @@ export default function ManifestoStrip() {
         </div>
 
         {/* Single animated caption for whichever logo is currently spotlighted */}
-        <div className="mt-6 h-12 flex flex-col items-center text-center">
+        <div className="mt-6 h-14 flex flex-col items-center text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={spotlight.name}
@@ -164,8 +174,11 @@ export default function ManifestoStrip() {
               transition={{ duration: 0.35 }}
             >
               <p className="font-serif text-white text-base font-light">{spotlight.name}</p>
-              <p className="text-gold text-[9.5px] font-sans font-semibold tracking-[0.2em] uppercase mt-1">
+              <p className="text-gold text-[9.5px] font-sans font-semibold tracking-[0.2em] uppercase mt-1.5">
                 {spotlight.status}
+              </p>
+              <p className="text-white/35 text-[10px] font-sans tabular-nums mt-1">
+                {spotlight.start} – {spotlight.end}
               </p>
             </motion.div>
           </AnimatePresence>
