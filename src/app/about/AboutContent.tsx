@@ -36,11 +36,14 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: 'easeOut' } },
 }
 
+// Years are each project's completion (or target completion) date,
+// per the development schedule — keeps the timeline in true
+// chronological order from founding through to Ivy Myst in 2029.
 const JOURNEY = [
   { year: '2017', name: 'The Ivy Group', status: 'Founded', kind: 'founding' as const },
-  { year: '2019', name: 'Diamond Homes', status: 'Completed', logo: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png') },
-  { year: '2021', name: 'Nandwa Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png') },
-  { year: '2023', name: 'Diamond Ivy Residence', status: 'Completed', logo: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png') },
+  { year: '2022', name: 'Diamond Homes', status: 'Completed', logo: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png') },
+  { year: '2024', name: 'Nandwa Ivy Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png') },
+  { year: '2025', name: 'Diamond Ivy Residence', status: 'Completed', logo: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png') },
   { year: '2026', name: 'Blossoms Ivy Residence', status: 'Nearing Completion', logo: p('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'), href: '/blossom-ivy' },
   { year: '2026', name: 'Luckinn Ivy Residence', status: 'Limited Units', logo: p('/Luckinn Ivy Assets/luckinn_logo.png'), href: '/luckinn-ivy' },
   { year: '2028', name: 'Ivy Park Residence', status: 'Under Construction', logo: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), href: '/ivy-park' },
@@ -160,7 +163,7 @@ export default function AboutContent() {
                     className="absolute inset-0"
                   >
                     <Image
-                      src={p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 1_IVY PARK.jpg')}
+                      src={p('/IVY PARK RESIDENCE Assests/EXTERIORS/Night_EXTERIOS_01.jpg')}
                       alt="Ivy Park Residence — our head office"
                       fill
                       className="object-cover"
@@ -196,18 +199,18 @@ export default function AboutContent() {
                 <figure>
                   <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: '4 / 3' }}>
                     <motion.div initial={{ scale: 1.1 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 2.4, ease: 'easeOut' }} className="absolute inset-0">
-                      <Image src={p('/Blossoms Ivy Residence Assets/FINALIZED AMENITIES INTERIORS - BLOSSOMS/Blossoms Ivy_Lobby_R1_View 01-1.jpg')} alt="Grand lobby arrival" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
+                      <Image src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll1_IVY%20MYST.jpg" alt="Ivy Myst rooftop realm" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
                     </motion.div>
                   </div>
-                  <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">Standards carried into every lobby</figcaption>
+                  <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">The rooftop, after dark</figcaption>
                 </figure>
                 <figure className="mt-10 lg:mt-16">
                   <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: '4 / 3' }}>
                     <motion.div initial={{ scale: 1.1 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 2.4, delay: 0.1, ease: 'easeOut' }} className="absolute inset-0">
-                      <Image src={p('/Ivy Myst Assets/New Renders/Myst amenities/Rooftop Celestial Pool.png')} alt="Rooftop amenities" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
+                      <Image src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_FINAL_Water%20Lounge%2023rd%20Floor_View%203_IVY%20MYST.jpg" alt="Water Lounge, 23rd floor" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
                     </motion.div>
                   </div>
-                  <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">...and every rooftop</figcaption>
+                  <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">Water Lounge, 23rd floor</figcaption>
                 </figure>
               </motion.div>
 

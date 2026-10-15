@@ -15,19 +15,8 @@ interface Portfolio {
 }
 
 // Currently selling or under construction — each links to its project page.
+// Ordered chronologically by (target) completion date.
 const CURRENT: Portfolio[] = [
-  {
-    name: 'Ivy Myst Residence',
-    status: 'Now Selling',
-    href: '/ivy-myst',
-    logo: { src: p('/Ivy Myst Assets/Ivy Myst Logo.png'), w: 792, h: 173, invert: true },
-  },
-  {
-    name: 'Ivy Park Residence',
-    status: 'Under Construction',
-    href: '/ivy-park',
-    logo: { src: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), w: 1552, h: 782 },
-  },
   {
     name: 'Blossoms Ivy Residence',
     status: 'Nearing Completion',
@@ -40,10 +29,23 @@ const CURRENT: Portfolio[] = [
     href: '/luckinn-ivy',
     logo: { src: p('/Luckinn Ivy Assets/luckinn_logo.png'), w: 5760, h: 1868 },
   },
+  {
+    name: 'Ivy Park Residence',
+    status: 'Under Construction',
+    href: '/ivy-park',
+    logo: { src: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), w: 1552, h: 782 },
+  },
+  {
+    name: 'Ivy Myst Residence',
+    status: 'Now Selling',
+    href: '/ivy-myst',
+    logo: { src: p('/Ivy Myst Assets/Ivy Myst Logo.png'), w: 792, h: 173, invert: true },
+  },
 ]
 
 // Delivered developments from before the current portfolio — no live page,
-// shown for legacy / track-record credibility.
+// shown for legacy / track-record credibility. Ordered chronologically by
+// completion date.
 const LEGACY: Portfolio[] = [
   {
     name: 'Diamond Homes',
@@ -51,14 +53,14 @@ const LEGACY: Portfolio[] = [
     logo: { src: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png'), w: 4320, h: 1854 },
   },
   {
+    name: 'Nandwa Ivy Residence',
+    status: 'Completed',
+    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png'), w: 1897, h: 2382 },
+  },
+  {
     name: 'Diamond Ivy Residence',
     status: 'Completed',
     logo: { src: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png'), w: 4320, h: 2849 },
-  },
-  {
-    name: 'Nandwa Residence',
-    status: 'Completed',
-    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png'), w: 1897, h: 2382 },
   },
 ]
 
