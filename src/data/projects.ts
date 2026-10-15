@@ -215,8 +215,8 @@ export const projects: ProjectData[] = [
     locationFull: 'Mogotio Road, Westlands, Nairobi',
     type: 'Luxury Apartments',
     blocks: '1 Tower',
-    floors: 20,
-    totalUnits: 120,
+    floors: 22,
+    totalUnits: 132,
     parking: 'Basement, Ground & First Floor',
     completion: 'December 2026',
     statusLabel: 'LIMITED UNITS',
@@ -232,9 +232,9 @@ export const projects: ProjectData[] = [
     descriptionBlocks: [
       { type: 'text', content: "Westlands is Nairobi's most dynamic urban quarter — where international business headquarters, the city's best restaurants, and top-ranked schools converge in a single walkable district. Luckinn Ivy Residence is positioned at the heart of it all on Mogotio Road, placing residents at the precise intersection of professional convenience and cosmopolitan lifestyle." },
       { type: 'image', src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), caption: 'Luckinn Ivy Residence — Mogotio Road, Westlands' },
-      { type: 'text', content: "The development's 20-floor tower was designed to meet the demands of Nairobi's modern professional: a resident who values both the sanctuary of a well-serviced home and the energy of urban life immediately outside. The building's interiors reflect this balance — premium finishes and smart home features create a private retreat, while co-working spaces and a business lounge on the amenity floor support those who move between home and office." },
+      { type: 'text', content: "The development's 22-floor tower was designed to meet the demands of Nairobi's modern professional: a resident who values both the sanctuary of a well-serviced home and the energy of urban life immediately outside. The building's interiors reflect this balance — premium finishes and smart home features create a private retreat, while co-working spaces and a business lounge on the amenity floor support those who move between home and office." },
       { type: 'image', src: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'), caption: 'Heated Indoor Swimming Pool — Amenities Floor' },
-      { type: 'text', content: "With only 120 apartments across the tower, Luckinn Ivy Residence offers genuine exclusivity. The unit count is intentionally limited — a decision that sustains both the quality of resident experience and the building's long-term capital value. As Westlands continues its transformation into Nairobi's premier commercial address, demand for premium residences in the area continues to outpace supply. Only limited units remain." },
+      { type: 'text', content: "With only 132 apartments across the tower, Luckinn Ivy Residence offers genuine exclusivity. The unit count is intentionally limited — a decision that sustains both the quality of resident experience and the building's long-term capital value. As Westlands continues its transformation into Nairobi's premier commercial address, demand for premium residences in the area continues to outpace supply. Only limited units remain." },
     ],
     availableUnits: [
       { type: '2 Bedroom + DSQ', size: '126 – 140 SQM', price: 'Limited Units — Enquire', available: true },
@@ -300,7 +300,7 @@ export const projects: ProjectData[] = [
     mapSrc: 'https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d2148.455932025552!2d36.810185702436065!3d-1.2677446121873845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e6!4m3!3m2!1d-1.2877824!2d36.7886336!4m5!1s0x182f17cc6e858b33%3A0x778089c06435dda9!2sLUCKINN%20IVY%20RESIDENCE%20Nairobi%2C%20Mogotio%20Rd%2C%20KE!3m2!1d-1.2670761!2d36.8102079!5e1!3m2!1sen!2ske!4v1781851024052!5m2!1sen!2ske',
     brochurePath: p('/Luckinn Ivy Assets/Luckinn Brochure.pdf'),
     gallerySlides: [
-      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), label: 'Arrival Entrance', category: 'Architecture', description: 'An arrival experience that sets the tone for the calibre of lifestyle that awaits within, on a 20-floor tower on Mogotio Road in Westlands.' },
+      { src: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), label: 'Arrival Entrance', category: 'Architecture', description: 'An arrival experience that sets the tone for the calibre of lifestyle that awaits within, on a 22-floor tower on Mogotio Road in Westlands.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Indoor heated Swimming Pool.png'), label: 'Heated Indoor Pool', category: 'Aquatics', description: 'An elegantly designed indoor heated swimming pool conceived as a private resort, available year-round regardless of the weather.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Gym.jpeg'), label: 'Fully Equipped Gym', category: 'Fitness', description: 'A fully kitted-out fitness suite delivering the performance of a boutique fitness club without leaving the building.' },
       { src: p('/Luckinn Ivy Assets/Amenities/Yoga Area.jpeg'), label: 'Yoga Studio', category: 'Wellness', description: 'A dedicated yoga and meditation studio bathed in considered light — a quiet counterpoint to the energy of Westlands outside.' },

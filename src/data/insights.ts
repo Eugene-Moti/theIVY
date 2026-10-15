@@ -310,7 +310,7 @@ export const articles: Article[] = [
     featured: false,
     content: [
       {
-        body: "Luckinn Ivy Residence sits on Mogotio Road in the heart of Westlands — a single 20-floor tower holding 120 apartments, with two basement parking levels plus ground and first-floor parking. Completion is targeted for December 2026, putting the building among the nearest-to-handover in The Ivy Group's current portfolio.",
+        body: "Luckinn Ivy Residence sits on Mogotio Road in the heart of Westlands — a single 22-floor tower holding 132 apartments, with two basement parking levels plus ground and first-floor parking. Completion is targeted for December 2026, putting the building among the nearest-to-handover in The Ivy Group's current portfolio.",
       },
       {
         heading: 'A Tower Nearing Handover',

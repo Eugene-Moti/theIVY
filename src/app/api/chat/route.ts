@@ -60,7 +60,7 @@ Nearby: Schools, hospitals, shopping malls, supermarkets — 10 minutes to Westl
 
 ━━━ DEVELOPMENT 4: LUCKINN IVY RESIDENCE ━━━
 Location: Westlands, Nairobi
-Scale: 1 tower · 20 floors · 120 apartments
+Scale: 1 tower · 22 floors · 132 apartments
 Completion: December 2026
 Parking: Two basement levels + ground floor + first floor
 
