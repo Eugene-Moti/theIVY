@@ -97,7 +97,7 @@ export default function ManifestoStrip() {
             Our Portfolio
           </p>
           <p className="text-white/40 text-[13px] font-sans font-light max-w-md mx-auto">
-            Four developments shaping Nairobi today, built on a legacy that goes back to 2017.
+            Four developments shaping Nairobi today, built on a track record of seven since 2017.
           </p>
         </motion.div>
 
