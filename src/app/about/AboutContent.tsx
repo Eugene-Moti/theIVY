@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useInView, animate } from 'framer-motion'
+import { motion, AnimatePresence, useInView, animate } from 'framer-motion'
 import {
   ArrowRight, ArrowUpRight, Quote, Building2, Home, Users,
   ShieldCheck, MapPin, Handshake, Clock, TrendingUp, HeartHandshake,
@@ -40,14 +40,14 @@ const fadeUp = {
 // per the development schedule — keeps the timeline in true
 // chronological order from founding through to Ivy Myst in 2029.
 const JOURNEY = [
-  { year: '2017', name: 'The Ivy Group', status: 'Founded', kind: 'founding' as const },
-  { year: '2022', name: 'Diamond Homes', status: 'Completed', logo: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png') },
-  { year: '2024', name: 'Nandwa Ivy Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png') },
-  { year: '2025', name: 'Diamond Ivy Residence', status: 'Completed', logo: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png') },
-  { year: '2026', name: 'Blossoms Ivy Residence', status: 'Nearing Completion', logo: p('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'), href: '/blossom-ivy' },
-  { year: '2026', name: 'Luckinn Ivy Residence', status: 'Limited Units', logo: p('/Luckinn Ivy Assets/luckinn_logo.png'), href: '/luckinn-ivy' },
-  { year: '2028', name: 'Ivy Park Residence', status: 'Under Construction', logo: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), href: '/ivy-park' },
-  { year: '2029', name: 'Ivy Myst Residence', status: 'Now Selling', logo: p('/Ivy Myst Assets/Ivy Myst Logo.png'), invert: true, href: '/ivy-myst' },
+  { start: '2017', end: '2017', name: 'The Ivy Group', status: 'Founded', kind: 'founding' as const },
+  { start: '2019', end: '2022', name: 'Diamond Homes', status: 'Completed', logo: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png') },
+  { start: '2022', end: '2024', name: 'Nandwa Ivy Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png') },
+  { start: '2023', end: '2025', name: 'Diamond Ivy Residence', status: 'Completed', logo: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png') },
+  { start: '2024', end: '2026', name: 'Blossoms Ivy Residence', status: 'Ongoing', logo: p('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'), href: '/blossom-ivy' },
+  { start: '2025', end: '2026', name: 'Luckinn Ivy Residence', status: 'Ongoing', logo: p('/Luckinn Ivy Assets/luckinn_logo.png'), href: '/luckinn-ivy' },
+  { start: '2026', end: '2028', name: 'Ivy Park Residence', status: 'Ongoing', logo: p('/IVY PARK RESIDENCE Assests/Ivypark_logo.png'), href: '/ivy-park' },
+  { start: '2026', end: '2029', name: 'Ivy Myst Residence', status: 'Ongoing', logo: p('/Ivy Myst Assets/Ivy Myst Logo.png'), invert: true, href: '/ivy-myst' },
 ]
 
 const VALUES = [
@@ -66,7 +66,22 @@ const PORTFOLIO = [
   { name: 'Ivy Myst Residence', location: 'Kileleshwa', status: 'Now Selling', image: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-Entrance02_IVY%20MYST.jpg', href: '/ivy-myst' },
 ]
 
+const JOURNEY_DWELL = 2800
+
 export default function AboutContent() {
+  const [journeyActive, setJourneyActive] = useState(0)
+  const [journeyPaused, setJourneyPaused] = useState(false)
+
+  // Self-rescheduling timeout, keyed off journeyActive — same pattern as
+  // the homepage portfolio carousel, so a hover/click resets the countdown.
+  useEffect(() => {
+    if (journeyPaused) return
+    const t = setTimeout(() => setJourneyActive((a) => (a + 1) % JOURNEY.length), JOURNEY_DWELL)
+    return () => clearTimeout(t)
+  }, [journeyActive, journeyPaused])
+
+  const journeySpotlight = JOURNEY[journeyActive]
+
   return (
     <>
       {/* ─────────────── HERO ─────────────── */}
@@ -231,54 +246,100 @@ export default function AboutContent() {
       </section>
 
       {/* ─────────────── OUR JOURNEY ─────────────── */}
-      <section className="py-24 lg:py-28 bg-dark overflow-hidden">
+      <section
+        className="py-24 lg:py-28 bg-dark overflow-hidden"
+        onMouseEnter={() => setJourneyPaused(true)}
+        onMouseLeave={() => setJourneyPaused(false)}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-14 text-center">
             <p className="text-gold text-[11px] font-sans font-semibold tracking-[0.3em] uppercase mb-4">SINCE 2017</p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-white">Our Journey</h2>
-            <div className="w-12 h-[2px] bg-gold mt-5" />
+            <div className="w-12 h-[2px] bg-gold mt-5 mx-auto" />
           </motion.div>
-        </div>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 overflow-x-auto no-scrollbar">
-          <div className="relative flex gap-0 w-max pb-4">
-            {/* Connecting line */}
-            <div className="absolute top-[52px] left-0 right-0 h-px bg-white/15" />
-
+          {/* Spotlight carousel — every logo visible at once (no scrolling
+              needed to find one), one auto-highlighted at a time, same
+              interaction as the homepage portfolio section. */}
+          <div className="grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-8 gap-x-6 gap-y-12">
             {JOURNEY.map((item, i) => {
+              const isActive = journeyActive === i
               const inner = (
                 <motion.div
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.6, delay: (i % 8) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="group w-[180px] flex-shrink-0 px-5"
+                  animate={{ opacity: isActive ? 1 : 0.32, scale: isActive ? 1.14 : 0.88 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative flex items-center justify-center"
                 >
-                  <p className="text-white/35 text-[10px] font-sans font-semibold tracking-[0.2em] mb-4 tabular-nums">{item.year}</p>
-                  <div className="relative w-3 h-3 rounded-full bg-gold mb-6 ring-4 ring-dark group-hover:ring-gold/20 transition-all" />
-                  <div className="h-10 flex items-center mb-3">
-                    {item.kind === 'founding' ? (
-                      <Building2 size={26} className="text-gold" strokeWidth={1.5} />
-                    ) : (
-                      <Image
-                        src={item.logo!}
-                        alt={item.name}
-                        width={200}
-                        height={80}
-                        className={`h-8 w-auto object-contain ${item.invert ? 'brightness-0 invert' : ''}`}
-                      />
-                    )}
-                  </div>
-                  <p className="font-serif text-white text-sm font-light leading-snug mb-1.5 group-hover:text-gold transition-colors">{item.name}</p>
-                  <p className="text-white/40 text-[9.5px] font-sans font-semibold tracking-[0.14em] uppercase">{item.status}</p>
+                  {isActive && (
+                    <motion.span
+                      layoutId="journey-glow"
+                      className="absolute -inset-6 rounded-full bg-gold/10 blur-2xl"
+                      transition={{ duration: 0.6 }}
+                    />
+                  )}
+                  {item.kind === 'founding' ? (
+                    <Building2 size={28} className="relative text-gold" strokeWidth={1.5} />
+                  ) : (
+                    <Image
+                      src={item.logo!}
+                      alt={item.name}
+                      width={200}
+                      height={80}
+                      className={`relative h-9 sm:h-10 w-auto object-contain ${item.invert ? 'brightness-0 invert' : ''}`}
+                    />
+                  )}
                 </motion.div>
               )
+              const cardClass = 'group relative flex items-center justify-center h-16 sm:h-20 transition-colors duration-500'
+
               return item.href ? (
-                <Link key={item.name} href={item.href} className="block">{inner}</Link>
+                <Link key={item.name} href={item.href} onMouseEnter={() => setJourneyActive(i)} className={`${cardClass} cursor-pointer`}>
+                  {inner}
+                </Link>
               ) : (
-                <div key={item.name}>{inner}</div>
+                <div key={item.name} onMouseEnter={() => setJourneyActive(i)} className={cardClass}>
+                  {inner}
+                </div>
               )
             })}
+          </div>
+
+          {/* Animated caption for whichever milestone is spotlighted */}
+          <div className="mt-10 h-16 flex flex-col items-center text-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={journeySpotlight.name}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35 }}
+              >
+                <p className="font-serif text-white text-lg font-light">{journeySpotlight.name}</p>
+                <p className="text-gold text-[9.5px] font-sans font-semibold tracking-[0.2em] uppercase mt-1.5">
+                  {journeySpotlight.status}
+                </p>
+                <p className="text-white/35 text-[10px] font-sans tabular-nums mt-1">
+                  {journeySpotlight.start === journeySpotlight.end
+                    ? journeySpotlight.start
+                    : `${journeySpotlight.start} – ${journeySpotlight.end}`}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Progress dots — click to jump straight to a milestone */}
+          <div className="flex items-center justify-center gap-2 mt-5">
+            {JOURNEY.map((item, i) => (
+              <button
+                key={item.name}
+                type="button"
+                aria-label={`Show ${item.name}`}
+                onClick={() => setJourneyActive(i)}
+                className={`h-1.5 rounded-full transition-all duration-400 ${
+                  journeyActive === i ? 'w-6 bg-gold' : 'w-1.5 bg-white/20 hover:bg-white/35'
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
