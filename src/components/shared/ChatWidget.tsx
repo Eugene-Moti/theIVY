@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, Loader2, ChevronDown, Download, PhoneCall, Sun, Moon } from 'lucide-react'
 
@@ -102,22 +103,19 @@ const THEMES = {
   },
 } as const
 
-// ── Logo mark SVG ─────────────────────────────────────────────────────────────
-function IvyMark({ size = 22, color = '#C9A84C' }: { size?: number; color?: string }) {
+// ── Logo mark ─────────────────────────────────────────────────────────────────
+// Was a hand-drawn SVG approximation of the mark — at 15-24px its thin
+// radiating strokes read as a cluster of legs/antennae rather than the
+// logo. Using the real mark image instead.
+function IvyMark({ size = 22 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 44 54" fill="none" width={size} height={size}>
-      <line x1="22" y1="11" x2="22" y2="51" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 13 C23 7 26 4 28 3"   stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 17 C27 11 33 10 36 11" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 21 C30 18 37 21 40 26" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 26 C31 28 38 35 38 42" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 31 C30 38 33 46 31 52" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 13 C21 7 18 4 16 3"   stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 17 C17 11 11 10 8 11"  stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 21 C14 18 7 21 4 26"   stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 26 C13 28 6 35 6 42"   stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-      <path d="M22 31 C14 38 11 46 13 52" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
-    </svg>
+    <Image
+      src="/ivy-logo.png"
+      alt="The Ivy Group"
+      width={size}
+      height={size}
+      style={{ width: size, height: size }}
+    />
   )
 }
 
@@ -441,7 +439,7 @@ export default function ChatWidget() {
                     className="w-10 h-10 flex items-center justify-center"
                     style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}` }}
                   >
-                    <IvyMark size={22} color="#C9A84C" />
+                    <IvyMark size={22} />
                   </div>
                   <span
                     className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
@@ -500,7 +498,7 @@ export default function ChatWidget() {
                       className="w-7 h-7 flex-shrink-0 flex items-center justify-center mb-0.5"
                       style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}`, flexShrink: 0 }}
                     >
-                      <IvyMark size={15} color="#C9A84C" />
+                      <IvyMark size={15} />
                     </div>
                   )}
                   <div className="max-w-[78%] flex flex-col gap-2">
@@ -547,7 +545,7 @@ export default function ChatWidget() {
                     className="w-7 h-7 flex-shrink-0 flex items-center justify-center"
                     style={{ background: t.avatarBg, border: `1px solid ${t.avatarBorder}` }}
                   >
-                    <IvyMark size={15} color="#C9A84C" />
+                    <IvyMark size={15} />
                   </div>
                   <div
                     className="px-4 py-3.5 flex items-center gap-1.5"
@@ -743,7 +741,7 @@ export default function ChatWidget() {
                       <X size={17} style={{ color: 'rgba(255,255,255,0.55)' }} />
                     </motion.div>
                   : <motion.div key="logo" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <IvyMark size={24} color="#C9A84C" />
+                      <IvyMark size={24} />
                     </motion.div>
                 }
               </AnimatePresence>
