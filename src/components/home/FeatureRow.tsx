@@ -35,7 +35,7 @@ const SLIDES: Slide[] = [
       'Curved architecture, garden terraces and a rooftop Celestial Pool on Gatundu Road. Groundbreaking is complete — now selling at early-stage pricing.',
     href: '/ivy-myst',
     cta: 'Explore Ivy Myst',
-    video: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/ivy%20myst%20landscape_1_squished.mp4',
+    video: p('/Ivy Myst Assets/New Renders/ivy myst landscape_1_squished.mp4'),
     poster: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
   },
   {
@@ -46,7 +46,7 @@ const SLIDES: Slide[] = [
       'Three residential towers with a rooftop cinema, lounge and bar — 660 homes minutes from Yaya Centre. Structural works are underway, with completion targeted for December 2028.',
     href: '/ivy-park',
     cta: 'Explore Ivy Park',
-    video: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/IVY%20PARK%20WIDE_squished.mp4',
+    video: p('/Ivy Myst Assets/New Renders/IVY PARK WIDE_squished.mp4'),
     poster: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Night new_Ivy Park.jpg'),
   },
 ]

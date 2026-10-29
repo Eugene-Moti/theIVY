@@ -361,7 +361,7 @@ export const projects: ProjectData[] = [
     completion: 'December 2028',
     statusLabel: 'EARLY BIRD',
     heroImage: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'),
-    heroVideo: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/IVY%20PARK%20WIDE_squished.mp4',
+    heroVideo: p('/Ivy Myst Assets/New Renders/IVY PARK WIDE_squished.mp4'),
     exteriorImages: [
       p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 1_IVY PARK.jpg'),
       p('/IVY PARK RESIDENCE Assests/EXTERIORS/251211_D03-Facade 2_IVY PARK.jpg'),
@@ -476,7 +476,7 @@ export const projects: ProjectData[] = [
     statusLabel: 'NOW SELLING',
     isLaunchingSoon: false,
     heroImage: p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
-    heroVideo: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/ivy%20myst%20landscape_1_squished.mp4',
+    heroVideo: p('/Ivy Myst Assets/New Renders/ivy myst landscape_1_squished.mp4'),
     exteriorImages: [
       p('/Ivy Myst Assets/New Renders/Exterior/Exterior Day View.jpg'),
       p('/Ivy Myst Assets/New Renders/Exterior/Exterior Night View.png'),
