@@ -19,8 +19,8 @@ const units = [
   { bed: '3 BED', size: '169–231 SQM', price: 'From KES 19.8M', usd: approxUsd(19_800_000) },
 ]
 
-const DAY_IMAGE = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2001_Day_AZURE%20IVY.jpg'
-const NIGHT_IMAGE = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_Final-Courtyard%2001_Night_AZURE%20IVY.jpg'
+const DAY_IMAGE = encodeURI('/Ivy Myst Assets/New Renders/Exterior/260901_Final-Courtyard 01_Day_AZURE IVY.jpg')
+const NIGHT_IMAGE = encodeURI('/Ivy Myst Assets/New Renders/Exterior/260901_Final-Courtyard 01_Night_AZURE IVY.jpg')
 
 export default function LaunchSection() {
   const [isDay, setIsDay] = useState(false)

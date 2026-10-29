@@ -63,7 +63,7 @@ export const articles: Article[] = [
     readTime: '5 min read',
     excerpt:
       "From tree-lined avenues to world-class amenities, Kileleshwa has consistently attracted Nairobi's most discerning homeowners. Here's what makes it special.",
-    image: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll2_IVY%20MYST.jpg',
+    image: p('/Ivy Myst Assets/New Renders/Exterior/260910_FINAL-RooftopAll2_IVY MYST.jpg'),
     featured: false,
     content: [
       {

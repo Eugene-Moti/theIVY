@@ -63,7 +63,7 @@ const PORTFOLIO = [
   { name: 'Blossoms Ivy Residence', location: 'Kileleshwa', status: 'Nearing Completion', image: p('/Blossoms Ivy Residence Assets/Exterior/Blossoms_Ivy exterior.png'), href: '/blossom-ivy' },
   { name: 'Luckinn Ivy Residence', location: 'Westlands', status: 'Limited Units', image: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'), href: '/luckinn-ivy' },
   { name: 'Ivy Park Residence', location: 'Kilimani', status: 'Under Construction', image: p('/IVY PARK RESIDENCE Assests/EXTERIORS/251118_D01_Droneview-Sunset_Ivy Park.jpg'), href: '/ivy-park' },
-  { name: 'Ivy Myst Residence', location: 'Kileleshwa', status: 'Now Selling', image: 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-Entrance02_IVY%20MYST.jpg', href: '/ivy-myst' },
+  { name: 'Ivy Myst Residence', location: 'Kileleshwa', status: 'Now Selling', image: p('/Ivy Myst Assets/New Renders/Exterior/260910_FINAL-Entrance02_IVY MYST.jpg'), href: '/ivy-myst' },
 ]
 
 const JOURNEY_DWELL = 2800
@@ -214,7 +214,7 @@ export default function AboutContent() {
                 <figure>
                   <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: '4 / 3' }}>
                     <motion.div initial={{ scale: 1.1 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 2.4, ease: 'easeOut' }} className="absolute inset-0">
-                      <Image src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260910_FINAL-RooftopAll1_IVY%20MYST.jpg" alt="Ivy Myst rooftop realm" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
+                      <Image src={p('/Ivy Myst Assets/New Renders/Exterior/260910_FINAL-RooftopAll1_IVY MYST.jpg')} alt="Ivy Myst rooftop realm" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
                     </motion.div>
                   </div>
                   <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">The rooftop, after dark</figcaption>
@@ -222,7 +222,7 @@ export default function AboutContent() {
                 <figure className="mt-10 lg:mt-16">
                   <div className="relative overflow-hidden bg-dark" style={{ aspectRatio: '4 / 3' }}>
                     <motion.div initial={{ scale: 1.1 }} whileInView={{ scale: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 2.4, delay: 0.1, ease: 'easeOut' }} className="absolute inset-0">
-                      <Image src="https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/260901_FINAL_Water%20Lounge%2023rd%20Floor_View%203_IVY%20MYST.jpg" alt="Water Lounge, 23rd floor" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
+                      <Image src={p('/Ivy Myst Assets/New Renders/Myst amenities/260901_FINAL_Water Lounge 23rd Floor_View 3_IVY MYST.jpg')} alt="Water Lounge, 23rd floor" fill className="object-cover" sizes="(max-width: 1024px) 50vw, 35vw" quality={84} />
                     </motion.div>
                   </div>
                   <figcaption className="mt-3 text-dark/40 text-[9px] font-sans tracking-[0.14em] uppercase">Water Lounge, 23rd floor</figcaption>

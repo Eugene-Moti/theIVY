@@ -15,24 +15,26 @@ const highlights = [
 
 // Ivy Myst amenity renders — cycle through these in succession behind the
 // "About" copy so the section keeps showing off more of the development.
-const BUCKET = 'https://aspvhjmmaaaivzezsnur.supabase.co/storage/v1/object/public/property-media/Ivymyst/'
+const p = (path: string) => encodeURI(path)
+const AMENITIES_DIR = '/Ivy Myst Assets/New Renders/Myst amenities/'
+const EXTERIOR_DIR = '/Ivy Myst Assets/New Renders/Exterior/'
 const AMENITY_IMAGES = [
-  BUCKET + '260901_FINAL-Rooftop%2025%20Pool%2005_AZURE%20IVY.jpg',
-  BUCKET + '260831_Final_Gym%20Floor%2025th_Creative%20View%204_AZURE%20IVY.jpg',
-  BUCKET + '260901_Final-ShotArt%2001_AZURE%20IVY.jpg',
-  BUCKET + '260901_Final-ShotArt%2002_AZURE%20IVY.jpg',
-  BUCKET + '260901_FINAL_Massage%20room_Creaitive%20Shot_View%201_AZURE%20IVY.jpg',
-  BUCKET + '260901_FINAL_Pool%20And%20Pood%20Deck-Creative%204_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Restaurant%20Garden_Creat%20shot_View%201_Floor%2025th_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Water%20Lounge%2023rd%20Floor_Creative%20View%204_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Water%20Lounge%2023rd%20Floor_View%203_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Yoga_Creat%20shot%20View%201_Floor%2025th_IVY%20MYST.jpg.jpg',
-  BUCKET + '260901_FINAL_Yoga_Creat%20shot%20View%202_Floor%2025th_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Gym%20Weight_Creative%20shot_View%201_IVY%20MYST.jpg',
-  BUCKET + '260901_FINAL_Kids%20Play-Creative%201_IVY%20MYST.jpg',
-  BUCKET + '260910_FINAL-RooftopAll3_IVY%20MYST.jpg',
-  BUCKET + '260910_FINAL_Main%20Reception_Creative_View%2001_IVY%20MYST.jpg',
-  BUCKET + 'IVY%20MYST%20MAPPED%20AMMENITIES.jpg.jpeg',
+  p(AMENITIES_DIR + '260901_FINAL-Rooftop 25 Pool 05_AZURE IVY.jpg'),
+  p(AMENITIES_DIR + '260831_Final_Gym Floor 25th_Creative View 4_AZURE IVY.jpg'),
+  p(EXTERIOR_DIR + '260901_Final-ShotArt 01_AZURE IVY.jpg'),
+  p(EXTERIOR_DIR + '260901_Final-ShotArt 02_AZURE IVY.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Massage room_Creaitive Shot_View 1_AZURE IVY.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Pool And Pood Deck-Creative 4_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Restaurant Garden_Creat shot_View 1_Floor 25th_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Water Lounge 23rd Floor_Creative View 4_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Water Lounge 23rd Floor_View 3_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Yoga_Creat shot View 1_Floor 25th_IVY MYST.jpg.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Yoga_Creat shot View 2_Floor 25th_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Gym Weight_Creative shot_View 1_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260901_FINAL_Kids Play-Creative 1_IVY MYST.jpg'),
+  p(EXTERIOR_DIR + '260910_FINAL-RooftopAll3_IVY MYST.jpg'),
+  p(AMENITIES_DIR + '260910_FINAL_Main Reception_Creative_View 01_IVY MYST.jpg'),
+  // IVY MYST MAPPED AMMENITIES.jpg.jpeg — not yet recovered, omitted until found
 ]
 
 const DWELL = 4500
