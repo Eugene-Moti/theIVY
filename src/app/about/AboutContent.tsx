@@ -42,7 +42,7 @@ const fadeUp = {
 const JOURNEY = [
   { start: '2017', end: '2017', name: 'The Ivy Group', status: 'Founded', kind: 'founding' as const },
   { start: '2019', end: '2022', name: 'Diamond Homes', status: 'Completed', logo: p('/previous_projects/Diamond Homes/diamond-homes-logo-gold.png') },
-  { start: '2022', end: '2024', name: 'Nandwa Ivy Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png') },
+  { start: '2022', end: '2024', name: 'Nandwa Ivy Residence', status: 'Completed', logo: p('/previous_projects/Nandwa-ivy/Nandwa Ivy Main.png') },
   { start: '2023', end: '2025', name: 'Diamond Ivy Residence', status: 'Completed', logo: p('/previous_projects/Diamond-ivy/diamond-ivy-gold.png') },
   { start: '2024', end: '2026', name: 'Blossoms Ivy Residence', status: 'Ongoing', logo: p('/Blossoms Ivy Residence Assets/BLOSSOM-LOGO-GOLD.png'), href: '/blossom-ivy' },
   { start: '2025', end: '2026', name: 'Luckinn Ivy Residence', status: 'Ongoing', logo: p('/Luckinn Ivy Assets/luckinn_logo.png'), href: '/luckinn-ivy' },
