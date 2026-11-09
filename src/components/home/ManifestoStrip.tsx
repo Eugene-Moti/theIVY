@@ -32,7 +32,7 @@ const PORTFOLIO: Portfolio[] = [
     status: 'Completed',
     start: '2022',
     end: '2024',
-    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa-ivy-full-logo-gold.png'), w: 1897, h: 2382 },
+    logo: { src: p('/previous_projects/Nandwa-ivy/Nandwa Ivy Main.png'), w: 1897, h: 2382 },
   },
   {
     name: 'Diamond Ivy Residence',
