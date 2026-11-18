@@ -1,9 +1,38 @@
 import { NextResponse } from 'next/server'
 import { resolveMx, resolve4 } from 'node:dns/promises'
 import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { createAdminClient } from '@/lib/supabase/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+
+// Resend's shared onboarding@resend.dev sending domain can only deliver to
+// the email address that owns the Resend account (marketing.ivy-group@...),
+// so the second inbox goes out over Gmail SMTP instead — no domain
+// verification required.
+let gmailTransport: ReturnType<typeof nodemailer.createTransport> | null = null
+function getGmailTransport() {
+  if (!gmailTransport) {
+    gmailTransport = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    })
+  }
+  return gmailTransport
+}
+
+async function sendViaGmail(to: string, subject: string, html: string, replyTo?: string) {
+  await getGmailTransport().sendMail({
+    from: `"The Ivy Group Website" <${process.env.GMAIL_USER}>`,
+    to,
+    replyTo,
+    subject,
+    html,
+  })
+}
 
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   return Promise.race([p, new Promise<T>((_, r) => setTimeout(() => r(new Error('timeout')), ms))])
@@ -217,13 +246,17 @@ export async function POST(request: Request) {
     const sidePromise = saveLead(rest, type)
     const recipient = await pickRecipient()
 
-    await resend.emails.send({
-      from: FROM,
-      to: recipient,
-      replyTo: rest.email || undefined,
-      subject,
-      html,
-    })
+    if (recipient === TO2) {
+      await sendViaGmail(TO2, subject, html, rest.email || undefined)
+    } else {
+      await resend.emails.send({
+        from: FROM,
+        to: recipient,
+        replyTo: rest.email || undefined,
+        subject,
+        html,
+      })
+    }
 
     await sidePromise
 
