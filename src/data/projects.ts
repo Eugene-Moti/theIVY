@@ -388,8 +388,8 @@ export const projects: ProjectData[] = [
       { type: 'text', content: "For investors, the timing of Ivy Park represents a rare alignment of conditions. Foundation and structural works are progressing on schedule, yet early-bird pricing remains available — meaning buyers entering now secure the maximum potential spread between their purchase price and the development's completion value. With units starting from KES 6.82M, Ivy Park opens the Ivy Group portfolio to a broader range of investors without compromising the quality standard that defines every Ivy Group development." },
     ],
     availableUnits: [
-      { type: '1 Bedroom', size: '62 – 69 SQM', price: 'From KES 6,820,000', available: true },
-      { type: '2 Bedroom', size: '73 – 128 SQM', price: 'From KES 10,780,000', available: true },
+      { type: '1 Bedroom', size: '62 – 76 SQM', price: 'From KES 6,820,000', available: true },
+      { type: '2 Bedroom', size: '98 – 128 SQM', price: 'From KES 10,780,000', available: true },
       { type: '3 Bedroom + DSQ', size: '142 SQM', price: 'From KES 15,620,000', available: true },
     ],
     soldOutUnits: [],

@@ -258,7 +258,7 @@ export const articles: Article[] = [
       },
       {
         heading: 'Unit Mix & Pricing',
-        body: "One-bedroom units start from KES 6.82 million (62–69 SQM), two-bedrooms from KES 10.78 million (73–128 SQM), and three-bedroom + DSQ units from KES 15.62 million (142 SQM) — pricing that reflects the project's early construction stage and its position in the KES 6–20 million band most diaspora and first-time buyers target.",
+        body: "One-bedroom units start from KES 6.82 million (62–76 SQM), two-bedrooms from KES 10.78 million (98–128 SQM), and three-bedroom + DSQ units from KES 15.62 million (142 SQM) — pricing that reflects the project's early construction stage and its position in the KES 6–20 million band most diaspora and first-time buyers target.",
       },
     ],
   },

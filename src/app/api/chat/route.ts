@@ -15,8 +15,8 @@ Completion: December 2028
 Construction status: Structural works on the 4th floor
 
 Apartment types:
-• 1 Bedroom — 62–69 sqm — from KSh 6.82 Million
-• 2 Bedroom — 73–128 sqm — from KSh 10.78 Million
+• 1 Bedroom — 62–76 sqm — from KSh 6.82 Million
+• 2 Bedroom — 98–128 sqm — from KSh 10.78 Million
 • 3 Bedroom + DSQ — 142 sqm — from KSh 15.62 Million
 
 Amenities: Heated swimming pool, rooftop garden, rooftop lounge, fully equipped gym, yoga studio, coffee bar, co-working spaces, landscaped garden, indoor children's play area, high-speed lifts, 24-hour security, CCTV, smart access control, backup power for common areas, borehole water supply
