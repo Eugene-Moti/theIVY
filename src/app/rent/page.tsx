@@ -29,7 +29,11 @@ export type RentalListing = {
   available_from: string | null
 }
 
-export default async function RentPage() {
+export default async function RentPage({
+  searchParams,
+}: {
+  searchParams: { interest?: string }
+}) {
   let listings: RentalListing[] = []
   try {
     const supabase = await createClient()
@@ -42,5 +46,5 @@ export default async function RentPage() {
     listings = data ?? []
   } catch { /* table not yet created — show coming soon */ }
 
-  return <RentContent listings={listings} />
+  return <RentContent listings={listings} presetInterest={searchParams.interest} />
 }

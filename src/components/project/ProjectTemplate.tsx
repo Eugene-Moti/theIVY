@@ -446,6 +446,23 @@ export default function ProjectTemplate({ data }: { data: ProjectData }) {
         </div>
       </section>
 
+      {/* ─────────────── RENTAL WAITLIST ─────────────── */}
+      {data.rentalWaitlist && (
+        <section className="bg-dark py-16 lg:py-20">
+          <div className="max-w-3xl mx-auto px-6 lg:px-10 text-center">
+            <Eyebrow light>Rentals</Eyebrow>
+            <Heading light className="mt-3 mb-4">Interested in Renting at {shortName}?</Heading>
+            <p className="text-white/60 text-sm font-sans font-light max-w-xl mx-auto leading-relaxed mb-8">
+              Units at {shortName} will soon be available to rent. Register your interest and we&apos;ll reach
+              out the moment a unit matching your needs is ready.
+            </p>
+            <Link href={`/rent?interest=${encodeURIComponent(data.name)}`} className={btnGhostLight}>
+              Join the Rental Waitlist <ArrowRight size={13} />
+            </Link>
+          </div>
+        </section>
+      )}
+
       {/* ─────────────── AMENITY SHOWCASE ─────────────── */}
       <AmenityShowcase amenities={data.amenities} />
 

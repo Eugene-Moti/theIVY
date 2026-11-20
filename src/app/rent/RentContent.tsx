@@ -7,7 +7,13 @@ import { Bell, ArrowRight, MapPin, Maximize2, BedDouble, CheckCircle, Clock } fr
 import type { RentalListing } from './page'
 import LeadForm from '@/components/shared/LeadForm'
 
-export default function RentContent({ listings }: { listings: RentalListing[] }) {
+export default function RentContent({
+  listings,
+  presetInterest,
+}: {
+  listings: RentalListing[]
+  presetInterest?: string
+}) {
   const hasListings = listings.length > 0
 
   return (
@@ -63,15 +69,17 @@ export default function RentContent({ listings }: { listings: RentalListing[] })
                   We are actively developing a premium rental programme and will launch it shortly.
                 </p>
                 <p className="text-white/40 text-sm font-sans font-light max-w-md mx-auto leading-relaxed mb-10">
-                  Tell us what you&apos;re looking for and we&apos;ll be the first to reach out when a matching
-                  rental unit becomes available.
+                  {presetInterest
+                    ? `Tell us about yourself and we'll be the first to reach out when a unit at ${presetInterest} matching your needs becomes available.`
+                    : "Tell us what you're looking for and we'll be the first to reach out when a matching rental unit becomes available."}
                 </p>
                 <div className="max-w-xl mx-auto text-left">
                   <LeadForm
                     variant="full"
                     context="rental"
                     leadType="rental-waitlist"
-                    source="Rental waitlist"
+                    project={presetInterest}
+                    source={presetInterest ? `Rental waitlist — ${presetInterest}` : 'Rental waitlist'}
                     dark
                     submitLabel="Join the waitlist"
                   />

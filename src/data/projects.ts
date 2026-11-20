@@ -71,6 +71,9 @@ export interface ProjectData {
   statusLabel: string
   isLaunchingSoon?: boolean
   specialOffer?: string
+  /** Shows a "rentals opening soon" CTA linking to the /rent waitlist,
+   *  pre-selected to this development. */
+  rentalWaitlist?: boolean
   heroImage: string
   /** Optional portrait / square crop used for the hero on small screens.
    *  Falls back to heroImage when not supplied. */
@@ -112,6 +115,7 @@ export const projects: ProjectData[] = [
     parking: 'Ground Floor + 4 Basement Levels',
     completion: 'December 2026',
     statusLabel: 'AVAILABLE',
+    rentalWaitlist: true,
     heroImage: p('/Blossoms Ivy Residence Assets/Blossoms Ivy Gate.jpg'),
     exteriorImages: [
       p('/Blossoms Ivy Residence Assets/Exterior/Exterior.png'),
@@ -220,6 +224,7 @@ export const projects: ProjectData[] = [
     parking: 'Basement, Ground & First Floor',
     completion: 'December 2026',
     statusLabel: 'LIMITED UNITS',
+    rentalWaitlist: true,
     heroImage: p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
     exteriorImages: [
       p('/Luckinn Ivy Assets/Exterior/Luckinn Ivy Entrance.png'),
